@@ -4,81 +4,136 @@
 #define Initialization
 
 #include <cstring>
+#include <string>
+#include <iostream>
 
-// Concept Symbol
-class Symbol
-{
-	string Concept = "Symbol";
-	string SymbolSet = "\latex2e";
-public:
-	GetConcept(){return Concept;}
-	GetSymbolSet(){return SymbolSet;}
-}
+using namespace std;
 
-class IndepVar
-{
-	string Concept = "Independent Variable";
-	string Symbol;
-public:
-	IndepVar(){Symbol = "\mu";}
-	GetConcept(){return Concept;}
-	GetSymbol(){return Symbol;}
-	LetSymbol(string NewSymbol)
-		{Symbol = NewSymbol;}
-}
-
+// Concept Predicate
 class Predicate
 {
+	// information
 	string Concept = "Predicate";
 	string Symbol;
+	// property
 	bool TruthValue;
+	// methods
 public:
+	// initialization
 	Predicate(){Symbol = "\mu";
 		 TruthValue = false;}
-	GetConcept(){return Concept;}
-	GetSymbol(){return Symbol;}
-	LetSymbol(string NewSymbol)
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+	// get property
+	bool GetTruthValue(){return TruthValue;}
+	// let info
+	void LetSymbol(string NewSymbol)
 		{Symbol = NewSymbol;}
-	GetTruthValue(){return TruthValue;}
-	LetTruthValue(bool NewTruthValue)
+	// get info
+	void LetTruthValue(bool NewTruthValue)
 		{TruthValue = NewTruthValue;}
-}
+	// condition
+	virtual bool Condition(Predicate &Input)
+		{return false;}
+};
 
-class PredConst
+class BelongTo
 {
-	string Concept = "Predicate Constant";
+	// information
+	string Concept = "belong to";
 	string Symbol = "\in";
+	// methods
 public:
-	GetConcept(){return Concept;}
-	GetSymbol(){return Symbol;}
-}
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+};
 
+class UnivQuan
+{
+	// information
+	string Concept = "for all";
+	string Symbol = "\forall";
+	// methods
+public:
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+	// operation
+	Predicate OpUnivQuan(Predicate &Input,
+		Predicate &psi)
+	{
+		Predicate univ_psi;
+		univ_psi.LetSymbol
+			(Symbol + " " + Input.GetSymbol()
+				+ " \," + psi.GetSymbol());
+		univ_psi.LetTruthValue
+			(psi.Condition(Input));
+		return univ_psi;
+	}
+};
+
+class UnivQuan
+{
+	// information
+	string Concept = "for all";
+	string Symbol = "\forall";
+	// methods
+public:
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+	// operation
+	Predicate OpUnivQuan(Predicate &Input,
+		Predicate &psi)
+	{
+		Predicate univ_psi;
+		univ_psi.LetSymbol
+			(Symbol + " " + Input.GetSymbol()
+				+ " \," + psi.GetSymbol());
+		univ_psi.LetTruthValue
+			(psi.Condition(Input));
+		return univ_psi;
+	}
+};
+
+// Operation Nagation
 class Negation
 {
+	// information
 	string Concept = "Negation";
 	string Symbol = "\neg";
+	// methods
 public:
-	GetConcept(){return Concept;}
-	GetSymbol(){return Symbol;}
-	Predicate Negation(Predicate &psi)
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+	// operation
+	Predicate OpNegation(Predicate &psi)
 	{
 		Predicate neg_psi;
 		neg_psi.LetSymbol
 			(Symbol + " " + psi.GetSymbol());
 		neg_psi.LetTruthValue
-			(!psi.TruthValue);
+			(!psi.GetTruthValue());
 		return neg_psi;
 	}
-}
+};
 
+// Operation Disjunction
 class Disjunction
 {
+	// information
 	string Concept = "Disjunction";
 	string Symbol = "\vee";
+	// methods
 public:
-	GetConcept(){return Concept;}
-	GetSymbol(){return Symbol;}
-	Predicate Disjunction
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+	// operation
+	Predicate OpDisjunction
 		(Predicate &psi, Predicate &varphi)
 	{
 		Predicate psi_vee_varphi;
@@ -90,37 +145,45 @@ public:
 				varphi.GetTruthValue());
 		return psi_vee_varphi;
 	}
-}
+};
 
 class Conjunction
 {
+	// information
 	string Concept = "Conjunction";
 	string Symbol = "\wedge";
+	// methods
 public:
-	GetConcept(){return Concept;}
-	GetSymbol(){return Symbol;}
-	Predicate Conjunction
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+	// operation
+	Predicate OpConjunction
 		(Predicate &psi, Predicate &varphi)
 	{
 		Predicate psi_wedge_varphi;
 		psi_wedge_varphi.LetSymbol
 			(psi.GetSymbol() + " " + Symbol
-				+ " " + varphi.GetSymbol);
+				+ " " + varphi.GetSymbol());
 		psi_wedge_varphi.LetTruthValue
 			(psi.GetTruthValue() &&
 				varphi.GetTruthValue());
 		return psi_wedge_varphi;
 	}
-}
+};
 
 class Implication
 {
+	// information
 	string Concept = "Implication";
 	string Symbol = "\rightarrow";
+	// methods
 public:
-	GetConcept(){return Concept;}
-	GetSymbol(){return Symbol;}
-	Predicate Implication
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+	// operation
+	Predicate OpImplication
 		(Predicate &psi, Predicate &varphi)
 	{
 		Predicate psi_rightarrow_varphi;
@@ -132,16 +195,20 @@ public:
 				varphi.GetTruthValue());
 		return psi_rightarrow_varphi;
 	}
-}
+};
 
 class Inference
 {
+	// information
 	string Concept = "Inference";
 	string Symbol = "\Rightarrow";
+	// methods
 public:
-	GetConcept(){return Concept;}
-	GetSymbol(){return Symbol;}
-	Predicate Inference
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+	// operation
+	Predicate OpInference
 		(Predicate &psi, Predicate &varphi)
 	{
 		Predicate psi_Rightarrow_varphi;
@@ -151,11 +218,11 @@ public:
 		psi_Rightarrow_varphi.LetTruthValue
 			(true);
 		if (psi.GetTruthValue()==true && 
-			varphi.GetTruthValue==false)
-			{cout<<"Inference Error!"}
-		return psi_rightarrow_varphi;
+			varphi.GetTruthValue()==false)
+			{cout<<"Inference Error!"<<endl;}
+		return psi_Rightarrow_varphi;
 	}
-}
+};
 
 class Definition
 {
@@ -166,7 +233,7 @@ protected:
 	{
 		return defname;
 	}
-}
+};
 
 #endif
 
