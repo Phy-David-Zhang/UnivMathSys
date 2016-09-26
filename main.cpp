@@ -16,6 +16,7 @@ using namespace std;
 #include "./Initialization/symbol.h"
 #include "./Initialization/initio.h"
 #include "./Initialization/logic.h"
+#include "./Initialization/standard.h"
 
 // main test function
 int main(void)

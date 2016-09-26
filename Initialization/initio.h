@@ -104,7 +104,8 @@ public:
 	Predicate ObjectForm()
 	{
 		Predicate object_x;
-		object_x.LetSymbol("x");
+		object_x.LetSymbol
+			(Class_C.GetObject().GetSymbol());
 		object_x.LetTruthValue(true);
 	}
 };

@@ -49,13 +49,15 @@ public:
 	Predicate OpExistQuan(IndepVar &Input,
 		Predicate &psi)
 	{
-		Predicate univ_psi;
-		univ_psi.LetSymbol
+		Predicate exist_psi;
+		psi.LetTruthValue
+			(!psi.GetTruthValue());
+		exist_psi.LetSymbol
 			(Symbol + " " + Input.GetSymbol()
 				+ " \," + psi.GetSymbol());
-		univ_psi.LetTruthValue
+		exist_psi.LetTruthValue
 			(!psi.Condition(Input));
-		return univ_psi;
+		return exist_psi;
 	}
 };
 
@@ -182,17 +184,6 @@ public:
 			varphi.GetTruthValue()==false)
 			{cout<<"Inference Error!"<<endl;}
 		return psi_Rightarrow_varphi;
-	}
-};
-
-class Definition
-{
-private:
-	string defname;
-protected:
-	string get_defname()
-	{
-		return defname;
 	}
 };
 
