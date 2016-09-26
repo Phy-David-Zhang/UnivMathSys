@@ -4,8 +4,8 @@ Universal Mathematics System, or UMS, is an attempt to formulate abstract mathem
 
 ### Authorship
 
-> Author: Zhang Chang-kai
-> E-mail: phy.zhangck@gmail.com
+    Author: Zhang Chang-kai
+    E-mail: phy.zhangck@gmail.com
 
 ### License
 
