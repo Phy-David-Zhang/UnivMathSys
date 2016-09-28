@@ -21,6 +21,11 @@ public:
 	// initialization
 	Predicate(){Symbol = "\mu";
 		 TruthValue = false;}
+	// condition
+	virtual bool Condition(IndepVar &Input)
+		{return false;}
+	virtual void CondChn(IndepVar &Input)
+		{TruthValue = Condition(Input);}
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
@@ -32,11 +37,6 @@ public:
 	// let property
 	void LetTruthValue(bool NewTruthValue)
 		{TruthValue = NewTruthValue;}
-	// condition
-	virtual bool Condition(IndepVar &Input)
-		{return false;}
-	virtual void CondChn(IndepVar &Input)
-		{TruthValue = Condition(Input);}
 };
 
 class Class
@@ -121,17 +121,19 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// formulation
-	Predicate OpBelongTo(Object &Objt, 
+	Predicate OpBelongTo(Object Objt, 
 		Class Class_C)
 	{
 		Predicate obj_in_c;
+		IndepVar temp;
+		temp.LetRpsnt(&Objt);
 		obj_in_c.LetSymbol
 			(Objt.GetSymbol() + " " + 
 				Symbol + " " + 
 				Class_C.GetSymbol());
 		obj_in_c.LetTruthValue
-			((Objt.GetClass().GetSymbol() ==
-				Class_C.GetSymbol()));
+			(Class_C.GetProperty()
+				.Condition(temp));
 	}
 };
 
