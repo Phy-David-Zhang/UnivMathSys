@@ -13,7 +13,9 @@ using namespace std;
 	{
 		Class *ClassC;
 	public:
-		PfClass(Class *NewClass)
+		PfClass()
+			{ClassC = NULL;}
+		void LetClass(Class* NewClass)
 			{ClassC = NewClass;}
 		bool Condition(IndepVar &Input)
 		{
@@ -22,13 +24,15 @@ using namespace std;
 				ClassC->GetObject().GetRpsnt());
 			return result;
 		}
+		void temp(){cout<<"tick"<<endl;}
 	};
 
 // Definition Subclass
-class Subclass: public MathDef, public Class
+class Subclass: virtual public MathDef, public Class
 {
 	// information
 	Class ClassC;
+	PfClass psifS;
 	// method
 public:
 	// initialization
@@ -36,9 +40,12 @@ public:
 	{Definition = "Subclass";
 	 MathDef::Symbol = "S";
 	 Property = ClassC.GetConcept()
-	 	+ " " + ClassC.GetSymbol();}
+	 	+ " " + ClassC.GetSymbol();
+	 // define class
+	 psifS.LetClass(this); 
+	 this->LetProperty(&psifS);}
 	// get info
-	Class GetClass(){return ClassC;}
+	Class* GetClass(){return &ClassC;}
 	// let info
 	void LetClass(Class NewClass)
 		{ClassC = NewClass;}
@@ -49,9 +56,6 @@ public:
 		// operation
 		BelongTo in;
 		Inference RghtArr;
-		// define class
-		PfClass psifS(this); 
-		this->LetProperty(&psifS); 
 		// let form
 		form.LetSymbol(this->GetObject().GetSymbol() 
 		+ in.GetSymbol() + " " + MathDef::Symbol
@@ -62,7 +66,7 @@ public:
 		Predicate LeftArg = 
 			in.OpBelongTo(this->GetObject(), *this);
 		Predicate RghtArg = 
-			in.OpBelongTo(ClassC.GetObject(), 
+			in.OpBelongTo(this->GetObject(), 
 				ClassC);
 		form.LetTruthValue(RghtArr.OpInference(
 			LeftArg, RghtArg).GetTruthValue()); 
@@ -70,7 +74,28 @@ public:
 	}
 };
 
-
+class Set: virtual public MathDef, public Subclass
+{
+	Predicate* psiC;
+public:
+	Set()
+	{
+		// information
+		MathDef::Definition = "Set";
+		MathDef::Symbol = "X";
+		LetClass(*this);
+		PropOfSet();
+		// eligibility
+		if (ChkEligibility()==false)
+			{cout<<"Ill defined!"<<endl;}
+	}
+	// check eligibility
+	bool ChkEligibility()
+		{return Subclass::Formulation()
+			.GetTruthValue();}
+	// default property
+	virtual void PropOfSet(){}
+};
 
 
 #endif

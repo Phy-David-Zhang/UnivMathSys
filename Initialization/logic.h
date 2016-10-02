@@ -179,7 +179,8 @@ public:
 			(psi.GetSymbol() + " " + Symbol
 				+ " " + varphi.GetSymbol());
 		psi_Rightarrow_varphi.LetTruthValue
-			(true);
+			(!psi.GetTruthValue() || 
+				varphi.GetTruthValue());
 		if (psi.GetTruthValue()==true && 
 			varphi.GetTruthValue()==false)
 			{cout<<"Inference Error!"<<endl;}
