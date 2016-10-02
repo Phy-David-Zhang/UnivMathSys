@@ -50,7 +50,7 @@ public:
 		BelongTo in;
 		Inference RghtArr;
 		// define class
-		PfClass psifC(&ClassC); 
+		PfClass psifS(this); 
 		this->LetProperty(&psifS); 
 		// let form
 		form.LetSymbol(this->GetObject().GetSymbol() 
