@@ -51,9 +51,7 @@ public:
 		Inference RghtArr;
 		// define class
 		PfClass psifC(&ClassC); 
-		PfClass psifS(this);
 		this->LetProperty(&psifS); 
-		ClassC.LetProperty(&psifC);
 		// let form
 		form.LetSymbol(this->GetObject().GetSymbol() 
 		+ in.GetSymbol() + " " + MathDef::Symbol
