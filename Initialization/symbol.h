@@ -37,6 +37,7 @@ public:
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
+	void* GetRpsnt(){return rpsnt;}
 	// let info
 	void LetSymbol(string NewSymbol)
 		{Symbol = NewSymbol;}
