@@ -13,7 +13,7 @@ class Symbol
 {
 	// information
 	string Concept = "Symbol";
-	string SymbolSet = "\latex2e";
+	string SymbolSet = "\\latex2e";
 	// method
 public:
 	// get info
@@ -32,7 +32,7 @@ class IndepVar
 	// method
 public:
 	// initialization
-	IndepVar(){Symbol = "\mu";
+	IndepVar(){Symbol = "\\mu";
 		rpsnt = &Symbol;}
 	// get info
 	string GetConcept(){return Concept;}

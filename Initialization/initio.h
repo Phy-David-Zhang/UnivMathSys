@@ -19,7 +19,7 @@ class Predicate
 	// methods
 public:
 	// initialization
-	Predicate(){Symbol = "\mu";
+	Predicate(){Symbol = "\\mu";
 		 TruthValue = false;}
 	// condition
 	virtual bool Condition(IndepVar &Input)
@@ -51,7 +51,8 @@ class Class
 	// method
 public:
 	// initialization
-	Class(){Symbol = "C";}
+	Class(){Symbol = "C"; 
+		Obj.LetSymbol("x");}
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
@@ -70,9 +71,9 @@ public:
 	Predicate ClassForm()
 	{
 		Predicate class_c;
-		class_c.LetSymbol("\{" + 
-			Obj.GetSymbol() + "\mid " + 
-			Prop->GetSymbol() + "\}");
+		class_c.LetSymbol("\\{" + 
+			Obj.GetSymbol() + "\\mid " + 
+			Prop->GetSymbol() + "\\}");
 		class_c.LetTruthValue(true);
 		return class_c;
 	}
@@ -116,7 +117,7 @@ class BelongTo
 {
 	// information
 	string Concept = "belong to";
-	string Symbol = "\in";
+	string Symbol = "\\in";
 	// methods
 public:
 	// get info

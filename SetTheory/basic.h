@@ -24,7 +24,6 @@ using namespace std;
 				ClassC->GetObject().GetRpsnt());
 			return result;
 		}
-		void temp(){cout<<"tick"<<endl;}
 	};
 
 // Definition Subclass
@@ -76,18 +75,14 @@ public:
 
 class Set: virtual public MathDef, public Subclass
 {
-	Predicate* psiC;
 public:
 	Set()
 	{
 		// information
 		MathDef::Definition = "Set";
 		MathDef::Symbol = "X";
+		Class::LetSymbol("X");
 		LetClass(*this);
-		PropOfSet();
-		// eligibility
-		if (ChkEligibility()==false)
-			{cout<<"Ill defined!"<<endl;}
 	}
 	// check eligibility
 	bool ChkEligibility()
@@ -95,6 +90,18 @@ public:
 			.GetTruthValue();}
 	// default property
 	virtual void PropOfSet(){}
+	// formulation
+	Predicate Formulation()
+	{
+		Predicate Form;
+		Form.LetSymbol("\\{" + 
+			GetObject().GetSymbol() + "\\mid " + 
+			GetProperty()->GetSymbol() + "\\}");
+		Form.LetTruthValue(ChkEligibility());
+		if (Form.GetTruthValue()==false)
+			{cout<<"Ill defined!"<<endl;}
+		return Form;
+	}
 };
 
 

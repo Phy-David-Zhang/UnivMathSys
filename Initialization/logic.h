@@ -14,7 +14,7 @@ class UnivQuan
 {
 	// information
 	string Concept = "for all";
-	string Symbol = "\forall";
+	string Symbol = "\\forall";
 	// methods
 public:
 	// get info
@@ -27,7 +27,7 @@ public:
 		Predicate univ_psi;
 		univ_psi.LetSymbol
 			(Symbol + " " + Input.GetSymbol()
-				+ " \," + psi.GetSymbol());
+				+ " \\," + psi.GetSymbol());
 		univ_psi.LetTruthValue
 			(psi.Condition(Input));
 		return univ_psi;
@@ -39,7 +39,7 @@ class ExistQuan
 {
 	// information
 	string Concept = "there exists";
-	string Symbol = "\exists";
+	string Symbol = "\\exists";
 	// methods
 public:
 	// get info
@@ -54,7 +54,7 @@ public:
 			(!psi.GetTruthValue());
 		exist_psi.LetSymbol
 			(Symbol + " " + Input.GetSymbol()
-				+ " \," + psi.GetSymbol());
+				+ " \\," + psi.GetSymbol());
 		exist_psi.LetTruthValue
 			(!psi.Condition(Input));
 		return exist_psi;
@@ -66,7 +66,7 @@ class Negation
 {
 	// information
 	string Concept = "Negation";
-	string Symbol = "\neg";
+	string Symbol = "\\neg";
 	// methods
 public:
 	// get info
@@ -89,7 +89,7 @@ class Disjunction
 {
 	// information
 	string Concept = "Disjunction";
-	string Symbol = "\vee";
+	string Symbol = "\\vee";
 	// methods
 public:
 	// get info
@@ -114,7 +114,7 @@ class Conjunction
 {
 	// information
 	string Concept = "Conjunction";
-	string Symbol = "\wedge";
+	string Symbol = "\\wedge";
 	// methods
 public:
 	// get info
@@ -139,7 +139,7 @@ class Implication
 {
 	// information
 	string Concept = "Implication";
-	string Symbol = "\rightarrow";
+	string Symbol = "\\rightarrow";
 	// methods
 public:
 	// get info
@@ -164,7 +164,7 @@ class Inference
 {
 	// information
 	string Concept = "Inference";
-	string Symbol = "\Rightarrow";
+	string Symbol = "\\Rightarrow";
 	// methods
 public:
 	// get info
