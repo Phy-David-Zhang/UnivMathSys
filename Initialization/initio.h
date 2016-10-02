@@ -46,7 +46,8 @@ class Class
 	string Symbol;
 	// property
 	IndepVar Obj;
-	Predicate Prop;
+	Predicate Empty;
+	Predicate *Prop = &Empty;
 	// method
 public:
 	// initialization
@@ -56,14 +57,14 @@ public:
 	string GetSymbol(){return Symbol;}
 	// get property
 	IndepVar GetObject(){return Obj;}
-	Predicate GetProperty(){return Prop;}
+	Predicate* GetProperty(){return Prop;}
 	// let info
 	void LetSymbol(string NewSymbol)
 		{Symbol = NewSymbol;}
 	// let property
 	void LetObject(IndepVar NewObj)
 		{Obj = NewObj;}
-	void LetProperty(Predicate NewProp)
+	void LetProperty(Predicate *NewProp)
 		{Prop = NewProp;}
 	// formulation
 	Predicate ClassForm()
@@ -71,7 +72,7 @@ public:
 		Predicate class_c;
 		class_c.LetSymbol("\{" + 
 			Obj.GetSymbol() + "\mid " + 
-			Prop.GetSymbol() + "\}");
+			Prop->GetSymbol() + "\}");
 		class_c.LetTruthValue(true);
 		return class_c;
 	}
@@ -107,6 +108,7 @@ public:
 		object_x.LetSymbol
 			(ClassC.GetObject().GetSymbol());
 		object_x.LetTruthValue(true);
+		return object_x;
 	}
 };
 
@@ -121,7 +123,7 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// formulation
-	Predicate OpBelongTo(Object Obj, 
+	Predicate OpBelongTo(IndepVar Obj, 
 		Class ClassC)
 	{
 		Predicate obj_in_c;
@@ -129,11 +131,10 @@ public:
 			(Obj.GetSymbol() + " " + 
 				Symbol + " " + 
 				ClassC.GetSymbol());
-		IndepVar TempVar;
-		TempVar.LetRpsnt(&Obj);
 		obj_in_c.LetTruthValue
 			(ClassC.GetProperty()
-				.Condition(TempVar));
+				->Condition(Obj));
+		return obj_in_c;
 	}
 };
 

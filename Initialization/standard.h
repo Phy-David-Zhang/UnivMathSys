@@ -28,14 +28,14 @@ public:
 		{return Definition;}
 	string GetSymbol()
 		{return Symbol;}
-	string GetProperty()
+	string GetMathProperty()
 		{return Property;}
 	// let info
 	void LetDefinition(string Def)
 		{Definition = Def;}
 	void LetSymbol(string NewSymbol)
 		{Symbol = NewSymbol;}
-	void LetProperty(string Prop)
+	void LetMathProperty(string Prop)
 		{Property = Prop;}
 	// formulation
 	virtual Predicate Formulation() = 0;

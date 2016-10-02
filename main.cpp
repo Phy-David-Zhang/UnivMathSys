@@ -18,6 +18,9 @@ using namespace std;
 #include "./Initialization/logic.h"
 #include "./Initialization/standard.h"
 
+// Set Theory
+#include "./SetTheory/config.cpp"
+
 // main test function
 int main(void)
 {
