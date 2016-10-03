@@ -86,6 +86,11 @@ public:
 	}
 	// check eligibility
 	bool ChkEligibility()
+		{bool result = TestSelfContain();
+		 if (result==false)
+			{cout<<"Ill defined!"<<endl;}
+		 return result;}
+	bool TestSelfContain()
 		{return Subclass::Formulation()
 			.GetTruthValue();}
 	// default property
@@ -98,12 +103,115 @@ public:
 			GetObject().GetSymbol() + "\\mid " + 
 			GetProperty()->GetSymbol() + "\\}");
 		Form.LetTruthValue(ChkEligibility());
-		if (Form.GetTruthValue()==false)
-			{cout<<"Ill defined!"<<endl;}
 		return Form;
 	}
 };
 
+class Element: virtual public MathDef, public Object
+{
+	Set SetX;
+public:
+	Element()
+	{
+		MathDef::Definition = "Element";
+		MathDef::Symbol = "x";
+		LetClass(SetX);
+	}
+	Set GetSet(){return SetX;}
+	void LetSet(Set NewSet){SetX = NewSet;}
+	Predicate Formulation()
+		{return ObjectForm();}
+};
+
+class Subset: virtual public MathDef, public Subclass
+{
+	Set SetX;
+public:
+	Subset()
+	{
+		MathDef::Definition = "Subset";
+		MathDef::Symbol = "S";
+		LetClass(SetX);
+	}
+	Set GetSet(){return SetX;}
+	void LetSet(Set NewSet)
+		{SetX = NewSet;
+		 LetClass(SetX);}
+	Predicate Formulation()
+		{return Subclass::Formulation();}
+};
+
+class SetContainedIn: virtual public MathOp
+{
+public:
+	SetContainedIn()
+	{
+		MathOp::Operation = "contained in";
+		MathOp::Symbol = "\\subset";
+	}
+	Predicate OpForm(Set* Left, Set* Right)
+	{
+		Predicate contained_in;
+		contained_in.LetSymbol(Left
+			  ->MathDef::GetSymbol()
+			+ MathOp::Symbol + " " 
+			+ Right->MathDef::GetSymbol());
+		Subclass TempSet = *Left;
+		TempSet.LetClass(*Right);
+		contained_in.LetTruthValue(TempSet
+			.Formulation().GetTruthValue());
+		return contained_in;
+	}
+};
+
+class SetEqual: virtual public MathOp, 
+	public SetContainedIn
+{
+public:
+	SetEqual()
+	{
+		MathOp::Operation = "equal to";
+		MathOp::Symbol = "=";
+	}
+	Predicate OpForm(Set* Left, Set* Right)
+	{
+		Predicate set_equal;
+		set_equal.LetSymbol(Left
+			  ->MathDef::GetSymbol()
+			+ MathOp::Symbol 
+			+ Right->MathDef::GetSymbol());
+		Conjunction wedge;
+		SetContainedIn contained_in;
+		Predicate PredL = 
+			contained_in.OpForm(Left, Right);
+		Predicate PredR = 
+			contained_in.OpForm(Right, Left);
+		set_equal.LetTruthValue(wedge.OpConjunction(
+			PredL, PredR).GetTruthValue());
+		return set_equal;
+	}
+};
+
+class EmptySet: virtual public MathDef, public Set
+{
+	Predicate Empty;
+public:
+	EmptySet()
+	{
+		MathDef::Definition = "Empty Set";
+		MathDef::Symbol = "\\varnothing";
+		this->LetProperty(&Empty);
+		LetClass(*this);
+		ChkEligibility();
+	}
+	Predicate Formulation()
+	{
+		Predicate empty_set;
+		empty_set.LetSymbol(MathDef::Symbol);
+		empty_set.LetTruthValue(ChkEligibility());
+		return empty_set;
+	}
+};
 
 #endif
 

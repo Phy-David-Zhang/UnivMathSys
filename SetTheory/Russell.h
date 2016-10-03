@@ -26,7 +26,7 @@ class Russell: virtual public MathDef, public Set
 	PfRussell psifR;
 public:
 	Russell(){PropOfSet(); 
-		Set::Formulation();}
+		ChkEligibility();}
 	void PropOfSet()
 	{
 		psifR.LetClass(GetClass());

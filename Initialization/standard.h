@@ -71,7 +71,7 @@ public:
 		{Property = Prop;}
 	// formulation
 	virtual Predicate OpForm(void *Left,
-		void *Right) = 0;
+		void *Right) {};
 };
 
 #endif
