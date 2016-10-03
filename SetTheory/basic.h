@@ -57,7 +57,7 @@ public:
 		Inference RghtArr;
 		// let form
 		form.LetSymbol(this->GetObject().GetSymbol() 
-		+ in.GetSymbol() + " " + MathDef::Symbol
+			+ in.GetSymbol() + " " + MathDef::Symbol
 			+ RghtArr.GetSymbol() + " "
 			+ ClassC.GetObject().GetSymbol()
 			+ in.GetSymbol() + " "
