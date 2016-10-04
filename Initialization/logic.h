@@ -22,14 +22,14 @@ public:
 	string GetSymbol(){return Symbol;}
 	// operation
 	Predicate OpUnivQuan(IndepVar &Input,
-		Predicate &psi)
+		Predicate *psi)
 	{
 		Predicate univ_psi;
 		univ_psi.LetSymbol
 			(Symbol + " " + Input.GetSymbol()
-				+ " \\," + psi.GetSymbol());
+				+ " \\," + psi->GetSymbol());
 		univ_psi.LetTruthValue
-			(psi.Condition(Input));
+			(psi->Condition(Input));
 		return univ_psi;
 	}
 };
@@ -47,16 +47,16 @@ public:
 	string GetSymbol(){return Symbol;}
 	// operation
 	Predicate OpExistQuan(IndepVar &Input,
-		Predicate &psi)
+		Predicate *psi)
 	{
 		Predicate exist_psi;
-		psi.LetTruthValue
-			(!psi.GetTruthValue());
+		psi->LetTruthValue
+			(!psi->GetTruthValue());
 		exist_psi.LetSymbol
 			(Symbol + " " + Input.GetSymbol()
-				+ " \\," + psi.GetSymbol());
+				+ " \\," + psi->GetSymbol());
 		exist_psi.LetTruthValue
-			(!psi.Condition(Input));
+			(!psi->Condition(Input));
 		return exist_psi;
 	}
 };
