@@ -36,9 +36,9 @@ class Subclass: virtual public MathDef, public Class
 public:
 	// initialization
 	Subclass()
-	{Definition = "Subclass";
+	{MathDef::Definition = "Subclass";
 	 MathDef::Symbol = "S";
-	 Property = ClassC.GetConcept()
+	 MathDef::Property = ClassC.GetConcept()
 	 	+ " " + ClassC.GetSymbol();
 	 // define class
 	 psifS.LetClass(this); 
