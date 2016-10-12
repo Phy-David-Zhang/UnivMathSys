@@ -13,23 +13,69 @@ using std::cout;
 // Definition: Set
 class Set: virtual public MathDef, public Subclass
 {
+	Predicate* SetProp = new Predicate;
 public:
 	// initialization
 	Set()
 	{
-		// information
 		MathDef::Definition = "Set";
 		MathDef::Symbol = "X";
 		Class::LetSymbol("X");
 		PropOfSet();
 		ChkEligibility();
 	}
+	Set(const Set &NewSet)
+	{
+		LetDefSymbol(NewSet.GetDefSymbol());
+		LetSetSymbol(NewSet.GetSetSymbol());
+		LetElement(NewSet.GetElement());
+		Predicate *TempProp = new Predicate;
+		*TempProp = *NewSet.GetSetProp();
+		LetSetProp(TempProp);
+	}
+	Set& operator=(const Set &NewSet)
+	{
+		if (this == &NewSet) {return *this}
+		LetDefSymbol(NewSet.GetDefSymbol());
+		LetSetSymbol(NewSet.GetSetSymbol());
+		LetElement(NewSet.GetElement());
+		Predicate *TempProp = new Predicate;
+		*TempProp = *NewSet.GetSetProp();
+		LetSetProp(TempProp); return *this;
+	}
+	// destruction
+	~Set(){delete SetProp; SetProp = nullptr;}
+	// get symbol
+	string GetDefSymbol(){return MathDef::Symbol;}
+	string GetSetSymbol(){return Class::GetSymbol();}
+	// get element variable
+	IndepVar GetElement(){return GetObject();}
+	// get set property
+	Predicate* GetSetProp(){return SetProp;}
+	// let symbol
+	void LetDefSymbol(string NewSymbol)
+		{MathDef::LetSymbol(NewSymbol);}
+	void LetSetSymbol(string NewSymbol)
+		{Class::LetSymbol(NewSymbol);}
+	// let element
+	void LetElement(IndepVar NewElement)
+		{LetObject(NewElement);}
+	// let set property
+	void LetSetProp(Predicate *NewProp)
+		{delete SetProp; SetProp = NewProp;
+			UpdateAndChk();}
+	void UpdateAndChk()
+		{Class *Temp = new Class;
+			Temp->LetObject(GetObject());
+			Temp->LetProperty(SetProp);
+			LetClass(*Temp); ChkEligibility();
+			delete Temp; Temp = nullptr;}
 	// check eligibility
 	bool ChkEligibility()
 		{bool result = TestSelfContain();
-		 if (result==false)
-			{cout<<"Ill defined!"<<endl;}
-		 return result;}
+			if (result==false)
+				{cout<<"Ill defined!"<<endl;}
+			return result;}
 	// test self containing
 	bool TestSelfContain()
 		{return Subclass::Formulation()
@@ -182,7 +228,7 @@ public:
 		MathDef::Definition = "Empty Set";
 		MathDef::Symbol = "\\varnothing";
 		this->LetProperty(Empty);
-		LetClass(*this);
+		PropOfSet();
 		ChkEligibility();
 	}
 	// formulation
