@@ -6,7 +6,7 @@
 #include <cstring>
 #include <string>
 
-using namespace std;
+using std::string;
 
 // Concept Predicate
 class Predicate
@@ -39,6 +39,7 @@ public:
 		{TruthValue = NewTruthValue;}
 };
 
+// Concept Class
 class Class
 {
 	// information
@@ -46,13 +47,15 @@ class Class
 	string Symbol;
 	// property
 	IndepVar Obj;
-	Predicate Empty;
-	Predicate *Prop = &Empty;
+	Predicate *Prop 
+		= new Predicate;
 	// method
 public:
 	// initialization
 	Class(){Symbol = "C"; 
 		Obj.LetSymbol("x");}
+	// destruction
+	~Class(){delete Prop; Prop = nullptr;}
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
@@ -66,7 +69,7 @@ public:
 	void LetObject(IndepVar NewObj)
 		{Obj = NewObj;}
 	void LetProperty(Predicate *NewProp)
-		{Prop = NewProp;}
+		{delete Prop; Prop = NewProp;}
 	// formulation
 	Predicate ClassForm()
 	{
@@ -79,40 +82,41 @@ public:
 	}
 };
 
+// Concept Object
 class Object
 {
 	// information
 	string Concept = "Object";
 	string Symbol;
 	// property
-	Class ClassC;
+	Class *ClassC = new Class;
 	// method
 public:
 	// initialization
 	Object(){Symbol = "x";}
+	~Object(){delete ClassC; ClassC = nullptr;}
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// get property
-	Class GetClass(){return ClassC;}
+	Class* GetClass(){return ClassC;}
 	// let info
 	void LetSymbol(string NewSymbol)
 		{Symbol = NewSymbol;}
 	// let property
-	void LetClass(Class NewClass)
-		{ClassC = NewClass;
-		 Symbol = ClassC.GetObject().GetSymbol();}
+	void LetClass(Class *NewClass)
+		{delete ClassC; ClassC = NewClass;}
 	// formulation
 	Predicate ObjectForm()
 	{
 		Predicate object_x;
-		object_x.LetSymbol
-			(ClassC.GetObject().GetSymbol());
+		object_x.LetSymbol(Symbol);
 		object_x.LetTruthValue(true);
 		return object_x;
 	}
 };
 
+// Operation belong to
 class BelongTo
 {
 	// information
@@ -125,15 +129,15 @@ public:
 	string GetSymbol(){return Symbol;}
 	// formulation
 	Predicate OpBelongTo(IndepVar Obj, 
-		Class ClassC)
+		Class *ClassC)
 	{
 		Predicate obj_in_c;
 		obj_in_c.LetSymbol
 			(Obj.GetSymbol() + " " + 
 				Symbol + " " + 
-				ClassC.GetSymbol());
+				ClassC->GetSymbol());
 		obj_in_c.LetTruthValue
-			(ClassC.GetProperty()
+			(ClassC->GetProperty()
 				->Condition(Obj));
 		return obj_in_c;
 	}

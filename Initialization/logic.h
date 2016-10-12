@@ -7,7 +7,8 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
+using std::string;
+using std::cout;
 
 // Universal Quantification
 class UnivQuan

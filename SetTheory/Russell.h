@@ -12,7 +12,7 @@
 			{ClassC = NewClass;}
 		bool Condition(IndepVar &Input)
 		{
-			bool result; 
+			bool result;
 			result = !(Input.GetRpsnt() == 
 				ClassC->GetObject().GetRpsnt());
 			LetSymbol(Input.GetSymbol() + 
@@ -23,14 +23,17 @@
 
 class Russell: virtual public MathDef, public Set
 {
-	PfRussell psifR;
 public:
 	Russell(){PropOfSet(); 
 		ChkEligibility();}
 	void PropOfSet()
 	{
-		psifR.LetClass(GetClass());
-		GetClass()->LetProperty(&psifR);
+		Class *Temp = new Class;
+		Temp->LetObject(this->GetObject());
+		LetClass(*Temp);
+		PfRussell *psifR = new PfRussell;
+		psifR->LetClass(GetClass());
+		GetClass()->LetProperty(psifR);
 	}
 	Predicate Formulation()
 	{

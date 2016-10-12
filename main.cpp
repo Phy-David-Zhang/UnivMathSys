@@ -2,7 +2,7 @@
 
 	Main Compilation File
 	Compile with
-		gcc -w main.cpp -lstdc++
+		g++ -w main.cpp -std=c++11
 	Successful compilation provides
 	  validity confirmation
 

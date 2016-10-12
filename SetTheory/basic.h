@@ -5,84 +5,24 @@
 
 #include <cstring>
 #include <string>
+#include <iostream>
 
-using namespace std;
+using std::string;
+using std::cout;
 
-	// define class property
-	class PfClass: public Predicate
-	{
-		Class *ClassC;
-	public:
-		PfClass()
-			{ClassC = NULL;}
-		void LetClass(Class* NewClass)
-			{ClassC = NewClass;}
-		bool Condition(IndepVar &Input)
-		{
-			bool result; 
-			result = (Input.GetRpsnt() == 
-				ClassC->GetObject().GetRpsnt());
-			return result;
-		}
-	};
-
-// Definition Subclass
-class Subclass: virtual public MathDef, public Class
-{
-	// information
-	Class ClassC;
-	PfClass psifS;
-	// method
-public:
-	// initialization
-	Subclass()
-	{MathDef::Definition = "Subclass";
-	 MathDef::Symbol = "S";
-	 MathDef::Property = ClassC.GetConcept()
-	 	+ " " + ClassC.GetSymbol();
-	 // define class
-	 psifS.LetClass(this); 
-	 this->LetProperty(&psifS);}
-	// get info
-	Class* GetClass(){return &ClassC;}
-	// let info
-	void LetClass(Class NewClass)
-		{ClassC = NewClass;}
-	// formulation
-	Predicate Formulation()
-	{
-		Predicate form;
-		// operation
-		BelongTo in;
-		Inference RghtArr;
-		// let form
-		form.LetSymbol(this->GetObject().GetSymbol() 
-			+ in.GetSymbol() + " " + MathDef::Symbol
-			+ RghtArr.GetSymbol() + " "
-			+ ClassC.GetObject().GetSymbol()
-			+ in.GetSymbol() + " "
-			+ ClassC.GetSymbol());
-		Predicate LeftArg = 
-			in.OpBelongTo(this->GetObject(), *this);
-		Predicate RghtArg = 
-			in.OpBelongTo(this->GetObject(), 
-				ClassC);
-		form.LetTruthValue(RghtArr.OpInference(
-			LeftArg, RghtArg).GetTruthValue()); 
-		return form;
-	}
-};
-
+// Definition: Set
 class Set: virtual public MathDef, public Subclass
 {
 public:
+	// initialization
 	Set()
 	{
 		// information
 		MathDef::Definition = "Set";
 		MathDef::Symbol = "X";
 		Class::LetSymbol("X");
-		LetClass(*this);
+		PropOfSet();
+		ChkEligibility();
 	}
 	// check eligibility
 	bool ChkEligibility()
@@ -90,120 +30,162 @@ public:
 		 if (result==false)
 			{cout<<"Ill defined!"<<endl;}
 		 return result;}
+	// test self containing
 	bool TestSelfContain()
 		{return Subclass::Formulation()
 			.GetTruthValue();}
 	// default property
-	virtual void PropOfSet(){}
+	virtual void PropOfSet(){LetClass(*this);}
 	// formulation
 	Predicate Formulation()
 	{
-		Predicate Form;
-		Form.LetSymbol("\\{" + 
+		Predicate form;
+		form.LetSymbol("\\{" + 
 			GetObject().GetSymbol() + "\\mid " + 
 			GetProperty()->GetSymbol() + "\\}");
-		Form.LetTruthValue(ChkEligibility());
-		return Form;
+		form.LetTruthValue(ChkEligibility());
+		return form;
 	}
 };
 
-class Element: virtual public MathDef, public Object
+// Definition: Element
+class Element: virtual public MathDef
 {
-	Set SetX;
+	// property
+	Set *SetX = new Set;
+	// method
 public:
-	Element()
-	{
+	// initialization
+	Element(){
 		MathDef::Definition = "Element";
-		MathDef::Symbol = "x";
-		LetClass(SetX);
-	}
-	Set GetSet(){return SetX;}
-	void LetSet(Set NewSet){SetX = NewSet;}
+		MathDef::Symbol = "x";}
+	// destruction
+	~Element(){delete SetX; SetX = nullptr;}
+	// get property
+	Set* GetSet(){return SetX;}
+	// let property
+	void LetSet(Set *NewSet)
+		{delete SetX; SetX = NewSet;}
+	// formulation
 	Predicate Formulation()
-		{return ObjectForm();}
+	{
+		Predicate element_x;
+		element_x.LetSymbol(Symbol);
+		element_x.LetTruthValue(true);
+		return element_x;
+	}
 };
 
+// Definition: Subset
 class Subset: virtual public MathDef, public Subclass
 {
-	Set SetX;
+	// property
+	Set *SetX = new Set;
+	// method
 public:
+	// initialization
 	Subset()
 	{
 		MathDef::Definition = "Subset";
 		MathDef::Symbol = "S";
-		LetClass(SetX);
+		LetClass(*SetX);
 	}
-	Set GetSet(){return SetX;}
-	void LetSet(Set NewSet)
-		{SetX = NewSet;
-		 LetClass(SetX);}
+	// destruction
+	~Subset(){delete SetX; SetX = nullptr;}
+	// get property
+	Set* GetSet(){return SetX;}
+	// let property
+	void LetSet(Set *NewSet)
+		{delete SetX; SetX = NewSet;
+		 LetClass(*SetX);}
+	// formulation
 	Predicate Formulation()
 		{return Subclass::Formulation();}
 };
 
+// Operation: contain in
 class SetContainedIn: virtual public MathOp
 {
 public:
+	// initialization
 	SetContainedIn()
 	{
 		MathOp::Operation = "contained in";
 		MathOp::Symbol = "\\subset";
 	}
-	Predicate OpForm(Set* Left, Set* Right)
+	// operation form
+	Predicate OpForm(Set *Left, Set *Right)
 	{
 		Predicate contained_in;
+		// let symbol
 		contained_in.LetSymbol(Left
 			  ->MathDef::GetSymbol()
 			+ MathOp::Symbol + " " 
 			+ Right->MathDef::GetSymbol());
-		Subclass TempSet = *Left;
-		TempSet.LetClass(*Right);
+		// define subclass
+		Subclass *TempSet; TempSet = Left;
+		TempSet->LetClass(*Right);
+		// let truth value
 		contained_in.LetTruthValue(TempSet
-			.Formulation().GetTruthValue());
+			->Formulation().GetTruthValue());
+		// return
 		return contained_in;
 	}
 };
 
+// Operation: equal
 class SetEqual: virtual public MathOp, 
 	public SetContainedIn
 {
 public:
+	// initialization
 	SetEqual()
 	{
 		MathOp::Operation = "equal to";
 		MathOp::Symbol = "=";
 	}
-	Predicate OpForm(Set* Left, Set* Right)
+	// operation form
+	Predicate OpForm(Set *Left, Set *Right)
 	{
 		Predicate set_equal;
+		// let symbol
 		set_equal.LetSymbol(Left
 			  ->MathDef::GetSymbol()
 			+ MathOp::Symbol 
 			+ Right->MathDef::GetSymbol());
+		// define operator
 		Conjunction wedge;
 		SetContainedIn contained_in;
+		// define arguments
 		Predicate PredL = 
 			contained_in.OpForm(Left, Right);
 		Predicate PredR = 
 			contained_in.OpForm(Right, Left);
+		// let truth value
 		set_equal.LetTruthValue(wedge.OpConjunction(
 			PredL, PredR).GetTruthValue());
+		// return
 		return set_equal;
 	}
 };
 
+// Definition: Empty Set
 class EmptySet: virtual public MathDef, public Set
 {
-	Predicate Empty;
+	// property
+	Predicate *Empty = new Predicate;
+	// method
 public:
+	// initialization
 	EmptySet()
 	{
 		MathDef::Definition = "Empty Set";
 		MathDef::Symbol = "\\varnothing";
-		this->LetProperty(&Empty);
+		this->LetProperty(Empty);
 		LetClass(*this);
 		ChkEligibility();
 	}
+	// formulation
 	Predicate Formulation()
 	{
 		Predicate empty_set;

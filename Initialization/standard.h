@@ -6,7 +6,7 @@
 #include <cstring>
 #include <string>
 
-using namespace std;
+using std::string;
 
 // Definition
 class MathDef
