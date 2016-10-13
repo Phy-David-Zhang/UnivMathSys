@@ -49,6 +49,10 @@ class Class
 	IndepVar Obj;
 	Predicate *Prop 
 		= new Predicate;
+	// interface
+protected:
+	// reset initial
+	void ResetInit(){Prop = new Predicate;}
 	// method
 public:
 	// initialization
@@ -90,6 +94,10 @@ class Object
 	string Symbol;
 	// property
 	Class *ClassC = new Class;
+	// interface
+protected:
+	// reset initial
+	void ResetInit(){ClassC = new Class;}
 	// method
 public:
 	// initialization

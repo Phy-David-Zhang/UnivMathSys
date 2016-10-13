@@ -9,13 +9,13 @@
 using std::string;
 
 	// define class property
-	class PfClass: public Predicate
+	class PredicateForClass: public Predicate
 	{
 		// father class
 		Class *ClassC;
 	public:
 		// initialization
-		PfClass()
+		PredicateForClass()
 			{ClassC = NULL;}
 		// define father class
 		void LetClass(Class *NewClass)
@@ -42,10 +42,21 @@ public:
 	{   // information
 		MathDef::Definition = "Subclass";
 		MathDef::Symbol = "S";
-		// define class
-		PfClass *psifS = new PfClass;
-		psifS->LetClass(this); 
-		this->LetProperty(psifS); 
+		DefineClass();
+	}
+	// define non-empty class
+	void DefineClass()
+	{
+		PredicateForClass *SubclassSProp 
+			= new PredicateForClass;
+		SubclassSProp->LetClass(this); 
+		this->LetProperty(SubclassSProp); 
+	}
+	// define empty class
+	void EmptyClass()
+	{
+		Predicate *Empty = new Predicate;
+		this->LetProperty(Empty);
 	}
 	// get info
 	Class* GetClass(){return ClassC;}
@@ -80,6 +91,12 @@ public:
 		// return
 		return form;
 	}
+};
+
+class ClassInterface: public Class
+{
+public:
+	void Reset(){ResetInit();}
 };
 
 #endif

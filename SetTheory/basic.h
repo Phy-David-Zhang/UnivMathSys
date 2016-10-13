@@ -11,7 +11,7 @@ using std::string;
 using std::cout;
 
 // Definition: Set
-class Set: virtual public MathDef, public Subclass
+class Set: virtual public MathDef, private Subclass
 {
 	Predicate* SetProp = new Predicate;
 public:
@@ -24,27 +24,14 @@ public:
 		PropOfSet();
 		ChkEligibility();
 	}
-	Set(const Set &NewSet)
-	{
-		LetDefSymbol(NewSet.GetDefSymbol());
-		LetSetSymbol(NewSet.GetSetSymbol());
-		LetElement(NewSet.GetElement());
-		Predicate *TempProp = new Predicate;
-		*TempProp = *NewSet.GetSetProp();
-		LetSetProp(TempProp);
-	}
-	Set& operator=(const Set &NewSet)
-	{
-		if (this == &NewSet) {return *this}
-		LetDefSymbol(NewSet.GetDefSymbol());
-		LetSetSymbol(NewSet.GetSetSymbol());
-		LetElement(NewSet.GetElement());
-		Predicate *TempProp = new Predicate;
-		*TempProp = *NewSet.GetSetProp();
-		LetSetProp(TempProp); return *this;
-	}
 	// destruction
-	~Set(){delete SetProp; SetProp = nullptr;}
+	virtual ~Set()
+		{delete SetProp; SetProp = nullptr;}
+	void isEmpty(bool SetEmpty = false)
+		{if (false == SetEmpty) {DefineClass();}
+			else {EmptyClass();}}
+	// get base concept
+	string GetBase(){return GetConcept();}
 	// get symbol
 	string GetDefSymbol(){return MathDef::Symbol;}
 	string GetSetSymbol(){return Class::GetSymbol();}
@@ -65,10 +52,11 @@ public:
 		{delete SetProp; SetProp = NewProp;
 			UpdateAndChk();}
 	void UpdateAndChk()
-		{Class *Temp = new Class;
+		{ClassInterface *Temp = new ClassInterface;
 			Temp->LetObject(GetObject());
 			Temp->LetProperty(SetProp);
 			LetClass(*Temp); ChkEligibility();
+			Temp->Reset();
 			delete Temp; Temp = nullptr;}
 	// check eligibility
 	bool ChkEligibility()
@@ -122,31 +110,30 @@ public:
 	}
 };
 
-// Definition: Subset
-class Subset: virtual public MathDef, public Subclass
+// Operation belong to
+class SetBelongTo: virtual public MathOp,
+	private BelongTo
 {
-	// property
-	Set *SetX = new Set;
-	// method
 public:
-	// initialization
-	Subset()
+	SetBelongTo()
 	{
-		MathDef::Definition = "Subset";
-		MathDef::Symbol = "S";
-		LetClass(*SetX);
+		MathOp::Operation = GetConcept();
+		MathOp::Symbol = BelongTo::GetSymbol();
 	}
-	// destruction
-	~Subset(){delete SetX; SetX = nullptr;}
-	// get property
-	Set* GetSet(){return SetX;}
-	// let property
-	void LetSet(Set *NewSet)
-		{delete SetX; SetX = NewSet;
-		 LetClass(*SetX);}
-	// formulation
-	Predicate Formulation()
-		{return Subclass::Formulation();}
+	string GetDefSymbol(){return MathOp::Symbol;}
+	Predicate OpBelongTo(IndepVar Elmnt,
+		Set *SetX)
+	{
+		Predicate ele_in_x;
+		ele_in_x.LetSymbol
+			(Elmnt.GetSymbol() + " " + 
+				MathOp::Symbol + " " + 
+				SetX->GetSetSymbol());
+		ele_in_x.LetTruthValue
+			(SetX->GetSetProp()
+				->Condition(Elmnt));
+		return ele_in_x;
+	}
 };
 
 // Operation: contain in
@@ -160,22 +147,70 @@ public:
 		MathOp::Symbol = "\\subset";
 	}
 	// operation form
-	Predicate OpForm(Set *Left, Set *Right)
+	Predicate OpForm(Set *Left, Set *Rght)
 	{
 		Predicate contained_in;
+		Inference RghtArr;
+		SetBelongTo in;
 		// let symbol
 		contained_in.LetSymbol(Left
 			  ->MathDef::GetSymbol()
 			+ MathOp::Symbol + " " 
-			+ Right->MathDef::GetSymbol());
-		// define subclass
-		Subclass *TempSet; TempSet = Left;
-		TempSet->LetClass(*Right);
-		// let truth value
-		contained_in.LetTruthValue(TempSet
-			->Formulation().GetTruthValue());
+			+ Rght->MathDef::GetSymbol());
+		// define arguments
+		Predicate LeftArg = 
+			in.OpBelongTo(Left->GetElement(), Left);
+		Predicate RghtArg = 
+			in.OpBelongTo(Left->GetElement(), Rght);
+		// let operation truth value
+		contained_in.LetTruthValue(RghtArr
+			.OpInference(LeftArg, RghtArg)
+			.GetTruthValue()); 
 		// return
 		return contained_in;
+	}
+};
+
+// Definition: Subset
+class Subset: virtual public MathDef, public Set
+{
+	// property
+	Set *SetX = new Set;
+	// method
+public:
+	// initialization
+	Subset()
+	{
+		MathDef::Definition = "Subset";
+		MathDef::Symbol = "S";
+	}
+	// destruction
+	~Subset(){delete SetX; SetX = nullptr;}
+	// get property
+	Set* GetSet(){return SetX;}
+	// let property
+	void LetSet(Set *NewSet)
+		{delete SetX; SetX = NewSet;}
+	// formulation
+	Predicate Formulation()
+	{
+		Predicate form;
+		Inference RghtArr;
+		// operation
+		SetBelongTo in;
+		SetContainedIn contained_in;
+		// let form symbol
+		form.LetSymbol(this->GetElement()
+			.GetSymbol() + in.GetDefSymbol() + " " 
+			+ MathDef::Symbol
+			+ RghtArr.GetSymbol() + " "
+			+ SetX->GetElement().GetSymbol()
+			+ in.GetDefSymbol() + " "
+			+ SetX->GetSetSymbol());
+		form.LetTruthValue(contained_in.OpForm(
+			this, SetX).GetTruthValue());
+		// return
+		return form;
 	}
 };
 
@@ -227,9 +262,8 @@ public:
 	{
 		MathDef::Definition = "Empty Set";
 		MathDef::Symbol = "\\varnothing";
-		this->LetProperty(Empty);
-		PropOfSet();
-		ChkEligibility();
+		isEmpty(true);
+		this->LetSetProp(Empty);
 	}
 	// formulation
 	Predicate Formulation()
