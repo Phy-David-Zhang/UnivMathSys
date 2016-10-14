@@ -21,7 +21,7 @@ public:
 	// initialization
 	MathDef()
 		{Definition = "";
-		 Symbol = ""; 
+		 Symbol = "";
 		 Property = "";}
 	// get info
 	string GetDefinition()

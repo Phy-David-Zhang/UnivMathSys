@@ -39,7 +39,8 @@ class Subclass: virtual public MathDef, public Class
 public:
 	// initialization
 	Subclass()
-	{   // information
+	{
+		// information
 		MathDef::Definition = "Subclass";
 		MathDef::Symbol = "S";
 		DefineClass();
@@ -47,10 +48,10 @@ public:
 	// define non-empty class
 	void DefineClass()
 	{
-		PredicateForClass *SubclassSProp 
+		PredicateForClass *SubclassSProp
 			= new PredicateForClass;
-		SubclassSProp->LetClass(this); 
-		this->LetProperty(SubclassSProp); 
+		SubclassSProp->LetClass(this);
+		this->LetProperty(SubclassSProp);
 	}
 	// define empty class
 	void EmptyClass()
@@ -71,7 +72,7 @@ public:
 		BelongTo in;
 		Inference RghtArr;
 		// let form symbol
-		form.LetSymbol(this->GetObject().GetSymbol() 
+		form.LetSymbol(this->GetObject().GetSymbol()
 			+ in.GetSymbol() + " " + MathDef::Symbol
 			+ RghtArr.GetSymbol() + " "
 			+ ClassC->GetObject().GetSymbol()
@@ -87,12 +88,13 @@ public:
 				ClassC);
 		// let form truth value
 		form.LetTruthValue(RghtArr.OpInference(
-			LeftArg, RghtArg).GetTruthValue()); 
+			LeftArg, RghtArg).GetTruthValue());
 		// return
 		return form;
 	}
 };
 
+// interface to reset class property
 class ClassInterface: public Class
 {
 public:

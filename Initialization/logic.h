@@ -97,8 +97,8 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// operation
-	Predicate OpDisjunction
-		(Predicate &psi, Predicate &varphi)
+	Predicate OpDisjunction(Predicate &psi, 
+		Predicate &varphi)
 	{
 		Predicate psi_vee_varphi;
 		psi_vee_varphi.LetSymbol
@@ -122,8 +122,8 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// operation
-	Predicate OpConjunction
-		(Predicate &psi, Predicate &varphi)
+	Predicate OpConjunction(Predicate &psi, 
+		Predicate &varphi)
 	{
 		Predicate psi_wedge_varphi;
 		psi_wedge_varphi.LetSymbol
@@ -147,8 +147,8 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// operation
-	Predicate OpImplication
-		(Predicate &psi, Predicate &varphi)
+	Predicate OpImplication(Predicate &psi, 
+		Predicate &varphi)
 	{
 		Predicate psi_rightarrow_varphi;
 		psi_rightarrow_varphi.LetSymbol
@@ -172,8 +172,8 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// operation
-	Predicate OpInference
-		(Predicate &psi, Predicate &varphi)
+	Predicate OpInference(Predicate &psi, 
+		Predicate &varphi)
 	{
 		Predicate psi_Rightarrow_varphi;
 		psi_Rightarrow_varphi.LetSymbol
@@ -184,7 +184,7 @@ public:
 				varphi.GetTruthValue());
 		if (psi.GetTruthValue()==true && 
 			varphi.GetTruthValue()==false)
-			{cout<<"Inference Error!"<<endl;}
+				{cout<<"Inference Error!"<<endl;}
 		return psi_Rightarrow_varphi;
 	}
 };

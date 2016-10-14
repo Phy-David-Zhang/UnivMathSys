@@ -56,7 +56,7 @@ protected:
 	// method
 public:
 	// initialization
-	Class(){Symbol = "C"; 
+	Class(){Symbol = "C";
 		Obj.LetSymbol("x");}
 	// destruction
 	~Class(){delete Prop; Prop = nullptr;}

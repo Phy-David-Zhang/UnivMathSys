@@ -13,6 +13,7 @@ using std::cout;
 // Definition: Set
 class Set: virtual public MathDef, private Subclass
 {
+	// set property
 	Predicate* SetProp = new Predicate;
 public:
 	// initialization
@@ -27,6 +28,7 @@ public:
 	// destruction
 	virtual ~Set()
 		{delete SetProp; SetProp = nullptr;}
+	// let whether set is empty
 	void isEmpty(bool SetEmpty = false)
 		{if (false == SetEmpty) {DefineClass();}
 			else {EmptyClass();}}
@@ -51,6 +53,7 @@ public:
 	void LetSetProp(Predicate *NewProp)
 		{delete SetProp; SetProp = NewProp;
 			UpdateAndChk();}
+	// update property info and check
 	void UpdateAndChk()
 		{ClassInterface *Temp = new ClassInterface;
 			Temp->LetObject(GetObject());
@@ -115,12 +118,15 @@ class SetBelongTo: virtual public MathOp,
 	private BelongTo
 {
 public:
+	// initialization
 	SetBelongTo()
 	{
 		MathOp::Operation = GetConcept();
 		MathOp::Symbol = BelongTo::GetSymbol();
 	}
+	// get symbol
 	string GetDefSymbol(){return MathOp::Symbol;}
+	// operation
 	Predicate OpBelongTo(IndepVar Elmnt,
 		Set *SetX)
 	{
@@ -207,6 +213,7 @@ public:
 			+ SetX->GetElement().GetSymbol()
 			+ in.GetDefSymbol() + " "
 			+ SetX->GetSetSymbol());
+		// let fomr truth value
 		form.LetTruthValue(contained_in.OpForm(
 			this, SetX).GetTruthValue());
 		// return
