@@ -1,2 +1,0 @@
-Math: 
-	g++ -w main.cpp -std=c++11
