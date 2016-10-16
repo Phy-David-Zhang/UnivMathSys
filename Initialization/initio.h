@@ -1,7 +1,7 @@
 /* Initialization of Universal Mathematics System */
 
-#ifndef Initialization_h
-#define Initialization_h
+#ifndef Initialization_Initio_h
+#define Initialization_Initio_h
 
 #include <cstring>
 #include <string>

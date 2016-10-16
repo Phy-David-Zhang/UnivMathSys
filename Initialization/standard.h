@@ -1,7 +1,7 @@
 /* Standard elements of Mathematics */
 
-#ifndef Standard_h
-#define Standard_h
+#ifndef Initialization_Standard_h
+#define Initialization_Standard_h
 
 #include <cstring>
 #include <string>

@@ -1,7 +1,7 @@
 /* Basic mathematical logic */
 
-#ifndef Logic_h
-#define Logic_h
+#ifndef Initialization_Logic_h
+#define Initialization_Logic_h
 
 #include <cstring>
 #include <string>

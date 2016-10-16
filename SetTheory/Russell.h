@@ -2,47 +2,66 @@
    Russell class, which means providing error 
    message when defining Russell class as a set. */
 
-	class PfRussell: public Predicate
+#ifndef SetTheory_Russell_h
+#define SetTheory_Russell_h
+
+#include <cstring>
+#include <string>
+
+using std::string;
+
+	// define property of Russell class
+	class PredicateForRussell: public Predicate
 	{
-		Class *ClassC;
+		// property
+		Set *SetX;
+		// method
 	public:
-		PfRussell()
-			{ClassC = NULL;}
-		void LetClass(Class* NewClass)
-			{ClassC = NewClass;}
+		// initialization
+		PredicateForRussell()
+			{SetX = NULL;}
+		// let set
+		void LetSet(Set *NewSet)
+			{SetX = NewSet;}
+		// define condition
 		bool Condition(IndepVar &Input)
 		{
 			bool result;
 			result = !(Input.GetRpsnt() == 
-				ClassC->GetObject().GetRpsnt());
+				SetX->GetElement().GetRpsnt());
 			LetSymbol(Input.GetSymbol() + 
-				"\\notin " + ClassC->GetSymbol());
+				"\\notin " + SetX->GetSetSymbol());
 			return result;
 		}
 	};
 
+// Definition: Russell Class
 class Russell: virtual public MathDef, public Set
 {
 public:
-	Russell(){PropOfSet(); 
-		ChkEligibility();}
+	// initialization
+	Russell(){PropOfSet();}
+	// define property
 	void PropOfSet()
 	{
-		Class *Temp = new Class;
-		Temp->LetObject(this->GetObject());
-		LetClass(*Temp);
-		PfRussell *psifR = new PfRussell;
-		psifR->LetClass(GetClass());
-		GetClass()->LetProperty(psifR);
+		PredicateForRussell *RussellPredicate
+			= new PredicateForRussell;
+		RussellPredicate->LetSet(this);
+		LetSetProp(RussellPredicate);
 	}
+	// formulation
 	Predicate Formulation()
 	{
 		Predicate Form;
 		Form.LetSymbol("\\{" + 
-			GetObject().GetSymbol() + "\\mid " + 
-			GetClass()->GetProperty()
-				->GetSymbol() + "\\}");
-		Form.LetTruthValue(ChkEligibility());
+			GetElement().GetSymbol() + "\\mid " + 
+			GetSetProp()->GetSymbol() + "\\}");
+		Form.LetTruthValue(GetStatus()
+			->WetherWellDef());
 		return Form;
 	}
 };
+
+#endif
+
+/* end of file */

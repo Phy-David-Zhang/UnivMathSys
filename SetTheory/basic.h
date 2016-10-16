@@ -1,7 +1,7 @@
 /* Basic Definitions of Set Theory */
 
-#ifndef Basic_h
-#define Basic_h
+#ifndef SetTheory_Basic_h
+#define SetTheory_Basic_h
 
 #include <cstring>
 #include <string>
@@ -14,7 +14,30 @@ using std::cout;
 class Set: virtual public MathDef, private Subclass
 {
 	// set property
-	Predicate* SetProp = new Predicate;
+	Predicate *SetProp = new Predicate;
+	// define status
+	WellDefined *Defined = new WellDefined;
+	// verify define validity
+protected:
+	// update property info and check
+	void UpdateAndChk()
+		{ClassInterface *Temp = new ClassInterface;
+			Temp->LetObject(GetObject());
+			Temp->LetProperty(SetProp);
+			LetClass(*Temp); ChkEligibility();
+			Temp->Reset();
+			delete Temp; Temp = nullptr;}
+	// check eligibility
+	bool ChkEligibility()
+		{Defined->LetWellDef(TestSelfContain());
+			if (Defined->WetherWellDef()==false)
+				{cout<<"Ill defined!"<<endl;}
+			return Defined->WetherWellDef();}
+	// test self containing
+	bool TestSelfContain()
+		{return Subclass::Formulation()
+			.GetTruthValue();}
+	// method
 public:
 	// initialization
 	Set()
@@ -27,7 +50,8 @@ public:
 	}
 	// destruction
 	virtual ~Set()
-		{delete SetProp; SetProp = nullptr;}
+		{delete SetProp; SetProp = nullptr;
+			delete Defined; Defined = nullptr;}
 	// let whether set is empty
 	void isEmpty(bool SetEmpty = false)
 		{if (false == SetEmpty) {DefineClass();}
@@ -41,6 +65,8 @@ public:
 	IndepVar GetElement(){return GetObject();}
 	// get set property
 	Predicate* GetSetProp(){return SetProp;}
+	// get define status
+	WellDefined* GetStatus(){return Defined;}
 	// let symbol
 	void LetDefSymbol(string NewSymbol)
 		{MathDef::LetSymbol(NewSymbol);}
@@ -53,24 +79,6 @@ public:
 	void LetSetProp(Predicate *NewProp)
 		{delete SetProp; SetProp = NewProp;
 			UpdateAndChk();}
-	// update property info and check
-	void UpdateAndChk()
-		{ClassInterface *Temp = new ClassInterface;
-			Temp->LetObject(GetObject());
-			Temp->LetProperty(SetProp);
-			LetClass(*Temp); ChkEligibility();
-			Temp->Reset();
-			delete Temp; Temp = nullptr;}
-	// check eligibility
-	bool ChkEligibility()
-		{bool result = TestSelfContain();
-			if (result==false)
-				{cout<<"Ill defined!"<<endl;}
-			return result;}
-	// test self containing
-	bool TestSelfContain()
-		{return Subclass::Formulation()
-			.GetTruthValue();}
 	// default property
 	virtual void PropOfSet(){LetClass(*this);}
 	// formulation
@@ -78,9 +86,10 @@ public:
 	{
 		Predicate form;
 		form.LetSymbol("\\{" + 
-			GetObject().GetSymbol() + "\\mid " + 
-			GetProperty()->GetSymbol() + "\\}");
-		form.LetTruthValue(ChkEligibility());
+			GetElement().GetSymbol() + "\\mid " + 
+			GetSetProp()->GetSymbol() + "\\}");
+		form.LetTruthValue(Defined
+			->WetherWellDef());
 		return form;
 	}
 };
@@ -201,8 +210,8 @@ public:
 	Predicate Formulation()
 	{
 		Predicate form;
-		Inference RghtArr;
 		// operation
+		Inference RghtArr;
 		SetBelongTo in;
 		SetContainedIn contained_in;
 		// let form symbol
@@ -277,7 +286,8 @@ public:
 	{
 		Predicate empty_set;
 		empty_set.LetSymbol(MathDef::Symbol);
-		empty_set.LetTruthValue(ChkEligibility());
+		empty_set.LetTruthValue(GetStatus()
+			->WetherWellDef());
 		return empty_set;
 	}
 };

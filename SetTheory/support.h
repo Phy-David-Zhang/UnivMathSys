@@ -1,7 +1,7 @@
 /* Support methods of initialization */
 
-#ifndef Support_h
-#define Support_h
+#ifndef SetTheory_Support_h
+#define SetTheory_Support_h
 
 #include <cstring>
 #include <string>

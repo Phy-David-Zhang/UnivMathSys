@@ -1,7 +1,7 @@
 /* Pre-definition of mathematical symbols */
 
-#ifndef Symbol_h
-#define Symbol_h
+#ifndef Initialization_Symbol_h
+#define Initialization_Symbol_h
 
 #include <cstring>
 #include <string>
