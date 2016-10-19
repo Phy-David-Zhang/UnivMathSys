@@ -16,7 +16,7 @@ using std::string;
 	public:
 		// initialization
 		PredicateForClass()
-			{ClassC = NULL;}
+			{ClassC = nullptr;}
 		// define father class
 		void LetClass(Class *NewClass)
 			{ClassC = NewClass;}
@@ -34,7 +34,7 @@ using std::string;
 class Subclass: virtual public MathDef, public Class
 {
 	// information
-	Class *ClassC = NULL;
+	Class *ClassC = nullptr;
 	// method
 public:
 	// initialization

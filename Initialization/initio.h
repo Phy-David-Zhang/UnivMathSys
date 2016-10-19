@@ -64,7 +64,7 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// get property
-	IndepVar GetObject(){return Obj;}
+	IndepVar& GetObject(){return Obj;}
 	Predicate* GetProperty(){return Prop;}
 	// let info
 	void LetSymbol(string NewSymbol)

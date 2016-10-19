@@ -29,6 +29,10 @@ class IndepVar
 	string Symbol;
 	// representation
 	void *rpsnt;
+	// interface
+protected:
+	// switch format of rpsnt
+	virtual void SwitchFormat(){}
 	// method
 public:
 	// initialization

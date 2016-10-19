@@ -20,10 +20,10 @@ class Set: virtual public MathDef, private Subclass
 	// verify define validity
 protected:
 	// update property info and check
-	void UpdateAndChk()
+	void UpdateAndChk(Predicate *CheckProp)
 		{ClassInterface *Temp = new ClassInterface;
 			Temp->LetObject(GetObject());
-			Temp->LetProperty(SetProp);
+			Temp->LetProperty(CheckProp);
 			LetClass(*Temp); ChkEligibility();
 			Temp->Reset();
 			delete Temp; Temp = nullptr;}
@@ -62,7 +62,7 @@ public:
 	string GetDefSymbol(){return MathDef::Symbol;}
 	string GetSetSymbol(){return Class::GetSymbol();}
 	// get element variable
-	IndepVar GetElement(){return GetObject();}
+	IndepVar& GetElement(){return GetObject();}
 	// get set property
 	Predicate* GetSetProp(){return SetProp;}
 	// get define status
@@ -78,7 +78,10 @@ public:
 	// let set property
 	void LetSetProp(Predicate *NewProp)
 		{delete SetProp; SetProp = NewProp;
-			UpdateAndChk();}
+			UpdateAndChk(SetProp);}
+	// smart set interface
+	virtual Predicate* GetSmartProperty()
+		{return GetSetProp();}
 	// default property
 	virtual void PropOfSet(){LetClass(*this);}
 	// formulation
@@ -87,12 +90,34 @@ public:
 		Predicate form;
 		form.LetSymbol("\\{" + 
 			GetElement().GetSymbol() + "\\mid " + 
-			GetSetProp()->GetSymbol() + "\\}");
+			GetSmartProperty()->GetSymbol() + "\\}");
 		form.LetTruthValue(Defined
 			->WetherWellDef());
 		return form;
 	}
 };
+
+	// define set property
+	class PredicateForSet: public Predicate
+	{
+		// father set
+		Set *SetX;
+	public:
+		// initialization
+		PredicateForSet()
+			{SetX = NULL;}
+		// define father set
+		void LetClass(Set *NewSet)
+			{SetX = NewSet;}
+		// define condition
+		bool Condition(IndepVar &Input)
+		{
+			bool result;
+			result = (Input.GetRpsnt() == 
+				SetX->GetElement().GetRpsnt());
+			return result;
+		}
+	};
 
 // Definition: Element
 class Element: virtual public MathDef
@@ -145,7 +170,7 @@ public:
 				MathOp::Symbol + " " + 
 				SetX->GetSetSymbol());
 		ele_in_x.LetTruthValue
-			(SetX->GetSetProp()
+			(SetX->GetSmartProperty()
 				->Condition(Elmnt));
 		return ele_in_x;
 	}

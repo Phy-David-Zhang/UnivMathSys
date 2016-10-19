@@ -19,7 +19,7 @@ using std::string;
 	public:
 		// initialization
 		PredicateForRussell()
-			{SetX = NULL;}
+			{SetX = nullptr;}
 		// let set
 		void LetSet(Set *NewSet)
 			{SetX = NewSet;}
