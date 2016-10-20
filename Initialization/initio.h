@@ -22,9 +22,9 @@ public:
 	Predicate(){Symbol = "\\mu";
 		 TruthValue = false;}
 	// condition
-	virtual bool Condition(IndepVar &Input)
+	virtual bool Condition(IndepVar *Input)
 		{return false;}
-	virtual void CondChn(IndepVar &Input)
+	virtual void CondChn(IndepVar *Input)
 		{TruthValue = Condition(Input);}
 	// get info
 	string GetConcept(){return Concept;}
@@ -46,32 +46,35 @@ class Class
 	string Concept = "Class";
 	string Symbol;
 	// property
-	IndepVar Obj;
+	IndepVar *Obj = new IndepVar;
 	Predicate *Prop 
 		= new Predicate;
 	// interface
 protected:
 	// reset initial
-	void ResetInit(){Prop = new Predicate;}
+	void ResetInit()
+		{Prop = new Predicate;
+			Obj = new IndepVar;}
 	// method
 public:
 	// initialization
 	Class(){Symbol = "C";
-		Obj.LetSymbol("x");}
+		Obj->LetSymbol("x");}
 	// destruction
-	~Class(){delete Prop; Prop = nullptr;}
+	~Class(){delete Prop; Prop = nullptr;
+		delete Obj; Obj = nullptr;}
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// get property
-	IndepVar& GetObject(){return Obj;}
+	IndepVar* GetObject(){return Obj;}
 	Predicate* GetProperty(){return Prop;}
 	// let info
 	void LetSymbol(string NewSymbol)
 		{Symbol = NewSymbol;}
 	// let property
-	void LetObject(IndepVar NewObj)
-		{Obj = NewObj;}
+	void LetObject(IndepVar *NewObj)
+		{delete Obj; Obj = NewObj;}
 	void LetProperty(Predicate *NewProp)
 		{delete Prop; Prop = NewProp;}
 	// formulation
@@ -79,7 +82,7 @@ public:
 	{
 		Predicate class_c;
 		class_c.LetSymbol("\\{" + 
-			Obj.GetSymbol() + "\\mid " + 
+			Obj->GetSymbol() + "\\mid " + 
 			Prop->GetSymbol() + "\\}");
 		class_c.LetTruthValue(true);
 		return class_c;
@@ -136,12 +139,12 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// formulation
-	Predicate OpBelongTo(IndepVar Obj, 
+	Predicate OpBelongTo(IndepVar *Obj, 
 		Class *ClassC)
 	{
 		Predicate obj_in_c;
 		obj_in_c.LetSymbol
-			(Obj.GetSymbol() + " " + 
+			(Obj->GetSymbol() + " " + 
 				Symbol + " " + 
 				ClassC->GetSymbol());
 		obj_in_c.LetTruthValue

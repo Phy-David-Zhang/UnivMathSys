@@ -22,12 +22,12 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// operation
-	Predicate OpUnivQuan(IndepVar &Input,
+	Predicate OpUnivQuan(IndepVar *Input,
 		Predicate *psi)
 	{
 		Predicate univ_psi;
 		univ_psi.LetSymbol
-			(Symbol + " " + Input.GetSymbol()
+			(Symbol + " " + Input->GetSymbol()
 				+ " \\," + psi->GetSymbol());
 		univ_psi.LetTruthValue
 			(psi->Condition(Input));
@@ -47,14 +47,14 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// operation
-	Predicate OpExistQuan(IndepVar &Input,
+	Predicate OpExistQuan(IndepVar *Input,
 		Predicate *psi)
 	{
 		Predicate exist_psi;
 		psi->LetTruthValue
 			(!psi->GetTruthValue());
 		exist_psi.LetSymbol
-			(Symbol + " " + Input.GetSymbol()
+			(Symbol + " " + Input->GetSymbol()
 				+ " \\," + psi->GetSymbol());
 		exist_psi.LetTruthValue
 			(!psi->Condition(Input));

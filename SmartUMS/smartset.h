@@ -16,32 +16,52 @@ class SmartSet: virtual public MathDef, public Set
 	// smart property for smart set
 	shared_ptr<Predicate> SmartProp
 		= shared_ptr<Predicate>(new Predicate);
+	// smart element for smart set
+	shared_ptr<IndepVar> SmartElmnt
+		= shared_ptr<IndepVar>(new IndepVar);
 	// internal transfer of property
 protected:
 	Predicate* GetSmartProperty()
 		{return SmartProp.get();}
+	IndepVar* GetSmartElement()
+		{return SmartElmnt.get();}
 	// method
 public:
 	// initialization
-	SmartSet(){}
+	SmartSet(){this->GetElement()
+		->LetRpsnt(SmartElmnt->GetRpsnt());}
 	// copy constructor
 	SmartSet(SmartSet &NewSet)
 		{LetDefSymbol(NewSet.GetDefSymbol());
 			LetSetSymbol(NewSet.GetSetSymbol());
-			LetElement(NewSet.GetElement());
+			LetSmartElmnt(NewSet.GetSmartElmnt());
+			LetSmartProp(NewSet.GetSmartProp());}
+	// copy constructor from set
+	SmartSet(Set &NewSet)
+		{LetDefSymbol(NewSet.GetDefSymbol());
+			LetSetSymbol(NewSet.GetSetSymbol());
+			LetSmartElmnt(NewSet.GetSmartElmnt());
 			LetSmartProp(NewSet.GetSmartProp());}
 	// assignment operator
 	SmartSet& operator=(SmartSet &NewSet)
 		{if (&NewSet != this) {
 			LetDefSymbol(NewSet.GetDefSymbol());
 			LetSetSymbol(NewSet.GetSetSymbol());
-			LetElement(NewSet.GetElement());
+			LetSmartElmnt(NewSet.GetSmartElmnt());
 			LetSmartProp(NewSet.GetSmartProp());} 
 		return *this;}
+	// let smart set element
+	void LetSmartElmnt(shared_ptr<IndepVar> NewElmnt)
+		{SmartElmnt = NewElmnt;
+			this->GetElement()
+				->LetRpsnt(SmartElmnt->GetRpsnt());}
 	// let smart set property
 	void LetSmartProp(shared_ptr<Predicate> NewProp)
 		{SmartProp = NewProp;
 			UpdateAndChk(GetSmartProperty());}
+	// get smart set element
+	shared_ptr<IndepVar> GetSmartElmnt()
+		{return SmartElmnt;}
 	// get smart set property
 	shared_ptr<Predicate> GetSmartProp()
 		{return SmartProp;}
@@ -50,7 +70,7 @@ public:
 	{
 		Predicate form;
 		form.LetSymbol("\\{" + 
-			GetElement().GetSymbol() + "\\mid " + 
+			GetSmartElmnt()->GetSymbol() + "\\mid " + 
 			GetSmartProp()->GetSymbol() + "\\}");
 		form.LetTruthValue(GetStatus()
 			->WetherWellDef());

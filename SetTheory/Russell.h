@@ -28,7 +28,7 @@ using std::string;
 		{
 			bool result;
 			result = !(Input.GetRpsnt() == 
-				SetX->GetElement().GetRpsnt());
+				SetX->GetElement()->GetRpsnt());
 			LetSymbol(Input.GetSymbol() + 
 				"\\notin " + SetX->GetSetSymbol());
 			return result;
@@ -54,7 +54,7 @@ public:
 	{
 		Predicate Form;
 		Form.LetSymbol("\\{" + 
-			GetElement().GetSymbol() + "\\mid " + 
+			GetElement()->GetSymbol() + "\\mid " + 
 			GetSetProp()->GetSymbol() + "\\}");
 		Form.LetTruthValue(GetStatus()
 			->WetherWellDef());

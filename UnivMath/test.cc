@@ -32,15 +32,15 @@ int main(void)
 {
 	SmartSet A;
 	shared_ptr<PredicateForSet> newprop(new PredicateForSet);
-	newprop->LetSymbol("\\lambda"); newprop->LetClass(&A);
-	A.LetSmartProp(newprop); //A.GetElement().LetSymbol("y");
+	newprop->LetSymbol("\\lambda"); newprop->LetSet(&A);
+	A.LetSmartProp(newprop); A.GetSmartElmnt()->LetSymbol("z");
 	SmartSet B(A);
 	SmartSet C = A;
 	cout<<A.Formulation().GetSymbol()<<endl;
 	cout<<B.Formulation().GetSymbol()<<endl;
 	cout<<C.Formulation().GetSymbol()<<endl;
 	Class D;
-	D.GetObject().LetSymbol("y");
+	D.GetObject()->LetSymbol("y");
 	cout<<D.ClassForm().GetSymbol()<<endl;
 	cout<<"Compile Success"<<endl;
 	return 0;

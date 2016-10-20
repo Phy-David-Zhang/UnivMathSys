@@ -22,7 +22,7 @@ protected:
 	// update property info and check
 	void UpdateAndChk(Predicate *CheckProp)
 		{ClassInterface *Temp = new ClassInterface;
-			Temp->LetObject(GetObject());
+			Temp->LetObject(GetSmartElement());
 			Temp->LetProperty(CheckProp);
 			LetClass(*Temp); ChkEligibility();
 			Temp->Reset();
@@ -62,7 +62,7 @@ public:
 	string GetDefSymbol(){return MathDef::Symbol;}
 	string GetSetSymbol(){return Class::GetSymbol();}
 	// get element variable
-	IndepVar& GetElement(){return GetObject();}
+	IndepVar* GetElement(){return GetObject();}
 	// get set property
 	Predicate* GetSetProp(){return SetProp;}
 	// get define status
@@ -73,7 +73,7 @@ public:
 	void LetSetSymbol(string NewSymbol)
 		{Class::LetSymbol(NewSymbol);}
 	// let element
-	void LetElement(IndepVar NewElement)
+	void LetElement(IndepVar *NewElement)
 		{LetObject(NewElement);}
 	// let set property
 	void LetSetProp(Predicate *NewProp)
@@ -82,6 +82,8 @@ public:
 	// smart set interface
 	virtual Predicate* GetSmartProperty()
 		{return GetSetProp();}
+	virtual IndepVar* GetSmartElement()
+		{return GetElement();}
 	// default property
 	virtual void PropOfSet(){LetClass(*this);}
 	// formulation
@@ -89,7 +91,7 @@ public:
 	{
 		Predicate form;
 		form.LetSymbol("\\{" + 
-			GetElement().GetSymbol() + "\\mid " + 
+			GetElement()->GetSymbol() + "\\mid " + 
 			GetSmartProperty()->GetSymbol() + "\\}");
 		form.LetTruthValue(Defined
 			->WetherWellDef());
@@ -105,16 +107,16 @@ public:
 	public:
 		// initialization
 		PredicateForSet()
-			{SetX = NULL;}
+			{SetX = nullptr;}
 		// define father set
-		void LetClass(Set *NewSet)
+		void LetSet(Set *NewSet)
 			{SetX = NewSet;}
 		// define condition
-		bool Condition(IndepVar &Input)
+		bool Condition(IndepVar *Input)
 		{
 			bool result;
-			result = (Input.GetRpsnt() == 
-				SetX->GetElement().GetRpsnt());
+			result = (Input->GetRpsnt() == 
+				SetX->GetSmartElement()->GetRpsnt());
 			return result;
 		}
 	};
@@ -161,12 +163,12 @@ public:
 	// get symbol
 	string GetDefSymbol(){return MathOp::Symbol;}
 	// operation
-	Predicate OpBelongTo(IndepVar Elmnt,
+	Predicate OpBelongTo(IndepVar *Elmnt,
 		Set *SetX)
 	{
 		Predicate ele_in_x;
 		ele_in_x.LetSymbol
-			(Elmnt.GetSymbol() + " " + 
+			(Elmnt->GetSymbol() + " " + 
 				MathOp::Symbol + " " + 
 				SetX->GetSetSymbol());
 		ele_in_x.LetTruthValue
@@ -241,10 +243,10 @@ public:
 		SetContainedIn contained_in;
 		// let form symbol
 		form.LetSymbol(this->GetElement()
-			.GetSymbol() + in.GetDefSymbol() + " " 
+			->GetSymbol() + in.GetDefSymbol() + " " 
 			+ MathDef::Symbol
 			+ RghtArr.GetSymbol() + " "
-			+ SetX->GetElement().GetSymbol()
+			+ SetX->GetElement()->GetSymbol()
 			+ in.GetDefSymbol() + " "
 			+ SetX->GetSetSymbol());
 		// let fomr truth value

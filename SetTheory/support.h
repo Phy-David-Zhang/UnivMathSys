@@ -21,11 +21,11 @@ using std::string;
 		void LetClass(Class *NewClass)
 			{ClassC = NewClass;}
 		// define condition
-		bool Condition(IndepVar &Input)
+		bool Condition(IndepVar *Input)
 		{
 			bool result;
-			result = (Input.GetRpsnt() == 
-				ClassC->GetObject().GetRpsnt());
+			result = (Input->GetRpsnt() == 
+				ClassC->GetObject()->GetRpsnt());
 			return result;
 		}
 	};
@@ -72,10 +72,10 @@ public:
 		BelongTo in;
 		Inference RghtArr;
 		// let form symbol
-		form.LetSymbol(this->GetObject().GetSymbol()
+		form.LetSymbol(this->GetObject()->GetSymbol()
 			+ in.GetSymbol() + " " + MathDef::Symbol
 			+ RghtArr.GetSymbol() + " "
-			+ ClassC->GetObject().GetSymbol()
+			+ ClassC->GetObject()->GetSymbol()
 			+ in.GetSymbol() + " "
 			+ ClassC->GetSymbol());
 		// let temp class ptr
