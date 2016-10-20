@@ -11,7 +11,7 @@ using std::string;
 using std::cout;
 
 // Definition: Set
-class Set: virtual public MathDef, private Subclass
+class Set: virtual public MathDef, private Class
 {
 	// set property
 	Predicate *SetProp = new Predicate;
@@ -19,14 +19,11 @@ class Set: virtual public MathDef, private Subclass
 	WellDefined *Defined = new WellDefined;
 	// verify define validity
 protected:
-	// update property info and check
-	void UpdateAndChk(Predicate *CheckProp)
-		{ClassInterface *Temp = new ClassInterface;
-			Temp->LetObject(GetSmartElement());
-			Temp->LetProperty(CheckProp);
-			LetClass(*Temp); ChkEligibility();
-			Temp->Reset();
-			delete Temp; Temp = nullptr;}
+	// define internal belong to predicate
+	void DefineClass()
+		{PredicateForClass *DefaultProp
+						= new PredicateForClass;
+			DefaultProp->LetClass(this);}
 	// check eligibility
 	bool ChkEligibility()
 		{Defined->LetWellDef(TestSelfContain());
@@ -35,8 +32,17 @@ protected:
 			return Defined->WetherWellDef();}
 	// test self containing
 	bool TestSelfContain()
-		{return Subclass::Formulation()
-			.GetTruthValue();}
+		{IndepVar TempVar; BelongTo in;
+			ClassIntface *Temp = new ClassIntface;
+			Temp->LetProperty(GetSmartProperty());
+			Predicate RghtArg = in
+				.OpBelongTo(&TempVar, Temp);
+			Predicate LeftArg = in
+				.OpBelongTo(&TempVar, this);
+			Temp->Reset(); Inference RghtArr;
+			delete Temp; Temp = nullptr;
+			return RghtArr.OpInference(RghtArg,
+				LeftArg).GetTruthValue();}
 	// method
 public:
 	// initialization
@@ -45,17 +51,13 @@ public:
 		MathDef::Definition = "Set";
 		MathDef::Symbol = "X";
 		Class::LetSymbol("X");
-		PropOfSet();
+		DefineClass();
 		ChkEligibility();
 	}
 	// destruction
 	virtual ~Set()
 		{delete SetProp; SetProp = nullptr;
 			delete Defined; Defined = nullptr;}
-	// let whether set is empty
-	void isEmpty(bool SetEmpty = false)
-		{if (false == SetEmpty) {DefineClass();}
-			else {EmptyClass();}}
 	// get base concept
 	string GetBase(){return GetConcept();}
 	// get symbol
@@ -78,14 +80,14 @@ public:
 	// let set property
 	void LetSetProp(Predicate *NewProp)
 		{delete SetProp; SetProp = NewProp;
-			UpdateAndChk(SetProp);}
+			ChkEligibility();}
 	// smart set interface
 	virtual Predicate* GetSmartProperty()
 		{return GetSetProp();}
 	virtual IndepVar* GetSmartElement()
 		{return GetElement();}
 	// default property
-	virtual void PropOfSet(){LetClass(*this);}
+	virtual void PropOfSet(){}
 	// formulation
 	Predicate Formulation()
 	{
@@ -296,17 +298,12 @@ public:
 // Definition: Empty Set
 class EmptySet: virtual public MathDef, public Set
 {
-	// property
-	Predicate *Empty = new Predicate;
-	// method
 public:
 	// initialization
 	EmptySet()
 	{
 		MathDef::Definition = "Empty Set";
 		MathDef::Symbol = "\\varnothing";
-		isEmpty(true);
-		this->LetSetProp(Empty);
 	}
 	// formulation
 	Predicate Formulation()

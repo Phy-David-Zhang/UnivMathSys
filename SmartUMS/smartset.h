@@ -36,12 +36,6 @@ public:
 			LetSetSymbol(NewSet.GetSetSymbol());
 			LetSmartElmnt(NewSet.GetSmartElmnt());
 			LetSmartProp(NewSet.GetSmartProp());}
-	// copy constructor from set
-	SmartSet(Set &NewSet)
-		{LetDefSymbol(NewSet.GetDefSymbol());
-			LetSetSymbol(NewSet.GetSetSymbol());
-			LetSmartElmnt(NewSet.GetSmartElmnt());
-			LetSmartProp(NewSet.GetSmartProp());}
 	// assignment operator
 	SmartSet& operator=(SmartSet &NewSet)
 		{if (&NewSet != this) {
@@ -57,8 +51,7 @@ public:
 				->LetRpsnt(SmartElmnt->GetRpsnt());}
 	// let smart set property
 	void LetSmartProp(shared_ptr<Predicate> NewProp)
-		{SmartProp = NewProp;
-			UpdateAndChk(GetSmartProperty());}
+		{SmartProp = NewProp; ChkEligibility();}
 	// get smart set element
 	shared_ptr<IndepVar> GetSmartElmnt()
 		{return SmartElmnt;}

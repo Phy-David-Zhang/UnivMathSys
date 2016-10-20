@@ -95,7 +95,7 @@ public:
 };
 
 // interface to reset class property
-class ClassInterface: public Class
+class ClassIntface: public Class
 {
 public:
 	void Reset(){ResetInit();}

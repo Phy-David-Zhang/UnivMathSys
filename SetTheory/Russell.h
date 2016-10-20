@@ -24,12 +24,12 @@ using std::string;
 		void LetSet(Set *NewSet)
 			{SetX = NewSet;}
 		// define condition
-		bool Condition(IndepVar &Input)
+		bool Condition(IndepVar *Input)
 		{
 			bool result;
-			result = !(Input.GetRpsnt() == 
+			result = !(Input->GetRpsnt() == 
 				SetX->GetElement()->GetRpsnt());
-			LetSymbol(Input.GetSymbol() + 
+			LetSymbol(Input->GetSymbol() + 
 				"\\notin " + SetX->GetSetSymbol());
 			return result;
 		}
