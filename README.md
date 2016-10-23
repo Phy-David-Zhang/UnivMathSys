@@ -9,7 +9,7 @@ Universal Mathematics System, or UMS, is an attempt to formulate abstract mathem
 
 ### License
 
-This project, Universal Mathematics System, is licensed under GPL v3.
+This project, Universal Mathematics System, is licensed under GPL-3.0.
 
 ### Principle
 

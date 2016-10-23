@@ -1,5 +1,9 @@
 /* Initialization of Universal Mathematics System */
 
+	/* Copyright (C) 2016 Zhang Chang-kai */
+	/* Contact via: phy.zhangck@gmail.com */
+	/* General Public License version 3.0 */
+
 #ifndef Initialization_Initio_h
 #define Initialization_Initio_h
 
@@ -7,6 +11,38 @@
 #include <string>
 
 using std::string;
+
+// Operation Symbol
+static const string SymBelongTo = "\\in";
+
+// Concept Independent Variable
+class IndepVar
+{
+	// information
+	string Concept = "Independent Variable";
+	string Symbol;
+	// representation
+	void *rpsnt;
+	// interface
+protected:
+	// switch format of rpsnt
+	virtual void SwitchFormat(){}
+	// method
+public:
+	// initialization
+	IndepVar(){Symbol = "\\mu";
+		rpsnt = &Symbol;}
+	// get info
+	string GetConcept(){return Concept;}
+	string GetSymbol(){return Symbol;}
+	void* GetRpsnt(){return rpsnt;}
+	// let info
+	void LetSymbol(string NewSymbol)
+		{Symbol = NewSymbol;}
+	// let representation
+	void LetRpsnt(void *Input)
+		{rpsnt = Input;}
+};
 
 // Concept Predicate
 class Predicate
@@ -139,13 +175,13 @@ public:
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
 	// formulation
-	Predicate OpBelongTo(IndepVar *Obj, 
+	static Predicate OpBelongTo(IndepVar *Obj, 
 		Class *ClassC)
 	{
 		Predicate obj_in_c;
 		obj_in_c.LetSymbol
 			(Obj->GetSymbol() + " " + 
-				Symbol + " " + 
+				SymBelongTo + " " + 
 				ClassC->GetSymbol());
 		obj_in_c.LetTruthValue
 			(ClassC->GetProperty()

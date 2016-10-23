@@ -32,16 +32,16 @@ protected:
 			return Defined->WetherWellDef();}
 	// test self containing
 	bool TestSelfContain()
-		{IndepVar TempVar; BelongTo in;
+		{IndepVar TempVar;
 			ClassIntface *Temp = new ClassIntface;
 			Temp->LetProperty(GetSmartProperty());
-			Predicate RghtArg = in
-				.OpBelongTo(&TempVar, Temp);
-			Predicate LeftArg = in
-				.OpBelongTo(&TempVar, this);
-			Temp->Reset(); Inference RghtArr;
+			Predicate RghtArg = BelongTo::
+				OpBelongTo(&TempVar, Temp);
+			Predicate LeftArg = BelongTo::
+				OpBelongTo(&TempVar, this);
+			Temp->Reset();
 			delete Temp; Temp = nullptr;
-			return RghtArr.OpInference(RghtArg,
+			return Inference::OpInference(RghtArg,
 				LeftArg).GetTruthValue();}
 	// method
 public:
@@ -163,15 +163,16 @@ public:
 		MathOp::Symbol = BelongTo::GetSymbol();
 	}
 	// get symbol
-	string GetDefSymbol(){return MathOp::Symbol;}
+	static string GetDefSymbol()
+		{return SymSetBelongTo;}
 	// operation
-	Predicate OpBelongTo(IndepVar *Elmnt,
+	static Predicate OpBelongTo(IndepVar *Elmnt,
 		Set *SetX)
 	{
 		Predicate ele_in_x;
 		ele_in_x.LetSymbol
 			(Elmnt->GetSymbol() + " " + 
-				MathOp::Symbol + " " + 
+				SymSetBelongTo + " " + 
 				SetX->GetSetSymbol());
 		ele_in_x.LetTruthValue
 			(SetX->GetSmartProperty()
@@ -181,34 +182,35 @@ public:
 };
 
 // Operation: contain in
-class SetContainedIn: virtual public MathOp
+class SetContain: virtual public MathOp
 {
 public:
 	// initialization
-	SetContainedIn()
+	SetContain()
 	{
 		MathOp::Operation = "contained in";
 		MathOp::Symbol = "\\subset";
 	}
+	// get symbol
+	static string GetDefSymbol()
+		{return SymContain;}
 	// operation form
-	Predicate OpForm(Set *Left, Set *Rght)
+	static Predicate OpForm(Set *Left, Set *Rght)
 	{
 		Predicate contained_in;
-		Inference RghtArr;
-		SetBelongTo in;
 		// let symbol
 		contained_in.LetSymbol(Left
 			  ->MathDef::GetSymbol()
-			+ MathOp::Symbol + " " 
+			+ SymContain + " " 
 			+ Rght->MathDef::GetSymbol());
 		// define arguments
-		Predicate LeftArg = 
-			in.OpBelongTo(Left->GetElement(), Left);
-		Predicate RghtArg = 
-			in.OpBelongTo(Left->GetElement(), Rght);
+		Predicate LeftArg = SetBelongTo::
+			OpBelongTo(Left->GetElement(), Left);
+		Predicate RghtArg = SetBelongTo::
+			OpBelongTo(Left->GetElement(), Rght);
 		// let operation truth value
-		contained_in.LetTruthValue(RghtArr
-			.OpInference(LeftArg, RghtArg)
+		contained_in.LetTruthValue(Inference::
+			OpInference(LeftArg, RghtArg)
 			.GetTruthValue()); 
 		// return
 		return contained_in;
@@ -239,20 +241,16 @@ public:
 	Predicate Formulation()
 	{
 		Predicate form;
-		// operation
-		Inference RghtArr;
-		SetBelongTo in;
-		SetContainedIn contained_in;
 		// let form symbol
 		form.LetSymbol(this->GetElement()
-			->GetSymbol() + in.GetDefSymbol() + " " 
-			+ MathDef::Symbol
-			+ RghtArr.GetSymbol() + " "
+			->GetSymbol() + SetBelongTo::
+			GetDefSymbol() + " " + MathDef::Symbol
+			+ Inference::GetDefSymbol() + " "
 			+ SetX->GetElement()->GetSymbol()
-			+ in.GetDefSymbol() + " "
+			+ SetBelongTo::GetDefSymbol() + " "
 			+ SetX->GetSetSymbol());
 		// let fomr truth value
-		form.LetTruthValue(contained_in.OpForm(
+		form.LetTruthValue(SetContain::OpForm(
 			this, SetX).GetTruthValue());
 		// return
 		return form;
@@ -261,7 +259,7 @@ public:
 
 // Operation: equal
 class SetEqual: virtual public MathOp, 
-	public SetContainedIn
+	public SetContain
 {
 public:
 	// initialization
@@ -270,26 +268,27 @@ public:
 		MathOp::Operation = "equal to";
 		MathOp::Symbol = "=";
 	}
+	// get symbol
+	static string GetDefSymbol()
+		{return SymSetEqual;}
 	// operation form
-	Predicate OpForm(Set *Left, Set *Right)
+	static Predicate OpForm(Set *Left, Set *Right)
 	{
 		Predicate set_equal;
 		// let symbol
 		set_equal.LetSymbol(Left
 			  ->MathDef::GetSymbol()
-			+ MathOp::Symbol 
+			+ SymSetEqual 
 			+ Right->MathDef::GetSymbol());
-		// define operator
-		Conjunction wedge;
-		SetContainedIn contained_in;
 		// define arguments
 		Predicate PredL = 
-			contained_in.OpForm(Left, Right);
+			SetContain::OpForm(Left, Right);
 		Predicate PredR = 
-			contained_in.OpForm(Right, Left);
+			SetContain::OpForm(Right, Left);
 		// let truth value
-		set_equal.LetTruthValue(wedge.OpConjunction(
-			PredL, PredR).GetTruthValue());
+		set_equal.LetTruthValue(Conjunction::
+			OpConjunction(PredL, PredR)
+				.GetTruthValue());
 		// return
 		return set_equal;
 	}

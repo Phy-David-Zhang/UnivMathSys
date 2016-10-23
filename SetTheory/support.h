@@ -68,26 +68,22 @@ public:
 	Predicate Formulation()
 	{
 		Predicate form;
-		// operation
-		BelongTo in;
-		Inference RghtArr;
 		// let form symbol
 		form.LetSymbol(this->GetObject()->GetSymbol()
-			+ in.GetSymbol() + " " + MathDef::Symbol
-			+ RghtArr.GetSymbol() + " "
+			+ SymBelongTo + " " + MathDef::Symbol
+			+ Inference::GetDefSymbol() + " "
 			+ ClassC->GetObject()->GetSymbol()
-			+ in.GetSymbol() + " "
+			+ SymBelongTo + " "
 			+ ClassC->GetSymbol());
 		// let temp class ptr
 		Class *Temp; Temp = this;
 		// define arguments
-		Predicate LeftArg = 
-			in.OpBelongTo(this->GetObject(), Temp);
-		Predicate RghtArg = 
-			in.OpBelongTo(this->GetObject(), 
-				ClassC);
+		Predicate LeftArg = BelongTo::
+			OpBelongTo(this->GetObject(), Temp);
+		Predicate RghtArg = BelongTo::
+			OpBelongTo(this->GetObject(), ClassC);
 		// let form truth value
-		form.LetTruthValue(RghtArr.OpInference(
+		form.LetTruthValue(Inference::OpInference(
 			LeftArg, RghtArg).GetTruthValue());
 		// return
 		return form;

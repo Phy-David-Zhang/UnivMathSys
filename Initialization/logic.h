@@ -21,13 +21,16 @@ public:
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
+	// get symbol
+	static string GetDefSymbol()
+		{return SymUnivQuan;}
 	// operation
-	Predicate OpUnivQuan(IndepVar *Input,
+	static Predicate OpUnivQuan(IndepVar *Input,
 		Predicate *psi)
 	{
 		Predicate univ_psi;
 		univ_psi.LetSymbol
-			(Symbol + " " + Input->GetSymbol()
+			(SymUnivQuan + " " + Input->GetSymbol()
 				+ " \\," + psi->GetSymbol());
 		univ_psi.LetTruthValue
 			(psi->Condition(Input));
@@ -46,15 +49,18 @@ public:
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
+	// get symbol
+	static string GetDefSymbol()
+		{return SymExistQuan;}
 	// operation
-	Predicate OpExistQuan(IndepVar *Input,
+	static Predicate OpExistQuan(IndepVar *Input,
 		Predicate *psi)
 	{
 		Predicate exist_psi;
 		psi->LetTruthValue
 			(!psi->GetTruthValue());
 		exist_psi.LetSymbol
-			(Symbol + " " + Input->GetSymbol()
+			(SymExistQuan + " " + Input->GetSymbol()
 				+ " \\," + psi->GetSymbol());
 		exist_psi.LetTruthValue
 			(!psi->Condition(Input));
@@ -73,12 +79,15 @@ public:
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
+	// get symbol
+	static string GetDefSymbol()
+		{return SymNegation;}
 	// operation
-	Predicate OpNegation(Predicate &psi)
+	static Predicate OpNegation(Predicate &psi)
 	{
 		Predicate neg_psi;
 		neg_psi.LetSymbol
-			(Symbol + " " + psi.GetSymbol());
+			(SymNegation + " " + psi.GetSymbol());
 		neg_psi.LetTruthValue
 			(!psi.GetTruthValue());
 		return neg_psi;
@@ -96,13 +105,16 @@ public:
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
+	// get symbol
+	static string GetDefSymbol()
+		{return SymDisjunction;}
 	// operation
-	Predicate OpDisjunction(Predicate &psi, 
+	static Predicate OpDisjunction(Predicate &psi, 
 		Predicate &varphi)
 	{
 		Predicate psi_vee_varphi;
 		psi_vee_varphi.LetSymbol
-			(psi.GetSymbol() + " " + Symbol
+			(psi.GetSymbol() + " " + SymDisjunction
 				+ " " + varphi.GetSymbol());
 		psi_vee_varphi.LetTruthValue
 			(psi.GetTruthValue() || 
@@ -121,13 +133,16 @@ public:
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
+	// get symbol
+	static string GetDefSymbol()
+		{return SymConjunction;}
 	// operation
-	Predicate OpConjunction(Predicate &psi, 
+	static Predicate OpConjunction(Predicate &psi, 
 		Predicate &varphi)
 	{
 		Predicate psi_wedge_varphi;
 		psi_wedge_varphi.LetSymbol
-			(psi.GetSymbol() + " " + Symbol
+			(psi.GetSymbol() + " " + SymConjunction
 				+ " " + varphi.GetSymbol());
 		psi_wedge_varphi.LetTruthValue
 			(psi.GetTruthValue() &&
@@ -146,13 +161,16 @@ public:
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
+	// get symbol
+	static string GetDefSymbol()
+		{return SymImplication;}
 	// operation
-	Predicate OpImplication(Predicate &psi, 
+	static Predicate OpImplication(Predicate &psi, 
 		Predicate &varphi)
 	{
 		Predicate psi_rightarrow_varphi;
 		psi_rightarrow_varphi.LetSymbol
-			(psi.GetSymbol() + " " + Symbol
+			(psi.GetSymbol() + " " + SymImplication
 				+ " " + varphi.GetSymbol());
 		psi_rightarrow_varphi.LetTruthValue
 			(!psi.GetTruthValue() || 
@@ -171,13 +189,16 @@ public:
 	// get info
 	string GetConcept(){return Concept;}
 	string GetSymbol(){return Symbol;}
+	// get symbol
+	static string GetDefSymbol()
+		{return SymInference;}
 	// operation
-	Predicate OpInference(Predicate &psi, 
+	static Predicate OpInference(Predicate &psi, 
 		Predicate &varphi)
 	{
 		Predicate psi_Rightarrow_varphi;
 		psi_Rightarrow_varphi.LetSymbol
-			(psi.GetSymbol() + " " + Symbol
+			(psi.GetSymbol() + " " + SymInference
 				+ " " + varphi.GetSymbol());
 		psi_Rightarrow_varphi.LetTruthValue
 			(!psi.GetTruthValue() || 
