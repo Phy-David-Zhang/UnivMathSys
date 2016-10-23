@@ -2,6 +2,10 @@
    Russell class, which means providing error 
    message when defining Russell class as a set. */
 
+	/* Copyright (C) 2016 Zhang Chang-kai */
+	/* Contact via: phy.zhangck@gmail.com */
+	/* General Public License version 3.0 */
+
 #ifndef SetTheory_Russell_h
 #define SetTheory_Russell_h
 

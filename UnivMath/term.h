@@ -1,5 +1,9 @@
 /* Common Mathematical Terms */
 
+	/* Copyright (C) 2016 Zhang Chang-kai */
+	/* Contact via: phy.zhangck@gmail.com */
+	/* General Public License version 3.0 */
+
 #ifndef UnivMath_Term_h
 #define UnivMath_Term_h
 

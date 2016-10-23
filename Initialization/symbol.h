@@ -1,5 +1,9 @@
 /* Pre-definition of mathematical symbols */
 
+	/* Copyright (C) 2016 Zhang Chang-kai */
+	/* Contact via: phy.zhangck@gmail.com */
+	/* General Public License version 3.0 */
+
 #ifndef Initialization_Symbol_h
 #define Initialization_Symbol_h
 

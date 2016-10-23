@@ -1,5 +1,9 @@
 /* Extension - Smart Set */
 
+	/* Copyright (C) 2016 Zhang Chang-kai */
+	/* Contact via: phy.zhangck@gmail.com */
+	/* General Public License version 3.0 */
+
 #ifndef SmartUMS_SmartSet_h
 #define SmartUMS_SmartSet_h
 

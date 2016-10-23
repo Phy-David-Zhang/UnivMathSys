@@ -1,5 +1,9 @@
 /* Support methods of initialization */
 
+	/* Copyright (C) 2016 Zhang Chang-kai */
+	/* Contact via: phy.zhangck@gmail.com */
+	/* General Public License version 3.0 */
+
 #ifndef SetTheory_Support_h
 #define SetTheory_Support_h
 
