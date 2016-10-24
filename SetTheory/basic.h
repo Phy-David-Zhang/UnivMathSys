@@ -36,7 +36,8 @@ protected:
 			return Defined->WetherWellDef();}
 	// test self containing
 	bool TestSelfContain()
-		{IndepVar TempVar;
+		{IndepVar TempVar; TempVar.LetSymbol(
+			GetSmartElement()->GetSymbol());
 			ClassIntface *Temp = new ClassIntface;
 			Temp->LetProperty(GetSmartProperty());
 			Predicate RghtArg = BelongTo::
@@ -53,7 +54,7 @@ public:
 	Set()
 	{
 		MathDef::Definition = "Set";
-		MathDef::Symbol = "X";
+		MathDef::Symbol = "";
 		Class::LetSymbol("X");
 		DefineClass();
 		ChkEligibility();
@@ -204,9 +205,9 @@ public:
 		Predicate contained_in;
 		// let symbol
 		contained_in.LetSymbol(Left
-			  ->MathDef::GetSymbol()
+			  ->GetSetSymbol()
 			+ SymContain + " " 
-			+ Rght->MathDef::GetSymbol());
+			+ Rght->GetSetSymbol());
 		// define arguments
 		Predicate LeftArg = SetBelongTo::
 			OpBelongTo(Left->GetElement(), Left);
@@ -248,7 +249,7 @@ public:
 		// let form symbol
 		form.LetSymbol(this->GetElement()
 			->GetSymbol() + SetBelongTo::
-			GetDefSymbol() + " " + MathDef::Symbol
+			GetDefSymbol() + " " + GetSetSymbol()
 			+ Inference::GetDefSymbol() + " "
 			+ SetX->GetElement()->GetSymbol()
 			+ SetBelongTo::GetDefSymbol() + " "
@@ -281,9 +282,9 @@ public:
 		Predicate set_equal;
 		// let symbol
 		set_equal.LetSymbol(Left
-			  ->MathDef::GetSymbol()
+			  ->GetSetSymbol()
 			+ SymSetEqual 
-			+ Right->MathDef::GetSymbol());
+			+ Right->GetSetSymbol());
 		// define arguments
 		Predicate PredL = 
 			SetContain::OpForm(Left, Right);

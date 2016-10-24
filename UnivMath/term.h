@@ -30,6 +30,7 @@ public:
 	// update well define status
 	void LetWellDef(bool WellorNot)
 		{isWellDefined = WellorNot;
+			LetTruthValue(isWellDefined);
 			ChnWellDef();}
 	// output status
 	void ChnWellDef()

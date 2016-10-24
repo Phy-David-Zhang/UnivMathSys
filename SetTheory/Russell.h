@@ -44,7 +44,9 @@ class Russell: virtual public MathDef, public Set
 {
 public:
 	// initialization
-	Russell(){PropOfSet();}
+	Russell()
+		{MathDef::Definition = "Russell Class";
+			PropOfSet();}
 	// define property
 	void PropOfSet()
 	{
