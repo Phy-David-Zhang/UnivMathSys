@@ -20,13 +20,13 @@
 using namespace std;
 
 // initialization file
-#include "Initialization/symbol.h"
-#include "Initialization/initio.h"
-#include "Initialization/logic.h"
-#include "Initialization/standard.h"
+#include "Initialization/symbol.hh"
+#include "Initialization/initio.hh"
+#include "Initialization/logic.hh"
+#include "Initialization/standard.hh"
 
 // import math terms
-#include "UnivMath/term.h"
+#include "UnivMath/term.hh"
 
 // Set Theory
 #include "SetTheory/config.cc"

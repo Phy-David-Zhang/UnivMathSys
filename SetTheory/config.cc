@@ -4,6 +4,6 @@
 	/* Contact via: phy.zhangck@gmail.com */
 	/* General Public License version 3.0 */
 
-#include "SetTheory/support.h"
-#include "SetTheory/basic.h"
-#include "SetTheory/Russell.h"
+#include "SetTheory/support.hh"
+#include "SetTheory/basic.hh"
+#include "SetTheory/Russell.hh"
