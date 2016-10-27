@@ -1,4 +1,14 @@
+# Makefile of Universal Mathematics System
+
+# Copyright (C) 2016 Zhang Chang-kai\
+# Contact via: phy.zhangck@gmail.com\
+# General Public License version 3.0
+
+cc = g++
+prom = UnivMathSys
+src = UnivMath/main.cc
+cflags = -I.
+std = -std=c++11
+
 UnivMathSys_Default: 
-	g++ -o UnivMathSys -w UnivMath/main.cc -I. -std=c++11
-test:
-	g++ -o UnivMathSys -w UnivMath/test.cc -I. -std=c++11
+	$(cc) -o $(prom) -w $(src) -I. $(std)

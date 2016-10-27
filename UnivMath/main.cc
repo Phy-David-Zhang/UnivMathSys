@@ -25,8 +25,11 @@ using namespace std;
 // import math terms
 #include "UnivMath/term.hh"
 
-// Set Theory
+// set theory
 #include "SetTheory/config.cc"
+
+// features
+#include "Features/config.cc"
 
 // main test function
 int main(void)
