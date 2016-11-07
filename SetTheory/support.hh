@@ -26,12 +26,8 @@ using std::string;
 			{ClassC = NewClass;}
 		// define condition
 		bool Condition(IndepVar *Input)
-		{
-			bool result;
-			result = (Input->GetRpsnt() == 
-				ClassC->GetObject()->GetRpsnt());
-			return result;
-		}
+			{return (Input->GetRpsnt() == 
+				ClassC->GetObject()->GetRpsnt());}
 	};
 
 // Definition Subclass

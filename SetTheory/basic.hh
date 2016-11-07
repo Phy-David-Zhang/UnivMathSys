@@ -120,12 +120,8 @@ public:
 			{SetX = NewSet;}
 		// define condition
 		bool Condition(IndepVar *Input)
-		{
-			bool result;
-			result = (Input->GetRpsnt() == 
-				SetX->GetSmartElement()->GetRpsnt());
-			return result;
-		}
+			{return (Input->GetRpsnt() == SetX
+				->GetSmartElement()->GetRpsnt());}
 	};
 
 // Definition: Element

@@ -30,12 +30,10 @@ using std::string;
 		// define condition
 		bool Condition(IndepVar *Input)
 		{
-			bool result;
-			result = !(Input->GetRpsnt() == 
-				SetX->GetElement()->GetRpsnt());
 			LetSymbol(Input->GetSymbol() + 
 				"\\notin " + SetX->GetSetSymbol());
-			return result;
+			return !(Input->GetRpsnt() == 
+				SetX->GetElement()->GetRpsnt());
 		}
 	};
 

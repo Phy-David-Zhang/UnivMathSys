@@ -4,8 +4,8 @@
 	/* Contact via: phy.zhangck@gmail.com */
 	/* General Public License version 3.0 */
 
-#ifndef Feature_Dynamic_h
-#define Feature_Dynamic_h
+#ifndef Features_Dynamic_h
+#define Features_Dynamic_h
 
 #include <cstring>
 #include <string>
