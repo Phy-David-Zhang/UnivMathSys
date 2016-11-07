@@ -1,3 +1,9 @@
+<!-- Motivation of Universal Mathematics System -->
+
+  <!-- Copyright (C) 2016 Zhang Chang-kai -->
+  <!-- Contact via: phy.zhangck@gmail.com -->
+  <!-- CC-BY-SA 4.0 International License -->
+
 # Universal Mathematics System
 
 Universal Mathematics System, or UMS, is an attempt to formulate abstract mathematical theory through computer language.
