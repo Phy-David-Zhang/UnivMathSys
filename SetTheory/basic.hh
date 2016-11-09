@@ -13,6 +13,7 @@
 
 using std::string;
 using std::cout;
+using std::endl;
 
 // Definition: Set
 class Set: virtual public MathDef, private Class

@@ -4,15 +4,34 @@
 # Contact via: phy.zhangck@gmail.com\
 # General Public License version 3.0
 
+mprom = UnivMathSys
+msrc = UnivMath/main.cc
+
+tprom = UnivTest
+tsrc = UnivMath/test.cc
+
+extdir = Extensions
+extname = PreAlgebra
+
+lhdir = $(extdir)/$(extname)/Header
+lsdir = $(extdir)/$(extname)/Source
+lodir = $(extdir)/$(extname)/Object
+
+obj = $(subst Source,Object,\
+      $(patsubst %.cc,%.o,\
+	  $(wildcard $(lsdir)/*.cc)))
+
 cc = g++
-prom = UnivMathSys
-testprom = UnivTest
-src = UnivMath/main.cc
-testsrc = UnivMath/test.cc
 cflags = -I.
 std = -std=c++11
 
-UnivMathSys_Default: 
-	$(cc) -o $(prom) -w $(src) -I. $(std)
-test:
-	$(cc) -o $(testprom) -w $(testsrc) -I. $(std) 
+default:
+	$(cc) -o $(mprom) -w $(msrc) -I. $(std)
+
+testrun:
+	$(cc) -o $(tprom) -w $(tsrc) -I. $(std)
+
+library: $(obj)
+
+$(lodir)/%.o: $(lsdir)/%.cc $(lhdir)/%.hh
+	$(cc) -o $@ -c $< -I. $(std)
