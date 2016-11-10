@@ -3,7 +3,7 @@
 #include <cstring>
 #include <string>
 
-#include "Extensions/PreAlgebra/Header/setop.hh"
+#include "Extensions/PreAlgebra/setop.hh"
 
 using std::string;
 
