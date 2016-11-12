@@ -26,7 +26,7 @@ using namespace std;
 #include "Initialization/standard.hh"
 
 // import math terms
-#include "UnivMath/term.hh"
+#include "UnivMath/Formal/term.hh"
 
 // Set Theory
 #include "SetTheory/config.cc"

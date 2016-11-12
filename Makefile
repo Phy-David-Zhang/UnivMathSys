@@ -5,21 +5,26 @@
 # General Public License version 3.0
 
 mprom = UnivMathSys
-msrc = UnivMath/main.cc
+mdir = UnivMath/Formal
+msrc = $(mdir)/main.cc
 
 tprom = UnivTest
-tsrc = UnivMath/test.cc
+tdir = UnivMath/Test
+tsrc = $(tdir)/test.cc
 
 extdir = Extensions
 extname = PreAlgebra
 
-lhdir = $(extdir)/$(extname)/Header
-lsdir = $(extdir)/$(extname)/Source
-lodir = $(extdir)/$(extname)/Object
+libdir = $(foreach dir,$(extname),\
+         $(extdir)/$(dir))
 
-obj = $(subst Source,Object,\
-      $(patsubst %.cc,%.o,\
-	  $(wildcard $(lsdir)/*.cc)))
+libobj = $(patsubst %.cc,%.o,\
+		 $(foreach dir,$(libdir),\
+         $(wildcard $(dir)/*.cc)))
+
+arcdir = Library
+libarc = $(foreach name,$(extname),\
+         $(arcdir)/$(name).a)
 
 cc = g++
 cflags = -I.
@@ -31,7 +36,18 @@ default:
 testrun:
 	$(cc) -o $(tprom) -w $(tsrc) -I. $(std)
 
-library: $(obj)
+clcprom:
+	rm $(mprom) $(tprom)
 
-$(lodir)/%.o: $(lsdir)/%.cc $(lhdir)/%.hh
+library: $(libobj) $(libarc)
+
+$(arcdir)/%.a: $(extdir)/%/
+	ar rcs $@ $<*.o
+
+$(libobj): %.o: %.cc %.hh
 	$(cc) -o $@ -c $< -I. $(std)
+
+clclib:
+	rm $(libobj) $(libarc)
+
+# end of makefile
