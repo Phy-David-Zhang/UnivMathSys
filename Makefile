@@ -5,7 +5,7 @@
 # Contact via: phy.zhangck@gmail.com\
 # General Public License version 3.0
 
-python = python
+python = python3
 cmps = zip
 target = UnivMathSys-Python.zip
 pack = Package

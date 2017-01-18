@@ -130,14 +130,15 @@ class BelongTo(MathBasic):
 
     Definition = "belong to"
     Denotation = "\\in"
-    Formulation = Predicate()
 
     @classmethod
     def BelongsTo(Cls, InVar, InClass):
         TempPredicate = Predicate()
+        Check(InVar, Variable)
+        Check(InClass, Class)
         TempPredicate.MathForm = \
             InVar.Symbol + \
-            Cls.Denotation + \
+            Cls.Denotation + " " + \
             InClass.Symbol
         TempPredicate.TruthValue = \
             InClass.Prop.Condition\

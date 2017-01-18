@@ -6,10 +6,10 @@
 
 '''Module Elementary.build of UnivMathSys'''
 
-def TrueFunc():
+def TrueFunc(*args):
     return True
 
-def FalseFunc():
+def FalseFunc(*args):
     return False
 
 # End of Module Elementary.build of UnivMathSys

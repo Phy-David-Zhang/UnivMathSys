@@ -12,4 +12,7 @@ class Error(Exception):
 class LogicError(Error):
     pass
 
+class IllDefined(Error):
+    pass
+
 # End of Module Elementary.error of UnivMathSys

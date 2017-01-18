@@ -6,7 +6,7 @@
 
 ## Universal Mathematics System
 
-Universal Mathematics System, or UMS, is an attempt to formulate abstract mathemtical theory through computer language.
+Universal Mathematics System, or UMS, is an attempt to formulate abstract mathematical theory through computer language.
 
 ### Authorship
 
