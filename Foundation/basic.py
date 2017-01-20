@@ -6,7 +6,9 @@
 
 '''Module Foundation.basic of UnivMathSys'''
 
-class MathBasic(object):
+from Elementary.techs import Techniques
+
+class MathBasic(Techniques):
 
     '''Base Class of Maths'''
 

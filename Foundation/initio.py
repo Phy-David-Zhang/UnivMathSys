@@ -21,6 +21,12 @@ class Variable(MathBasic):
     Formulation = Denotation
     Rpsntation = Denotation
 
+    @staticmethod
+    def Initio(self):
+        self.Symbol = "\\mu"
+        self.MathForm = self.Symbol
+        self.Rpsnt = self.Symbol
+
     @property
     def Rpsnt(self):
         return self.Rpsntation
@@ -39,6 +45,13 @@ class Predicate(MathBasic):
     TruthValue = False
     Formulation = Denotation
     Conditioned = FalseFunc
+
+    @staticmethod
+    def Initio(self):
+        self.Symbol = "\\mu"
+        self.Truth = False
+        self.MathForm = self.Symbol
+        self.Condition = FalseFunc
 
     @property
     def Truth(self):
@@ -68,6 +81,13 @@ class Class(MathBasic):
     ObjectForm = Variable()
     Property = Predicate()
     Formulation = Denotation
+
+    @staticmethod
+    def Initio(self):
+        self.Symbol = "X"
+        self.MathForm = self.Symbol
+        self.Object = Variable()
+        self.Prop = Predicate()
 
     @property
     def Object(self):
@@ -108,6 +128,12 @@ class Object(MathBasic):
     ClassForm = Class()
     Formulation = Denotation
     Property = ClassForm.Prop
+
+    @staticmethod
+    def Initio(self):
+        self.Symbol = "x"
+        self.MathForm = self.Symbol
+        self.ClsForm = Class()
 
     @property
     def ClsForm(self):

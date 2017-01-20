@@ -44,6 +44,13 @@ class Set(Class):
     Denotation = "X"
     Element = Class.ObjectForm
 
+    @staticmethod
+    def Initio(self):
+        self.Symbol = "X"
+        self.MathForm = self.Symbol
+        self.Elmnt = Variable()
+        self.Prop = Predicate()
+
     @property
     def Elmnt(self):
         return self.Element
@@ -82,6 +89,12 @@ class Element(Object):
     Definition = "Element"
     Denotation = "x"
     TheSetForm = Object.ClassForm
+
+    @staticmethod
+    def Initio(self):
+        self.Symbol = "x"
+        self.MathForm = self.Symbol
+        self.SetForm = Set()
 
     @property
     def SetForm(self):

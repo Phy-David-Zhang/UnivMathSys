@@ -19,7 +19,6 @@ class Negation(MathBasic):
 
     Definition = "Negation"
     Denotation = "\\neg"
-    Formulation = Predicate()
 
     @classmethod
     def Neg(Cls, Input):
