@@ -240,8 +240,6 @@ def Test_Foundation_set_Set():
     print("\nTest of Set")
 
     TempSet = Set()
-    TempPropA = Predicate()
-    TempSet.Prop = TempPropA
 
     print(TempSet.Define, TempSet.Symbol, \
             TempSet.MathForm)
@@ -251,18 +249,14 @@ def Test_Foundation_set_Set():
         Check(InSet, Set)
         return not InVar.Rpsnt == InSet.Elmnt
 
-    TempPropB = Predicate()
-    TempPropB.Condition = RussellCondition
-    TempPropB.MathForm = "x\\notin x"
-    TempSet.Prop = TempPropB
+    TempSet.PropForm = "x\\notin X"
+    TempSet.Condition = RussellCondition
 
     print(TempSet.Define, TempSet.Symbol, \
             TempSet.MathForm)
 
-    TempPropC = Predicate()
-    TempPropC.Condition = TrueFunc
-    TempPropC.MathForm = "true"
-    TempSet.Prop = TempPropC
+    TempSet.PropForm = "true"
+    TempSet.Condition = TrueFunc
 
     print(TempSet.Define, TempSet.Symbol, \
             TempSet.MathForm)

@@ -15,4 +15,7 @@ class LogicError(Error):
 class IllDefined(Error):
     pass
 
+class AccessError(Error):
+    pass
+
 # End of Module Elementary.error of UnivMathSys

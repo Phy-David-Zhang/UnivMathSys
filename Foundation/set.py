@@ -7,7 +7,7 @@
 '''Module Foundation.logic of UnivMathSys'''
 
 
-from Elementary.error import IllDefined
+from Elementary.error import IllDefined, AccessError
 from Elementary.certify import Check
 from Foundation.basic import MathBasic
 from Foundation.initio import Variable, Predicate, \
@@ -49,7 +49,7 @@ class Set(Class):
         self.Symbol = "X"
         self.MathForm = self.Symbol
         self.Elmnt = Variable()
-        self.Prop = Predicate()
+        self.Property = Predicate()
 
     @property
     def Elmnt(self):
@@ -70,18 +70,41 @@ class Set(Class):
             (TempVar, Input).Truth:
             raise IllDefined("Set Property Invalid")
 
-    @Class.Prop.setter
+    @property
+    def Prop(self):
+        raise AccessError("Access Denied")
+
+    @property
+    def PropForm(self):
+        return self.Property.MathForm
+
+    @property
+    def Condition(self):
+        return self.Property.Condition
+
+    @Prop.setter
     def Prop(self, NewProp):
         Check(NewProp, Predicate)
-        TempProp = self.Prop
-        self.Property = NewProp
+        self.PropForm = NewProp.MathForm
+        self.Condition = NewProp.Condition
+
+    @PropForm.setter
+    def PropForm(self, NewForm):
+        Check(NewForm, str)
+        self.Property.MathForm = NewForm
+        Class.UpdateMathForm(self)
+
+    @Condition.setter
+    def Condition(self, NewFunc):
+        Check(NewFunc, 'function')
+        TempFunc = self.Property.Condition
+        self.Property.Condition = NewFunc
         try:
             Set.DefCheck(self)
         except IllDefined:
             print("Set Property Invalid: " + \
                 "Probable Russell Set")
-            self.Property = TempProp
-        Class.UpdateMathForm(self)
+            self.Property.Condition = TempFunc
 
 
 class Element(Object):

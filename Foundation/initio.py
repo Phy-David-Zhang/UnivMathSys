@@ -115,7 +115,7 @@ class Class(MathBasic):
             InClass.Object.Symbol
         InClass.MathForm += "\\mid "
         InClass.MathForm += \
-            InClass.Prop.MathForm
+            InClass.Property.MathForm
         InClass.MathForm += "\\}"
 
 
@@ -147,7 +147,7 @@ class Object(MathBasic):
     def ClsForm(self, NewCls):
         Check(NewCls, Class)
         self.ClassForm = NewCls
-        self.Property = NewCls.Prop
+        self.Property = NewCls.Property
 
 
 class BelongTo(MathBasic):
@@ -167,7 +167,7 @@ class BelongTo(MathBasic):
             Cls.Denotation + " " + \
             InClass.Symbol
         TempPredicate.TruthValue = \
-            InClass.Prop.Condition\
+            InClass.Property.Condition\
                 (InVar, InClass)
         return TempPredicate
 
