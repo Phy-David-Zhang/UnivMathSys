@@ -6,34 +6,81 @@
 
 '''Module Foundation.basic of UnivMathSys'''
 
+
 from Elementary.techs import Techniques
 
-class MathBasic(Techniques):
 
-    '''Base Class of Maths'''
+class Variable(Techniques):
 
-    Definition = None
-    Denotation = None
-    Formulation = None
+    '''Base Class of Variable'''
+
+    _Define = None
+    _Symbol = None
+    _Unique = None
 
     @property
     def Define(self):
-        return self.Definition
+        return self._Define
 
     @property
     def Symbol(self):
-        return self.Denotation
+        return self._Symbol
 
     @property
-    def MathForm(self):
-        return self.Formulation
+    def Unique(self):
+        return self._Unique
 
     @Symbol.setter
     def Symbol(self, NewSym):
-        self.Denotation = NewSym
+        self._Symbol = NewSym
 
-    @MathForm.setter
-    def MathForm(self, NewForm):
-        self.Formulation = NewForm
+    @Unique.setter
+    def Unique(self, NewUnq):
+        self._Unique = NewUnq
+
+
+class Operator(Techniques):
+
+    '''Base Class of Operator'''
+
+    _Define = None
+    _Symbol = None
+
+    @property
+    def Define(self):
+        return self._Define
+
+    @property
+    def Symbol(self):
+        return self._Symbol
+
+    @staticmethod
+    def Action(self, *args):
+        pass
+
+
+class Morphism(Techniques):
+
+    '''Base Class of Morphism'''
+
+    _Define = None
+    _Symbol = None
+
+    @property
+    def Define(self):
+        return self._Define
+
+    @property
+    def Symbol(self):
+        return self._Symbol
+
+    @staticmethod
+    def Action(self, *args):
+        self.Functor(*args)
+
+    @staticmethod
+    def Functor(self, *args):
+        pass
+
 
 # End of Module Foundation.basic of UnivMathSys
