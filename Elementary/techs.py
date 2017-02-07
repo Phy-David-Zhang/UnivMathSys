@@ -11,8 +11,15 @@ class Techniques(object):
     def __init__(self):
         self.Initio(self)
 
+    def __call__(self, *args):
+        self.Action(*args)
+
     @staticmethod
     def Initio(self):
+        pass
+
+    @staticmethod
+    def Action(self, *args):
         pass
 
 # End of Module Elementary.Techs of UnivMathSys
