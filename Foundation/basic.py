@@ -80,7 +80,7 @@ class Operator(Techniques):
     _Symbol = None
 
     @staticmethod
-    def Action(self, *args):
+    def Action(self, *args, **kwargs):
         pass
 
     @property

@@ -1,4 +1,4 @@
-# Definition of Propositional Logic for UnivMathSys
+# _Define of Propositional Logic for UnivMathSys
 
     # Copyright (C) 2016 Zhang Chang-kai #
     # Contact via: phy.zhangck@gmail.com #
@@ -9,96 +9,115 @@
 
 from Elementary.error import LogicError
 from Elementary.certify import Check
-from Foundation.basic import MathBasic
+from Foundation.basic import Variable, Operator, \
+    Morphism
 from Foundation.initio import Predicate
 
 
-class Negation(MathBasic):
+class Negation(Operator):
 
     '''Concept Negation'''
 
-    Definition = "Negation"
-    Denotation = "\\neg"
+    _Define = "Negation"
+    _Symbol = "\\neg"
 
-    @classmethod
-    def Neg(Cls, Input):
+    @staticmethod
+    def Action(self, Input):
         TempPredicate = Predicate()
         Check(Input, Predicate)
-        TempPredicate.MathForm = \
-            Cls.Denotation + " " + \
+        TempPredicate.Format = \
+            self.Symbol + " " + \
             Input.Symbol
-        TempPredicate.TruthValue = \
-            not Input.TruthValue
+        TempPredicate.Truth = \
+            not Input.Truth
         return TempPredicate
 
 
-class Conjunction(MathBasic):
+class Conjunction(Operator):
 
     '''Concept Conjunction'''
 
-    Definition = "Conjunction"
-    Denotation = "\\wedge"
+    _Define = "Conjunction"
+    _Symbol = "\\wedge"
 
-    @classmethod
-    def Conjunc(Cls, Left, Rght):
+    @staticmethod
+    def Action(self, Left, Rght):
         TempPredicate = Predicate()
         Check(Left, Predicate)
         Check(Rght, Predicate)
-        TempPredicate.MathForm = \
+        TempPredicate.Format = \
             Left.Symbol + \
-            Cls.Denotation + " " + \
+            self.Symbol+ " " + \
             Rght.Symbol
-        TempPredicate.TruthValue = \
-            Left.TruthValue and \
-            Rght.TruthValue
+        TempPredicate.Truth = \
+            Left.Truth and \
+            Rght.Truth
         return TempPredicate
 
 
-class Disjunction(MathBasic):
+class Disjunction(Operator):
 
     '''Concept Disjunction'''
 
-    Definition = "Disjunction"
-    Denotation = "\\vee"
+    _Define = "Disjunction"
+    _Symbol = "\\vee"
 
-    @classmethod
-    def Disjunc(Cls, Left, Rght):
+    @staticmethod
+    def Action(self, Left, Rght):
         TempPredicate = Predicate()
         Check(Left, Predicate)
         Check(Rght, Predicate)
-        TempPredicate.MathForm = \
+        TempPredicate.Format = \
             Left.Symbol + \
-            Cls.Denotation + " " + \
+            self.Symbol + " " + \
             Rght.Symbol
-        TempPredicate.TruthValue = \
-            Left.TruthValue or \
-            Rght.TruthValue
+        TempPredicate.Truth = \
+            Left.Truth or \
+            Rght.Truth
         return TempPredicate
 
-class Implication(MathBasic):
+
+class Implication(Operator):
 
     '''Concept Implication'''
 
-    Definition = "Implication"
-    Denotation = "\\rightarrow"
+    _Define = "Implication"
+    _Symbol = "\\rightarrow"
 
-    @classmethod
-    def Imply(Cls, Left, Rght):
+    @staticmethod
+    def Action(self, Left, Rght):
         TempPredicate = Predicate()
         Check(Left, Predicate)
         Check(Rght, Predicate)
-        TempPredicate.MathForm = \
+        TempPredicate.Format = \
             Left.Symbol + \
-            Cls.Denotation + " " + \
+            self.Symbol + " " + \
             Rght.Symbol
-        TempPredicate.TruthValue = \
-            (not Left.TruthValue) \
-            or Rght.TruthValue
+        TempPredicate.Truth = \
+            (not Left.Truth) \
+            or Rght.Truth
         return TempPredicate
 
     @classmethod
     def Check(Cls, Input):
-        if Input.TruthValue == False:
+        if Input.Truth == False:
             raise LogicError("Implication Error")
+
+
+def Neg(Input):
+    OpNot = Negation()
+    return OpNot(Input)
+
+def Conjunc(Left, Rght):
+    OpWedge = Conjunction()
+    return OpWedge(Left, Rght)
+
+def Disjunc(Left, Rght):
+    OpVee = Disjunction()
+    return OpVee(Left, Rght)
+
+def Imply(Left, Rght):
+    OpArrow = Implication()
+    return OpArrow(Left, Rght)
 
 # End of Module Foundation.logic of UnivMathSys
