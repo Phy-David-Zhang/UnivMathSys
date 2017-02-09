@@ -7,27 +7,16 @@
 '''Test Operating File of UnivMathSys'''
 
 
-from Foundation.basic import MathBasic
+from Foundation.basic import Variable, Operator, \
+    Morphism
 from Elementary.build import TrueFunc, FalseFunc
 from Elementary.certify import Check
-from Foundation.initio import Variable, Predicate,\
-    Class, Object, BelongTo
-from Foundation.logic import Negation, Conjunction, \
-    Disjunction, Implication
-from Foundation.set import Subclass, Set, Element, \
-    SetEqual
-
-
-def Test_Foundation_initio_Variable():
-
-    print("\nTest of Variable:")
-    TestVar = Variable()
-    TestVar.Symbol = "\\varphi"
-    TestVar.Rpsnt = "Test String"
-    print(TestVar.Define)
-    print(TestVar.Symbol)
-    print(TestVar.MathForm)
-    print(TestVar.Rpsnt)
+from Foundation.initio import Predicate, Class, \
+    Object, BelongTo
+#from Foundation.logic import Negation, Conjunction, \
+#    Disjunction, Implication
+#from Foundation.set import Subclass, Set, Element, \
+#    SetEqual
 
 
 def Test_Foundation_initio_Predicate():
@@ -35,13 +24,11 @@ def Test_Foundation_initio_Predicate():
     print("\nTest of Predicate")
     TestPredicate = Predicate()
     TestPredicate.Symbol = "\\xi"
-    TestPredicate.TruthValue = True
+    TestPredicate.Truth = True
     TestPredicate.Condition = TrueFunc
-    print(TestPredicate.Define)
-    print(TestPredicate.Symbol)
-    print(TestPredicate.MathForm)
-    print(TestPredicate.TruthValue)
-    print(TestPredicate.Condition())
+    print(TestPredicate.Define, TestPredicate.Symbol,\
+        TestPredicate.Format, TestPredicate.Truth, \
+        TestPredicate.Condition())
 
 
 def Test_Foundation_initio_Class():
@@ -49,88 +36,67 @@ def Test_Foundation_initio_Class():
     print("\nTest of Class")
 
     TestClass = Class()
-    TestVar = Variable()
     TestPredicate = Predicate()
 
-    TestVar.Symbol = "y"
-    TestVar.MathForm = TestVar.Symbol
-
     TestPredicate.Symbol = "P(y)"
-    TestPredicate.MathForm = "P(y)"
     TestPredicate.Condition = TrueFunc
 
     TestClass.Symbol = "Y"
-    TestClass.Object = TestVar
-    TestClass.Prop = TestPredicate
+    TestClass.Object = "y"
+    TestClass.Unique = dict(Property=TestPredicate)
 
-    print(TestClass.Define)
-    print(TestClass.Symbol)
-    print(TestClass.MathForm)
-    print(TestClass.Prop.Condition())
+    print(TestClass.Define, TestClass.Symbol, \
+        TestClass.Format, \
+        TestClass.Unique['Property'].Condition())
 
 
 def Test_Foundation_initio_Object():
 
     print("\nTest of Object")
 
-    TestObject = Object()
     TestClass = Class()
-    TestVar = Variable()
     TestPredicate = Predicate()
 
-    TestVar.Symbol = "y"
-    TestVar.MathForm = TestVar.Symbol
-
     TestPredicate.Symbol = "P(y)"
-    TestPredicate.MathForm = "P(y)"
     TestPredicate.Condition = TrueFunc
 
     TestClass.Symbol = "Y"
-    TestClass.Object = TestVar
-    TestClass.Prop = TestPredicate
+    TestClass.Object = "y"
+    TestClass.Unique = dict(Property=TestPredicate)
 
-    TestObject.Symbol = "z"
-    TestObject.MathForm = "z"
-    TestObject.ClsForm = TestClass
+    TestObject = Object(TestClass)
+    TestObject.Symbol = "y"
 
-    print(TestObject.Define)
-    print(TestObject.Symbol)
-    print(TestObject.MathForm)
-    print(TestObject.ClsForm.MathForm)
+    print(TestObject.Define, TestObject.Symbol, \
+        TestObject.Format, TestObject.Status, \
+        TestObject.BelongTo(TestClass).Format, \
+        TestObject.BelongTo(TestClass).Truth)
 
 
 def Test_Foundation_initio_BelongTo():
 
     print("\nTest of BelongTo")
 
-    Belongto = BelongTo()
-    TestObject = Variable()
-    TestObjectF = Variable()
+    def TestFunc(InVar, InClass):
+        return InClass.Symbol in InVar.Status
+
     TestClass = Class()
-    TestVar = Variable()
     TestPredicate = Predicate()
 
-    def TempFunc(InVar, InClass):
-        return InVar.Symbol == InClass.Object.Symbol
-
-    TestVar.Symbol = "y"
-    TestVar.MathForm = TestVar.Symbol
-
     TestPredicate.Symbol = "P(y)"
-    TestPredicate.MathForm = "P(y)"
-    TestPredicate.Condition = TempFunc
+    TestPredicate.Condition = TestFunc
 
     TestClass.Symbol = "Y"
-    TestClass.Object = TestVar
-    TestClass.Prop = TestPredicate
+    TestClass.Object = "y"
+    TestClass.Unique = dict(Property=TestPredicate)
 
+    TestObject = Object(TestClass)
     TestObject.Symbol = "y"
-    TestObject.MathForm = "y"
 
-    print(Belongto.Define)
-    print(Belongto.Symbol)
-    print(BelongTo.BelongsTo(TestObject, TestClass).TruthValue)
-    print(BelongTo.BelongsTo(TestObjectF, TestClass).TruthValue)
+    In = BelongTo()
+
+    print(In(TestObject, TestClass).Format, \
+        In(TestObject, TestClass).Truth)
 
 
 def Test_Foundation_logic_Negation():
@@ -310,21 +276,20 @@ def TestRun():
     print(" ")
     print("Test for Universal Mathematics System")
 
-    Test_Foundation_initio_Variable()
     Test_Foundation_initio_Predicate()
     Test_Foundation_initio_Class()
     Test_Foundation_initio_Object()
     Test_Foundation_initio_BelongTo()
 
-    Test_Foundation_logic_Negation()
-    Test_Foundation_logic_Conjunction()
-    Test_Foundation_logic_Disjunction()
-    Test_Foundation_logic_Implication()
+    #Test_Foundation_logic_Negation()
+    #Test_Foundation_logic_Conjunction()
+    #Test_Foundation_logic_Disjunction()
+    #Test_Foundation_logic_Implication()
 
-    Test_Foundation_set_Subclass()
-    Test_Foundation_set_Set()
-    Test_Foundation_set_Element()
-    Test_Foundation_set_SetEqual()
+    #Test_Foundation_set_Subclass()
+    #Test_Foundation_set_Set()
+    #Test_Foundation_set_Element()
+    #Test_Foundation_set_SetEqual()
 
 
 if __name__ == "__main__":

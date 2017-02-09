@@ -9,166 +9,162 @@
 
 from Elementary.build import FalseFunc
 from Elementary.certify import Check
-from Foundation.basic import MathBasic
+from Foundation.basic import Variable, Operator, \
+    Morphism
 
 
-class Variable(MathBasic):
-
-    '''Concept Variable'''
-
-    Definition = "Variable"
-    Denotation = "\\mu"
-    Formulation = Denotation
-    Rpsntation = Denotation
-
-    @staticmethod
-    def Initio(self):
-        self.Symbol = "\\mu"
-        self.MathForm = self.Symbol
-        self.Rpsnt = self.Symbol
-
-    @property
-    def Rpsnt(self):
-        return self.Rpsntation
-
-    @Rpsnt.setter
-    def Rpsnt(self, NewRp):
-        self.Rpsntation = NewRp
-
-
-class Predicate(MathBasic):
+class Predicate(Variable):
 
     '''Concept Predicate'''
 
-    Definition = "Predicate"
-    Denotation = "\\mu"
-    TruthValue = False
-    Formulation = Denotation
-    Conditioned = FalseFunc
+    _Define = "Predicate"
+    _Symbol = "\\mu"
+    _Format = _Symbol
+    _Truth = False
+    _Condition = FalseFunc
+
+    @Variable.UniqueInit
+    def Initio(self):
+        self._Symbol = "\\mu"
+        self._Truth = False
+        self._Format = self._Symbol
+        self._Condition = FalseFunc
 
     @staticmethod
-    def Initio(self):
-        self.Symbol = "\\mu"
-        self.Truth = False
-        self.MathForm = self.Symbol
-        self.Condition = FalseFunc
+    def Update(self):
+        if self.Unique['Sync'] is True:
+            self._Format = self._Symbol
+
+    @Variable.Format.setter
+    def Format(self, NewExp):
+        self._Format = NewExp
+        self._Unique['Sync'] = False
 
     @property
     def Truth(self):
-        return self.TruthValue
+        return self._Truth
 
     @property
     def Condition(self):
-        return self.Conditioned
+        return self._Condition
 
     @Truth.setter
     def Truth(self, NewVal):
         Check(NewVal, bool)
-        self.TruthValue = NewVal
+        self._Truth = NewVal
 
     @Condition.setter
     def Condition(self, NewFunc):
         Check(NewFunc, 'function')
-        self.Conditioned = NewFunc
+        self._Condition = NewFunc
 
 
-class Class(MathBasic):
+class Class(Variable):
 
     '''Concept Class'''
 
-    Definition = "Class"
-    Denotation = "X"
-    ObjectForm = Variable()
-    Property = Predicate()
-    Formulation = Denotation
+    _Define = "Class"
+    _Symbol = "X"
+    _Format = _Symbol
+    _Object = "x"
+
+    @Variable.UniqueInit
+    def Initio(self):
+        self._Symbol = "X"
+        self._Format = self._Symbol
+        self._Object = "x"
+        self._Unique['Property'] \
+            = Predicate()
 
     @staticmethod
-    def Initio(self):
-        self.Symbol = "X"
-        self.MathForm = self.Symbol
-        self.Object = Variable()
-        self.Prop = Predicate()
+    def Update(self):
+        if self.Unique['Sync'] is True:
+            self._Format = self._Symbol
 
     @property
     def Object(self):
-        return self.ObjectForm
-
-    @property
-    def Prop(self):
-        return self.Property
+        return self._Object
 
     @Object.setter
     def Object(self, NewObj):
-        Check(NewObj, Variable)
-        self.ObjectForm = NewObj
-        Class.UpdateMathForm(self)
+        self._Object = NewObj
+        Class.UpdateFormat(self)
 
-    @Prop.setter
-    def Prop(self, NewProp):
-        Check(NewProp, Predicate)
-        self.Property = NewProp
-        Class.UpdateMathForm(self)
+    @Variable.Unique.setter
+    def Unique(self, NewUnq):
+        self._Unique.update(NewUnq)
+        self._Unique['Sync'] = False
+        Class.UpdateFormat(self)
 
     @staticmethod
-    def UpdateMathForm(InClass):
-        InClass.MathForm = "\\{" + \
-            InClass.Object.Symbol
-        InClass.MathForm += "\\mid "
-        InClass.MathForm += \
-            InClass.Property.MathForm
-        InClass.MathForm += "\\}"
+    def UpdateFormat(InClass):
+        InClass.Format = "\\{" + \
+            InClass.Object
+        InClass.Format += "\\mid "
+        InClass.Format += \
+            InClass.Unique['Property'].Format
+        InClass.Format += "\\}"
 
 
-class Object(MathBasic):
+class Object(Variable):
 
     '''Concept Object'''
 
-    Definition = "Object"
-    Denotation = "x"
-    ClassForm = Class()
-    Formulation = Denotation
-    Property = ClassForm.Prop
+    _Define = "Object"
+    _Symbol = "x"
+    _Format = _Symbol
+
+    @Variable.UniqueInit
+    def Initio(self, InClass, InVar=None):
+        if InVar is not None:
+            Check(InVar, Variable)
+            self.Symbol = InVar.Symbol
+            self.Unique = InVar.Unique
+        Check(InClass, Class)
+        self.Status = InClass.Symbol
 
     @staticmethod
-    def Initio(self):
-        self.Symbol = "x"
-        self.MathForm = self.Symbol
-        self.ClsForm = Class()
+    def Update(self):
+        if self.Unique['Sync'] is True:
+            self._Format = self._Symbol
 
-    @property
-    def ClsForm(self):
-        return self.ClassForm
+    @Variable.Format.setter
+    def Format(self, NewExp):
+        self._Format = NewExp
+        self._Unique['Sync'] = False
 
-    @property
-    def Prop(self):
-        return self.Property
+    def BelongTo(self, InClass):
+        TempPredicate = Predicate()
+        Check(InClass, Class)
+        TempPredicate.Format = \
+            self.Symbol + \
+            "\\in" + " " + \
+            InClass.Symbol
+        TempPredicate.Truth = \
+            InClass.Unique['Property'].\
+                Condition(self, InClass)
+        return TempPredicate
 
-    @ClsForm.setter
-    def ClsForm(self, NewCls):
-        Check(NewCls, Class)
-        self.ClassForm = NewCls
-        self.Property = NewCls.Property
 
+class BelongTo(Operator):
 
-class BelongTo(MathBasic):
+    '''Operator Belong To'''
 
-    '''Operation Belong To'''
+    _Define = "belong to"
+    _Symbol = "\\in"
 
-    Definition = "belong to"
-    Denotation = "\\in"
-
-    @classmethod
-    def BelongsTo(Cls, InVar, InClass):
+    @staticmethod
+    def Action(self, InVar, InClass):
         TempPredicate = Predicate()
         Check(InVar, Variable)
         Check(InClass, Class)
-        TempPredicate.MathForm = \
+        TempPredicate.Format = \
             InVar.Symbol + \
-            Cls.Denotation + " " + \
+            self.Symbol + " " + \
             InClass.Symbol
-        TempPredicate.TruthValue = \
-            InClass.Property.Condition\
-                (InVar, InClass)
+        TempPredicate.Truth = \
+            InClass.Unique['Property'].\
+                Condition(InVar, InClass)
         return TempPredicate
 
 

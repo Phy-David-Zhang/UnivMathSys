@@ -8,13 +8,16 @@
 
 class Techniques(object):
 
-    def __init__(self):
-        self.Initio(self)
+    def __init__(self, *args, **kwargs):
+        self.Initio(*args, **kwargs)
 
-    def __call__(self, *args):
-        self.Action(*args)
+    def __call__(self, *args, **kwargs):
+        return self.Action(self, *args, **kwargs)
 
     @staticmethod
+    def Update(self):
+        pass
+
     def Initio(self):
         pass
 
