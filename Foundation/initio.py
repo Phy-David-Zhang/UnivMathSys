@@ -30,11 +30,6 @@ class Predicate(Variable):
         self._Format = self._Symbol
         self._Condition = FalseFunc
 
-    @staticmethod
-    def Update(self):
-        if self.Unique['Sync'] is True:
-            self._Format = self._Symbol
-
     @Variable.Format.setter
     def Format(self, NewExp):
         self._Format = NewExp
@@ -75,11 +70,6 @@ class Class(Variable):
         self._Object = "x"
         self._Unique['Property'] \
             = Predicate()
-
-    @staticmethod
-    def Update(self):
-        if self.Unique['Sync'] is True:
-            self._Format = self._Symbol
 
     @property
     def Object(self):
@@ -122,11 +112,6 @@ class Object(Variable):
             self.Unique = InVar.Unique
         Check(InClass, Class)
         self.Status = InClass.Symbol
-
-    @staticmethod
-    def Update(self):
-        if self.Unique['Sync'] is True:
-            self._Format = self._Symbol
 
     @Variable.Format.setter
     def Format(self, NewExp):

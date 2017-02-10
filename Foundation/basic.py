@@ -40,6 +40,8 @@ class Variable(Techniques):
 
     @property
     def Format(self):
+        if self._Unique['Sync'] is True:
+            return self._Symbol
         return self._Format
 
     @property
@@ -53,23 +55,19 @@ class Variable(Techniques):
     @Symbol.setter
     def Symbol(self, NewSym):
         self._Symbol = NewSym
-        self.Update(self)
 
     @Format.setter
     def Format(self, NewExp):
         self._Format = NewExp
-        self.Update(self)
 
     @Unique.setter
     def Unique(self, NewUnq):
         self._Unique.update(NewUnq)
-        self.Update(self)
 
     @Status.setter
     def Status(self, NewStat):
         self._Unique['Status']\
             .append(NewStat)
-        self.Update(self)
 
 
 class Operator(Techniques):
