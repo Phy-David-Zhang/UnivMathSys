@@ -14,6 +14,34 @@ from Foundation.basic import Variable, Operator, \
 from Foundation.initio import Predicate
 
 
+class UnivQuan(Operator):
+
+    '''Concept Universal Quantifier'''
+
+    _Define = "Universal Quantifier"
+    _Symbol = "\\forall"
+
+    @staticmethod
+    def Action(self, InVar):
+        Check(InVar, Variable)
+        if 'Value' in InVar.Unique:
+            del InVar.Unique['Value']
+
+
+class ExistQuan(Operator):
+
+    '''Concept Existential Quantifier'''
+
+    _Define = "Existential Quantifier"
+    _Symbol = "\\exist"
+
+    @staticmethod
+    def Action(self, InVar):
+        Check(InVar, Variable)
+        if not 'Value' in InVar.Unique:
+            InVar.Unique = dict(Value=None)
+
+
 class Negation(Operator):
 
     '''Concept Negation'''
@@ -103,6 +131,14 @@ class Implication(Operator):
         if Input.Truth == False:
             raise LogicError("Implication Error")
 
+
+def ForAll(InVar):
+    OpForAll = UnivQuan()
+    OpForAll(InVar)
+
+def Exist(InVar):
+    OpExist = ExistQuan()
+    OpExist(InVar)
 
 def Neg(Input):
     OpNot = Negation()
