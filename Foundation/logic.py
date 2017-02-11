@@ -1,4 +1,4 @@
-# _Define of Propositional Logic for UnivMathSys
+# Definition of Propositional Logic for UnivMathSys
 
     # Copyright (C) 2016 Zhang Chang-kai #
     # Contact via: phy.zhangck@gmail.com #
@@ -155,5 +155,6 @@ def Disjunc(Left, Rght):
 def Imply(Left, Rght):
     OpArrow = Implication()
     return OpArrow(Left, Rght)
+
 
 # End of Module Foundation.logic of UnivMathSys

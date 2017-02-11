@@ -9,143 +9,139 @@
 
 from Elementary.error import IllDefined, AccessError
 from Elementary.certify import Check
-from Foundation.basic import MathBasic
-from Foundation.initio import Variable, Predicate, \
-    Class, Object, BelongTo
-from Foundation.logic import Implication
+from Foundation.basic import Variable, Operator, \
+    Morphism
+from Foundation.initio import Predicate, Class, \
+    Object, BelongTo
+from Foundation.logic import Imply
 
 
-class Subclass(Class):
+class Subclass(Operator):
 
-    Definition = "Subclass"
-    Denotation = "\\subset"
+    _Define = "Subclass"
+    _Symbol = "\\subset"
 
-    @classmethod
-    def Contain(Cls, Left, Rght):
+    @staticmethod
+    def Action(self, Left, Rght):
         TempPredicate = Predicate()
         Check(Left, Class)
         Check(Rght, Class)
-        TempPredicate.MathForm = \
+        TempPredicate.Format = \
             Left.Symbol + \
-            Cls.Denotation + " " + \
+            self.Symbol + " " + \
             Rght.Symbol
-        TempPredicate.Truth = \
-            Implication.Imply(
-            BelongTo.BelongsTo \
-                (Left.Object, Left), \
-            BelongTo.BelongsTo \
-                (Left.Object, Rght)).Truth
+        TempPredicate.Truth = Imply(
+                Object(Left).BelongTo(Left), \
+                Object(Left).BelongTo(Rght) \
+            ).Truth
         return TempPredicate
 
 
 class Set(Class):
 
-    Definition = "Set"
-    Denotation = "X"
-    Element = Class.ObjectForm
+    _Define = "Set"
+    _Symbol = "X"
+    _Element = "x"
 
-    @staticmethod
+    @Variable.UniqueInit
     def Initio(self):
-        self.Symbol = "X"
-        self.MathForm = self.Symbol
-        self.Elmnt = Variable()
-        self.Property = Predicate()
+        self._Symbol = "X"
+        self._Format = self._Symbol
+        self._Element = "x"
+        self._Unique['Property'] \
+            = Predicate()
 
     @property
     def Elmnt(self):
-        return self.Element
+        return self._Element
 
     @Elmnt.setter
     def Elmnt(self, NewElm):
-        self.Object = NewElm
-        self.Element = self.Object
+        self._Element = NewElm
 
     @staticmethod
     def DefCheck(Input):
         Check(Input, Set)
-        TempVar = Variable()
-        TempVar.Symbol = "0"
-        TempVar.Rpsnt = None
-        if BelongTo.BelongsTo \
-            (TempVar, Input).Truth:
-            raise IllDefined("Set Property Invalid")
+        TempVar = Object(Class())
+        del TempVar.Status[:]
+        if TempVar.BelongTo(Input):
+            raise IllDefined
 
     @property
-    def Prop(self):
+    def Property(self):
         raise AccessError("Access Denied")
 
     @property
     def PropForm(self):
-        return self.Property.MathForm
+        return self._Unique['Property'].Format
 
     @property
     def Condition(self):
-        return self.Property.Condition
+        return self._Unique['Property'].Condition
 
-    @Prop.setter
-    def Prop(self, NewProp):
+    @Property.setter
+    def Property(self, NewProp):
         Check(NewProp, Predicate)
-        self.PropForm = NewProp.MathForm
+        self.PropForm = NewProp.Format
         self.Condition = NewProp.Condition
 
     @PropForm.setter
     def PropForm(self, NewForm):
         Check(NewForm, str)
-        self.Property.MathForm = NewForm
-        Class.UpdateMathForm(self)
+        self._Unique['Property'].Format = NewForm
+        self._Unique['Sync'] = False
+        Class.UpdateFormat(self)
 
     @Condition.setter
     def Condition(self, NewFunc):
         Check(NewFunc, 'function')
-        TempFunc = self.Property.Condition
-        self.Property.Condition = NewFunc
+        TempFunc = self.Condition
+        self._Unique['Property'].Condition = NewFunc
         try:
             Set.DefCheck(self)
         except IllDefined:
             print("Set Property Invalid: " + \
                 "Probable Russell Set")
-            self.Property.Condition = TempFunc
+            self._Unique['Property']\
+                .Condition = TempFunc
 
 
 class Element(Object):
 
-    Definition = "Element"
-    Denotation = "x"
-    TheSetForm = Object.ClassForm
+    _Define = "Element"
+    _Symbol = "x"
+    _Format = _Symbol
+
+    @Variable.UniqueInit
+    def Initio(self, InSet, InVar=None):
+        if InVar is not None:
+            Check(InVar, Variable)
+            self.Symbol = InVar.Symbol
+            self.Unique = InVar.Unique
+        Check(InSet, Set)
+        self.Status = InSet.Symbol
+        self.Status = InSet.PropForm
+
+
+class SetEqual(Operator):
+
+    _Define = "equal"
+    _Symbol = {False:"\\neq ", True:"="}
 
     @staticmethod
-    def Initio(self):
-        self.Symbol = "x"
-        self.MathForm = self.Symbol
-        self.SetForm = Set()
-
-    @property
-    def SetForm(self):
-        return self.TheSetForm
-
-    @SetForm.setter
-    def SetForm(self, NewSet):
-        self.ClsForm = NewSet
-        self.TheSetForm = self.ClassForm
-
-
-class SetEqual(MathBasic):
-
-    Definition = "equal"
-    Denotation = {False:"\\neq ", True:"="}
-
-    @classmethod
-    def Equal(Cls, Left, Rght):
+    def Action(self, Left, Rght):
         TempPredicate = Predicate()
         Check(Left, Set)
         Check(Rght, Set)
+        Op = Subclass()
         TempPredicate.Truth = \
-            Subclass.Contain(Left, Rght).Truth \
-            and Subclass.Contain(Rght, Left).Truth
-        TempPredicate.MathForm = \
+            Subclass.Action(Op, Left, Rght).Truth \
+            and Subclass.Action(Op, Rght, Left).Truth
+        TempPredicate.Format = \
             Left.Symbol + \
-            Cls.Denotation[TempPredicate.Truth] + \
+            self.Symbol[TempPredicate.Truth] + \
             Rght.Symbol
         return TempPredicate
+
 
 # End of Module Foundation.set of UnivMathSys
