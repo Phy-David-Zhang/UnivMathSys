@@ -135,8 +135,8 @@ class SetEqual(Operator):
         Check(Rght, Set)
         Op = Subclass()
         TempPredicate.Truth = \
-            Subclass.Action(Op, Left, Rght).Truth \
-            and Subclass.Action(Op, Rght, Left).Truth
+            Op(Left, Rght).Truth \
+            and Op(Rght, Left).Truth
         TempPredicate.Format = \
             Left.Symbol + \
             self.Symbol[TempPredicate.Truth] + \
