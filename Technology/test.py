@@ -13,10 +13,10 @@ from Elementary.build import TrueFunc, FalseFunc
 from Elementary.certify import Check
 from Foundation.initio import Predicate, Class, \
     Object, BelongTo
-#from Foundation.logic import Negation, Conjunction, \
-#    Disjunction, Implication
-#from Foundation.set import Subclass, Set, Element, \
-#    SetEqual
+from Foundation.logic import ForAll, Exist, Neg, \
+    Conjunc, Disjunc, Imply
+from Foundation.set import Subclass, Set, Element, \
+    SetEqual
 
 
 def Test_Foundation_initio_Predicate():
@@ -99,14 +99,30 @@ def Test_Foundation_initio_BelongTo():
         In(TestObject, TestClass).Truth)
 
 
+def Test_Foundation_logic_Quantifiers():
+
+    print("\nTest of Quantifiers")
+
+    TestClass = Class()
+
+    ForAll(TestClass)
+    print("Value: ", 'Value' in TestClass.Unique)
+
+    Exist(TestClass)
+    print("Value: ", 'Value' in TestClass.Unique)
+
+    ForAll(TestClass)
+    print("Value: ", 'Value' in TestClass.Unique)
+
+
 def Test_Foundation_logic_Negation():
 
     print("\nTest of Negation")
 
     TestPredicate = Predicate()
-    print(TestPredicate.MathForm, TestPredicate.Truth)
-    print(Negation.Neg(TestPredicate).MathForm, \
-          Negation.Neg(TestPredicate).Truth)
+    print(TestPredicate.Format, TestPredicate.Truth)
+    print(Neg(TestPredicate).Format, \
+          Neg(TestPredicate).Truth)
 
 
 def Test_Foundation_logic_Conjunction():
@@ -117,16 +133,15 @@ def Test_Foundation_logic_Conjunction():
     TestPredicateB = Predicate()
 
     TestPredicateA.Truth = True
-    Result = Conjunction.Conjunc(TestPredicateA, \
-            TestPredicateB)
+    TestPredicateB.Symbol = "\\varphi"
+    Result = Conjunc(TestPredicateA, TestPredicateB)
 
-    print(Result.MathForm, Result.Truth)
+    print(Result.Format, Result.Truth)
 
     TestPredicateB.Truth = True
-    Result = Conjunction.Conjunc(TestPredicateA, \
-            TestPredicateB)
+    Result = Conjunc(TestPredicateA, TestPredicateB)
 
-    print(Result.MathForm, Result.Truth)
+    print(Result.Format, Result.Truth)
 
 
 def Test_Foundation_logic_Disjunction():
@@ -137,16 +152,15 @@ def Test_Foundation_logic_Disjunction():
     TestPredicateB = Predicate()
 
     TestPredicateA.Truth = True
-    Result = Disjunction.Disjunc(TestPredicateA, \
-            TestPredicateB)
+    TestPredicateB.Symbol = "\\varphi"
+    Result = Disjunc(TestPredicateA, TestPredicateB)
 
-    print(Result.MathForm, Result.Truth)
+    print(Result.Format, Result.Truth)
 
     TestPredicateB.Truth = True
-    Result = Disjunction.Disjunc(TestPredicateA, \
-            TestPredicateB)
+    Result = Disjunc(TestPredicateA, TestPredicateB)
 
-    print(Result.MathForm, Result.Truth)
+    print(Result.Format, Result.Truth)
 
 
 def Test_Foundation_logic_Implication():
@@ -156,21 +170,20 @@ def Test_Foundation_logic_Implication():
     TestPredicateA = Predicate()
     TestPredicateB = Predicate()
 
-    Result = Implication.Imply(TestPredicateA, \
-            TestPredicateB)
-    print(Result.MathForm, Result.Truth)
+    TestPredicateB.Symbol = "\\varphi"
+
+    Result = Imply(TestPredicateA, TestPredicateB)
+    print(Result.Format, Result.Truth)
 
     TestPredicateA.Truth = True
-    Result = Implication.Imply(TestPredicateA, \
-            TestPredicateB)
+    Result = Imply(TestPredicateA, TestPredicateB)
 
-    print(Result.MathForm, Result.Truth)
+    print(Result.Format, Result.Truth)
 
     TestPredicateB.Truth = True
-    Result = Implication.Imply(TestPredicateA, \
-            TestPredicateB)
+    Result = Imply(TestPredicateA, TestPredicateB)
 
-    print(Result.MathForm, Result.Truth)
+    print(Result.Format, Result.Truth)
 
 
 def Test_Foundation_set_Subclass():
@@ -178,27 +191,23 @@ def Test_Foundation_set_Subclass():
     print("\nTest of Subclass")
 
     TestClass = Class()
-    TestVar = Variable()
     TestPredicate = Predicate()
 
     def TempFunc(InVar, InClass):
-        return InVar.Symbol == InClass.Object.Symbol
-
-    TestVar.Symbol = "y"
-    TestVar.MathForm = TestVar.Symbol
+        return InClass.Symbol in InVar.Status
 
     TestPredicate.Symbol = "P(y)"
-    TestPredicate.MathForm = "P(y)"
     TestPredicate.Condition = TempFunc
 
     TestClass.Symbol = "Y"
-    TestClass.Object = TestVar
-    TestClass.Prop = TestPredicate
+    TestClass.Object = "y"
+    TestClass.Unique = dict(Property=TestPredicate)
 
-    TempPredicate = Subclass.Contain \
-        (TestClass, TestClass)
+    OpContain = Subclass()
+    TempPredicate = OpContain.Action(OpContain,
+        TestClass, TestClass)
 
-    print(TempPredicate.MathForm, TempPredicate.Truth)
+    print(TempPredicate.Format, TempPredicate.Truth)
 
 
 def Test_Foundation_set_Set():
@@ -208,67 +217,82 @@ def Test_Foundation_set_Set():
     TempSet = Set()
 
     print(TempSet.Define, TempSet.Symbol, \
-            TempSet.MathForm)
+            TempSet.Format)
 
     def RussellCondition(InVar, InSet):
         Check(InVar, Variable)
         Check(InSet, Set)
-        return not InVar.Rpsnt == InSet.Elmnt
+        return not InSet.Symbol in InVar.Status
 
     TempSet.PropForm = "x\\notin X"
     TempSet.Condition = RussellCondition
 
     print(TempSet.Define, TempSet.Symbol, \
-            TempSet.MathForm)
+            TempSet.Format)
 
     TempSet.PropForm = "true"
     TempSet.Condition = TrueFunc
 
     print(TempSet.Define, TempSet.Symbol, \
-            TempSet.MathForm)
+            TempSet.Format)
 
 
 def Test_Foundation_set_Element():
 
     print("\nTest of Element")
 
-    TempProp = Predicate()
-    TempProp.MathForm = "false"
-    TempSet = Set()
-    TempSet.Prop = TempProp
-    TempElement = Element()
+    TestSet = Set()
+    TestPredicate = Predicate()
 
-    print(TempElement.Define, TempElement.Symbol)
+    def TempFunc(InVar, InSet):
+        return InSet.Symbol in InVar.Status
 
-    print(TempElement.SetForm.MathForm)
+    TestPredicate.Symbol = "P(y)"
+    TestPredicate.Condition = TempFunc
 
-    TempElement.SetForm = TempSet
+    TestSet.Symbol = "Y"
+    TestSet.Object = "y"
+    TestSet.Unique = dict(Property=TestPredicate)
 
-    print(TempElement.SetForm.MathForm)
+    TestElmnt = Element(TestSet)
+
+    print(TestElmnt.Define, TestElmnt.Symbol,
+        TestElmnt.Format, TestElmnt.Status)
+
+    TestElmnt.Format = "y\in Y"
+    TempPredicate = TestElmnt.BelongTo(TestSet)
+
+    print(TestElmnt.Format, TempPredicate.Format,
+        TestPredicate.Truth)
 
 
 def Test_Foundation_set_SetEqual():
 
     print("\nTest of SetEqual")
 
-    TempSetA = Set()
-    TempSetB = Set()
+    TestSetA = Set()
+    TestSetB = Set()
+    TestPredicate = Predicate()
 
-    def TempFunc(InVar, InClass):
-        return InVar.Symbol == InClass.Object.Symbol
+    def TempFunc(InVar, InSet):
+        return InSet.Symbol in InVar.Status
 
-    TempPredicate = Predicate()
-    TempPredicate.Condition = TempFunc
-    TempSetB.Prop = TempPredicate
-    TempVar = Variable()
-    TempSetB.Elmnt = TempVar
-    TempSetB.Symbol = "Y"
+    TestPredicate.Symbol = "P(y)"
+    TestPredicate.Condition = TempFunc
 
-    TempPredicate = SetEqual.Equal(TempSetA, TempSetA)
-    print(TempPredicate.MathForm, TempPredicate.Truth)
+    TestSetA.Symbol = "Y"
+    TestSetA.Object = "y"
+    TestSetA.Unique = dict(Property=TestPredicate)
 
-    TempPredicate = SetEqual.Equal(TempSetA, TempSetB)
-    print(TempPredicate.MathForm, TempPredicate.Truth)
+    OpEqual = SetEqual()
+
+    TempPredicate = \
+        OpEqual.Action(OpEqual, TestSetA, TestSetA)
+    print(TempPredicate.Format, TempPredicate.Truth)
+
+    TempPredicate = \
+        OpEqual.Action(OpEqual, TestSetA, TestSetB)
+    print(TempPredicate.Format, TempPredicate.Truth)
 
 
 def TestRun():
@@ -281,15 +305,16 @@ def TestRun():
     Test_Foundation_initio_Object()
     Test_Foundation_initio_BelongTo()
 
-    #Test_Foundation_logic_Negation()
-    #Test_Foundation_logic_Conjunction()
-    #Test_Foundation_logic_Disjunction()
-    #Test_Foundation_logic_Implication()
+    Test_Foundation_logic_Quantifiers()
+    Test_Foundation_logic_Negation()
+    Test_Foundation_logic_Conjunction()
+    Test_Foundation_logic_Disjunction()
+    Test_Foundation_logic_Implication()
 
-    #Test_Foundation_set_Subclass()
-    #Test_Foundation_set_Set()
-    #Test_Foundation_set_Element()
-    #Test_Foundation_set_SetEqual()
+    Test_Foundation_set_Subclass()
+    Test_Foundation_set_Set()
+    Test_Foundation_set_Element()
+    Test_Foundation_set_SetEqual()
 
 
 if __name__ == "__main__":
