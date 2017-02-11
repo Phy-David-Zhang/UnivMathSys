@@ -131,17 +131,14 @@ class Morphism(Techniques):
     @Format.setter
     def Format(self, NewExp):
         self._Format = NewExp
-        self.Update(self)
 
     @Domain.setter
     def Domain(self, NewDom):
         self._Domain = NewDom
-        self.Update(self)
 
     @Ranges.setter
     def Ranges(self, NewRan):
         self._Ranges = NewRan
-        self.Update(self)
 
 
 # End of Module Foundation.basic of UnivMathSys
