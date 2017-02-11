@@ -112,6 +112,8 @@ class Object(Variable):
             self.Unique = InVar.Unique
         Check(InClass, Class)
         self.Status = InClass.Symbol
+        self.Status = InClass\
+            .Unique['Property'].Format
 
     @Variable.Format.setter
     def Format(self, NewExp):
