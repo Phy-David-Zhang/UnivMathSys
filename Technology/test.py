@@ -17,6 +17,8 @@ from Foundation.logic import ForAll, Exist, Neg, \
     Conjunc, Disjunc, Imply
 from Foundation.set import Subclass, Set, Element, \
     SetEqual
+from Foundation.setop import Contain, SetEq, Union, \
+    Intsct, Complt
 
 
 def Test_Foundation_initio_Predicate():
@@ -295,6 +297,103 @@ def Test_Foundation_set_SetEqual():
     print(TempPredicate.Format, TempPredicate.Truth)
 
 
+def Test_Foundation_setop_Union():
+
+    print("\nTest of Union")
+
+    SetA = Set()
+    SetB = Set()
+
+    SetA.Symbol = "A"
+    SetB.Symbol = "B"
+
+    SetA.Object = "a"
+    SetB.Object = "b"
+
+    SetA.PropForm = "P(a)"
+    SetB.PropForm = "P(b)"
+
+    def TempFunc(InVar, InSet):
+        return InSet.Symbol in InVar.Status
+
+    SetA.Condition = lambda InVar, InSet: \
+        InSet.Symbol in InVar.Status
+    SetB.Condition = lambda InVar, InSet: \
+        InSet.Symbol in InVar.Status
+
+    SetX = Union(SetA, SetB)
+    Objx = Object(SetX)
+
+    print(SetX.Symbol, SetX.Unique['Origin'](SetX),
+        SetX.Format)
+    print(SetX.Unique)
+    print(Objx.Symbol, Objx.Unique)
+
+
+def Test_Foundation_setop_Intsct():
+
+    print("\nTest of Intersection")
+
+    SetA = Set()
+    SetB = Set()
+
+    SetA.Symbol = "A"
+    SetB.Symbol = "B"
+
+    SetA.Object = "a"
+    SetB.Object = "b"
+
+    SetA.PropForm = "P(a)"
+    SetB.PropForm = "P(b)"
+
+    def TempFunc(InVar, InSet):
+        return InSet.Symbol in InVar.Status
+
+    SetA.Condition = lambda InVar, InSet: \
+        InSet.Symbol in InVar.Status
+    SetB.Condition = lambda InVar, InSet: \
+        InSet.Symbol in InVar.Status
+
+    SetX = Intsct(SetA, SetB)
+    Objx = Object(SetX)
+
+    print(SetX.Symbol, SetX.Unique['Origin'](SetX),
+        SetX.Format)
+    print(Objx.Symbol, Objx.Unique)
+
+
+def Test_Foundation_setop_Complt():
+
+    print("\nTest of Complement")
+
+    SetU = Set()
+    SetA = Set()
+
+    SetU.Symbol = "U"
+    SetA.Symbol = "A"
+
+    SetU.Object = "u"
+    SetA.Object = "a"
+
+    SetU.PropForm = "P(u)"
+    SetA.PropForm = "P(a)"
+
+    def TempFunc(InVar, InSet):
+        return InSet.Symbol in InVar.Status
+
+    SetU.Condition = lambda InVar, InSet: \
+        InSet.Symbol in InVar.Status
+    SetA.Condition = lambda InVar, InSet: \
+        InSet.Symbol in InVar.Status
+
+    SetX = Complt(SetU, SetA)
+    Objx = Object(SetX)
+
+    print(SetX.Symbol, SetX.Unique['Origin'](SetX),
+        SetX.Format)
+    print(Objx.Symbol, Objx.Unique)
+
+
 def TestRun():
 
     print(" ")
@@ -315,6 +414,10 @@ def TestRun():
     Test_Foundation_set_Set()
     Test_Foundation_set_Element()
     Test_Foundation_set_SetEqual()
+
+    Test_Foundation_setop_Union()
+    Test_Foundation_setop_Intsct()
+    Test_Foundation_setop_Complt()
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ from Foundation.set import Subclass, Set, \
     Element, SetEqual
 
 
-class Union(Operator):
+class SetUnion(Operator):
 
     _Define = "Union"
     _Symbol = "\\cup"
@@ -36,15 +36,16 @@ class Union(Operator):
         TempSet = Set()
         TempSet.Unique['Depend']\
             .extend([Left, Rght])
-        TempSet.Format = lambda self: \
+        TempSet.Unique['Origin'] = lambda self: \
             TempSet.Unique['Depend'][0].Symbol \
-                + self.Symbol + \
+                + "\\cup " + \
             TempSet.Unique['Depend'][1].Symbol
-        TempSet.PropForm = lambda self: Disjunc(
-            InVar.BelongTo(InSet\
-                .Unique['Depend'][0]),
-            InVar.BelongTo(InSet\
-                .Unique['Depend'][1])).Format
+        TempSet.PropForm = lambda self: \
+            TempSet.Elmnt + "\\in " + \
+                TempSet.Unique['Depend'][0].Symbol \
+                    + "\\vee " + \
+            TempSet.Elmnt + "\\in " + \
+                TempSet.Unique['Depend'][1].Symbol
         TempSet.Condition = Condition
         return TempSet
 
@@ -70,15 +71,16 @@ class Intersection(Operator):
         TempSet = Set()
         TempSet.Unique['Depend']\
             .extend([Left, Rght])
-        TempSet.Format = lambda self: \
+        TempSet.Unique['Origin'] = lambda self: \
             TempSet.Unique['Depend'][0].Symbol \
-                + self.Symbol + \
+                + "\\cap " + \
             TempSet.Unique['Depend'][1].Symbol
-        TempSet.PropForm = lambda self: Conjunc(
-            InVar.BelongTo(InSet\
-                .Unique['Depend'][0]),
-            InVar.BelongTo(InSet\
-                .Unique['Depend'][1])).Format
+        TempSet.PropForm = lambda self: \
+            TempSet.Elmnt + "\\in " + \
+                TempSet.Unique['Depend'][0].Symbol \
+                    + "\\wedge " + \
+            TempSet.Elmnt + "\\in " + \
+                TempSet.Unique['Depend'][1].Symbol
         TempSet.Condition = Condition
         return TempSet
 
@@ -90,8 +92,8 @@ class Complement(Operator):
 
     @staticmethod
     def Action(self, Univ, Input):
-        Check(Left, Univ)
-        Check(Rght, Input)
+        Check(Univ, Set)
+        Check(Input, Set)
 
         def Condition(InVar, InSet):
             return Conjunc(
@@ -104,15 +106,16 @@ class Complement(Operator):
         TempSet = Set()
         TempSet.Unique['Depend']\
             .extend([Univ, Input])
-        TempSet.Format = lambda self: \
-            self.Symbol + "_" + \
+        TempSet.Unique['Origin'] = lambda self: \
+            "\\complement_" + \
             TempSet.Unique['Depend'][0].Symbol + \
             TempSet.Unique['Depend'][1].Symbol
-        TempSet.PropForm = lambda self: Conjunc(
-            InVar.BelongTo(InSet\
-                .Unique['Depend'][0]),
-            Neg(InVar.BelongTo(InSet\
-                .Unique['Depend'][1]))).Format
+        TempSet.PropForm = lambda self: \
+            TempSet.Elmnt + "\\in " + \
+                TempSet.Unique['Depend'][0].Symbol \
+                    + "\\wedge " + \
+            TempSet.Elmnt + "\\notin " + \
+                TempSet.Unique['Depend'][1].Symbol
         TempSet.Condition = Condition
         return TempSet
 
@@ -126,7 +129,7 @@ def SetEq(Left, Rght):
     return OpSetEq(Left, Rght)
 
 def Union(Left, Rght):
-    OpUnion = Union()
+    OpUnion = SetUnion()
     return OpUnion(Left, Rght)
 
 def Intsct(Left, Rght):
