@@ -46,7 +46,6 @@ class Set(Class):
     @Variable.UniqueInit
     def Initio(self):
         self._Symbol = "X"
-        self._Format = self._Symbol
         self._Element = "x"
         self._Unique['Property'] \
             = Predicate()

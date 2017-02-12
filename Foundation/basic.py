@@ -25,9 +25,11 @@ class Variable(Techniques):
         @wraps(func)
         def wrapper(self, *args, **kwargs):
             self._Unique = dict(
-                Depend = dict()
+                Depend = dict(),
                 Status = list(),
                 Sync = True)
+            self._Format = \
+                lambda self: self._Symbol
             func(self, *args, **kwargs)
         return wrapper
 
@@ -41,9 +43,7 @@ class Variable(Techniques):
 
     @property
     def Format(self):
-        if self._Unique['Sync'] is True:
-            return self._Symbol
-        return self._Format
+        return self._Format(self)
 
     @property
     def Unique(self):
@@ -59,7 +59,10 @@ class Variable(Techniques):
 
     @Format.setter
     def Format(self, NewExp):
+        self._Unique['Sync'] = False
         self._Format = NewExp
+        if not callable(NewExp):
+            self._Format = lambda self: NewExp
 
     @Unique.setter
     def Unique(self, NewUnq):
@@ -67,8 +70,7 @@ class Variable(Techniques):
 
     @Status.setter
     def Status(self, NewStat):
-        self._Unique['Status']\
-            .append(NewStat)
+        self._Unique['Status'].append(NewStat)
 
 
 class Operator(Techniques):

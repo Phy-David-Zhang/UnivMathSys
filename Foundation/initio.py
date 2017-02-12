@@ -27,13 +27,7 @@ class Predicate(Variable):
     def Initio(self):
         self._Symbol = "\\mu"
         self._Truth = False
-        self._Format = self._Symbol
         self._Condition = FalseFunc
-
-    @Variable.Format.setter
-    def Format(self, NewExp):
-        self._Format = NewExp
-        self._Unique['Sync'] = False
 
     @property
     def Truth(self):
@@ -66,7 +60,6 @@ class Class(Variable):
     @Variable.UniqueInit
     def Initio(self):
         self._Symbol = "X"
-        self._Format = self._Symbol
         self._Object = "x"
         self._Unique['Property'] \
             = Predicate()
@@ -114,11 +107,6 @@ class Object(Variable):
         self.Status = InClass.Symbol
         self.Status = InClass\
             .Unique['Property'].Format
-
-    @Variable.Format.setter
-    def Format(self, NewExp):
-        self._Format = NewExp
-        self._Unique['Sync'] = False
 
     def BelongTo(self, InClass):
         TempPredicate = Predicate()
