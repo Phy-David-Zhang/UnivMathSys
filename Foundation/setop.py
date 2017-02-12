@@ -120,6 +120,52 @@ class Complement(Operator):
         return TempSet
 
 
+class CartesianProduct(Operator):
+
+    _Define = "Cartesian Product"
+    _Symbol = "\\times"
+
+    @staticmethod
+    def Action(self, Left, Rght):
+        Check(Left, Set)
+        Check(Rght, Set)
+
+        def Condition(InVar, InSet):
+            return isinstance(InVar.Format, tuple) \
+                and len(InVar.Format) is 2 and \
+                    InVar.Format[0].BelongTo \
+                        (InSet.Unique['Depend'][0]) \
+                and InVar.Format[1].BelongTo \
+                        (InSet.Unique['Depend'][1])
+
+        TempSet = Set()
+        TempSet.Elmnt = lambda self: "(" + \
+            TempSet.Unique['Depend'][0].Elmnt + "," +\
+            TempSet.Unique['Depend'][1].Elmnt + ")"
+        TempSet.Unique['Depend'].extend([Left, Rght])
+        TempSet.Unique['Origin'] = lambda self: \
+            TempSet.Unique['Depend'][0].Symbol \
+                + "\\times " + \
+            TempSet.Unique['Depend'][1].Symbol
+        TempSet.Unique['Element'] = \
+            (Element(TempSet.Unique['Depend'][0]),
+             Element(TempSet.Unique['Depend'][1]))
+        TempSet.Unique['Element'][0].Symbol = \
+            TempSet.Unique['Depend'][0].Elmnt
+        TempSet.Unique['Element'][1].Symbol = \
+            TempSet.Unique['Depend'][1].Elmnt
+        TempSet.PropForm = lambda self: \
+            TempSet.Unique['Depend'][0].Elmnt \
+                + "\\in " + \
+            TempSet.Unique['Depend'][0].Symbol \
+                + "\\wedge " + \
+            TempSet.Unique['Depend'][1].Elmnt \
+                + "\\in " + \
+            TempSet.Unique['Depend'][1].Symbol
+        TempSet.Condition = Condition
+        return TempSet
+
+
 def Contain(Left, Rght):
     OpContain = Subclass()
     return OpContain(Left, Rght)
@@ -139,6 +185,10 @@ def Intsct(Left, Rght):
 def Complt(Univ, Input):
     OpComplt = Complement()
     return OpComplt(Univ, Input)
+
+def CartProct(Left, Rght):
+    OpCross = CartesianProduct()
+    return OpCross(Left, Rght)
 
 
 # End of Module Foundation.setop of UnivMathSys

@@ -18,7 +18,7 @@ from Foundation.logic import ForAll, Exist, Neg, \
 from Foundation.set import Subclass, Set, Element, \
     SetEqual
 from Foundation.setop import Contain, SetEq, Union, \
-    Intsct, Complt
+    Intsct, Complt, CartProct
 
 
 def Test_Foundation_initio_Predicate():
@@ -307,8 +307,8 @@ def Test_Foundation_setop_Union():
     SetA.Symbol = "A"
     SetB.Symbol = "B"
 
-    SetA.Object = "a"
-    SetB.Object = "b"
+    SetA.Elmnt = "a"
+    SetB.Elmnt = "b"
 
     SetA.PropForm = "P(a)"
     SetB.PropForm = "P(b)"
@@ -322,12 +322,12 @@ def Test_Foundation_setop_Union():
         InSet.Symbol in InVar.Status
 
     SetX = Union(SetA, SetB)
-    Objx = Object(SetX)
+    Elmx = Element(SetX)
 
     print(SetX.Symbol, SetX.Unique['Origin'](SetX),
         SetX.Format)
     print(SetX.Unique)
-    print(Objx.Symbol, Objx.Unique)
+    print(Elmx.Symbol, Elmx.Unique)
 
 
 def Test_Foundation_setop_Intsct():
@@ -340,14 +340,11 @@ def Test_Foundation_setop_Intsct():
     SetA.Symbol = "A"
     SetB.Symbol = "B"
 
-    SetA.Object = "a"
-    SetB.Object = "b"
+    SetA.Elmnt = "a"
+    SetB.Elmnt = "b"
 
     SetA.PropForm = "P(a)"
     SetB.PropForm = "P(b)"
-
-    def TempFunc(InVar, InSet):
-        return InSet.Symbol in InVar.Status
 
     SetA.Condition = lambda InVar, InSet: \
         InSet.Symbol in InVar.Status
@@ -355,11 +352,11 @@ def Test_Foundation_setop_Intsct():
         InSet.Symbol in InVar.Status
 
     SetX = Intsct(SetA, SetB)
-    Objx = Object(SetX)
+    Elmx = Element(SetX)
 
     print(SetX.Symbol, SetX.Unique['Origin'](SetX),
         SetX.Format)
-    print(Objx.Symbol, Objx.Unique)
+    print(Elmx.Symbol, Elmx.Unique)
 
 
 def Test_Foundation_setop_Complt():
@@ -387,11 +384,42 @@ def Test_Foundation_setop_Complt():
         InSet.Symbol in InVar.Status
 
     SetX = Complt(SetU, SetA)
-    Objx = Object(SetX)
+    Elmx = Element(SetX)
 
     print(SetX.Symbol, SetX.Unique['Origin'](SetX),
         SetX.Format)
-    print(Objx.Symbol, Objx.Unique)
+    print(Elmx.Symbol, Elmx.Unique)
+
+
+def Test_Foundation_setop_CartProct():
+
+    print("\nTest of Cartesian Product")
+
+    SetA = Set()
+    SetB = Set()
+
+    SetA.Symbol = "A"
+    SetB.Symbol = "B"
+
+    SetA.Elmnt = "a"
+    SetB.Elmnt = "b"
+
+    SetA.PropForm = "P(a)"
+    SetB.PropForm = "P(b)"
+
+    SetA.Condition = lambda InVar, InSet: \
+        InSet.Symbol in InVar.Status
+    SetB.Condition = lambda InVar, InSet: \
+        InSet.Symbol in InVar.Status
+
+    SetX = CartProct(SetA, SetB)
+    Elmx = Element(SetX)
+
+    print(SetX.Symbol, SetX.Unique['Origin'](SetX),
+        SetX.Format)
+    print(Elmx.Symbol, Elmx.Format[0].Symbol,
+        Elmx.Format[1].Symbol, Elmx.Unique)
+    print(Elmx.Format)
 
 
 def TestRun():
@@ -418,6 +446,7 @@ def TestRun():
     Test_Foundation_setop_Union()
     Test_Foundation_setop_Intsct()
     Test_Foundation_setop_Complt()
+    Test_Foundation_setop_CartProct()
 
 
 if __name__ == "__main__":

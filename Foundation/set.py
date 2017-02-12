@@ -46,21 +46,23 @@ class Set(Class):
     @Variable.UniqueInit
     def Initio(self):
         self._Symbol = "X"
-        self._Element = "x"
+        self._Element = lambda self: "x"
         self._Unique['Property'] \
             = Predicate()
         self._Unique['Sync'] = False
         self._Format = lambda self: "\\{" + \
-            self._Object + "\\mid " + \
+            self._Element(self) + "\\mid " + \
             self._Unique['Property'].Format + "\\}"
 
     @property
     def Elmnt(self):
-        return self._Element
+        return self._Element(self)
 
     @Elmnt.setter
     def Elmnt(self, NewElm):
         self._Element = NewElm
+        if not callable(NewElm):
+            self._Element = lambda self: NewElm
 
     @staticmethod
     def DefCheck(Input):
@@ -118,6 +120,8 @@ class Element(Object):
             Check(InVar, Variable)
             self.Symbol = InVar.Symbol
             self.Unique = InVar.Unique
+        if 'Element' in InSet.Unique:
+            self.Format = InSet.Unique['Element']
         Check(InSet, Set)
         self.Status = InSet.Symbol
         self.Status = InSet.PropForm
