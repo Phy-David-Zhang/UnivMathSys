@@ -67,7 +67,7 @@ class Set(Class):
         Check(Input, Set)
         TempVar = Object(Class())
         del TempVar.Status[:]
-        if TempVar.BelongTo(Input):
+        if TempVar.BelongTo(Input).Truth:
             raise IllDefined
 
     @property
@@ -90,8 +90,7 @@ class Set(Class):
 
     @PropForm.setter
     def PropForm(self, NewForm):
-        Check(NewForm, str)
-        self._Unique['Property'].Format = NewForm
+        self.Unique['Property'].Format = NewForm
 
     @Condition.setter
     def Condition(self, NewFunc):

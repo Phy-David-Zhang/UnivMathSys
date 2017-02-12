@@ -25,7 +25,7 @@ class Variable(Techniques):
         @wraps(func)
         def wrapper(self, *args, **kwargs):
             self._Unique = dict(
-                Depend = dict(),
+                Depend = list(),
                 Status = list(),
                 Sync = True)
             self._Format = \
