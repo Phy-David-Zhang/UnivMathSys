@@ -63,6 +63,10 @@ class Class(Variable):
         self._Object = "x"
         self._Unique['Property'] \
             = Predicate()
+        self._Unique['Sync'] = False
+        self._Format = lambda self: "\\{" + \
+            self._Object + "\\mid " + \
+            self._Unique['Property'].Format + "\\}"
 
     @property
     def Object(self):
@@ -71,22 +75,6 @@ class Class(Variable):
     @Object.setter
     def Object(self, NewObj):
         self._Object = NewObj
-        Class.UpdateFormat(self)
-
-    @Variable.Unique.setter
-    def Unique(self, NewUnq):
-        self._Unique.update(NewUnq)
-        self._Unique['Sync'] = False
-        Class.UpdateFormat(self)
-
-    @staticmethod
-    def UpdateFormat(InClass):
-        InClass.Format = "\\{" + \
-            InClass.Object
-        InClass.Format += "\\mid "
-        InClass.Format += \
-            InClass.Unique['Property'].Format
-        InClass.Format += "\\}"
 
 
 class Object(Variable):

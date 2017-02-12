@@ -49,6 +49,10 @@ class Set(Class):
         self._Element = "x"
         self._Unique['Property'] \
             = Predicate()
+        self._Unique['Sync'] = False
+        self._Format = lambda self: "\\{" + \
+            self._Object + "\\mid " + \
+            self._Unique['Property'].Format + "\\}"
 
     @property
     def Elmnt(self):
@@ -88,8 +92,6 @@ class Set(Class):
     def PropForm(self, NewForm):
         Check(NewForm, str)
         self._Unique['Property'].Format = NewForm
-        self._Unique['Sync'] = False
-        Class.UpdateFormat(self)
 
     @Condition.setter
     def Condition(self, NewFunc):

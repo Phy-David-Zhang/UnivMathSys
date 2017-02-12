@@ -263,7 +263,7 @@ def Test_Foundation_set_Element():
     TempPredicate = TestElmnt.BelongTo(TestSet)
 
     print(TestElmnt.Format, TempPredicate.Format,
-        TestPredicate.Truth)
+        TempPredicate.Truth)
 
 
 def Test_Foundation_set_SetEqual():
