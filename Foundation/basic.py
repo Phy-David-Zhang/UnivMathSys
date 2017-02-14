@@ -33,6 +33,14 @@ class Variable(Techniques):
             func(self, *args, **kwargs)
         return wrapper
 
+    @staticmethod
+    def GetInfo(self):
+        return self.Symbol + "=" + self.Format
+
+    @staticmethod
+    def GetRepr(self):
+        return self.Format
+
     @property
     def Define(self):
         return self._Define
