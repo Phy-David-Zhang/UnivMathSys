@@ -59,7 +59,8 @@ class Variable(Techniques):
 
     @property
     def Status(self):
-        return self._Unique['Status']
+        return [Stats(self) for
+            Stats in self._Unique['Status']]
 
     @Symbol.setter
     def Symbol(self, NewSym):

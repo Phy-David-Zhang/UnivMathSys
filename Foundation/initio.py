@@ -92,8 +92,8 @@ class Object(Variable):
             self.Symbol = InVar.Symbol
             self.Unique = InVar.Unique
         Check(InClass, Class)
-        self.Status = InClass.Symbol
-        self.Status = InClass\
+        self.Status = lambda self: InClass.Symbol
+        self.Status = lambda self: InClass\
             .Unique['Property'].Format
 
     def BelongTo(self, InClass):

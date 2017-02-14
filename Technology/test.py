@@ -327,7 +327,7 @@ def Test_Foundation_setop_Union():
     print(SetX.Symbol, SetX.Unique['Origin'](SetX),
         SetX.Format)
     print(SetX.Unique)
-    print(Elmx.Symbol, Elmx.Unique)
+    print(Elmx.Symbol, Elmx.Status)
 
 
 def Test_Foundation_setop_Intsct():
@@ -356,7 +356,7 @@ def Test_Foundation_setop_Intsct():
 
     print(SetX.Symbol, SetX.Unique['Origin'](SetX),
         SetX.Format)
-    print(Elmx.Symbol, Elmx.Unique)
+    print(Elmx.Symbol, Elmx.Status)
 
 
 def Test_Foundation_setop_Complt():
@@ -388,7 +388,7 @@ def Test_Foundation_setop_Complt():
 
     print(SetX.Symbol, SetX.Unique['Origin'](SetX),
         SetX.Format)
-    print(Elmx.Symbol, Elmx.Unique)
+    print(Elmx.Symbol, Elmx.Status)
 
 
 def Test_Foundation_setop_CartProct():
@@ -417,7 +417,7 @@ def Test_Foundation_setop_CartProct():
 
     print(SetX.Symbol, SetX.Unique['Origin'](SetX),
         SetX.Format)
-    print(Elmx.Symbol, Elmx.Format, Elmx.Unique)
+    print(Elmx.Symbol, Elmx.Format, Elmx.Status)
 
 
 def TestRun():
