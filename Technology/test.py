@@ -417,9 +417,7 @@ def Test_Foundation_setop_CartProct():
 
     print(SetX.Symbol, SetX.Unique['Origin'](SetX),
         SetX.Format)
-    print(Elmx.Symbol, Elmx.Format[0].Symbol,
-        Elmx.Format[1].Symbol, Elmx.Unique)
-    print(Elmx.Format)
+    print(Elmx.Symbol, Elmx.Format, Elmx.Unique)
 
 
 def TestRun():

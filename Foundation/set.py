@@ -123,8 +123,8 @@ class Element(Object):
         if 'Element' in InSet.Unique:
             self.Format = InSet.Unique['Element']
         Check(InSet, Set)
-        self.Status = InSet.Symbol
-        self.Status = InSet.PropForm
+        self.Status = lambda self: InSet.Symbol
+        self.Status = lambda self: InSet.PropForm
 
 
 class SetEqual(Operator):
