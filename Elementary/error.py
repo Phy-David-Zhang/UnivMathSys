@@ -18,4 +18,10 @@ class IllDefined(Error):
 class AccessError(Error):
     pass
 
+class IntpnError(Error):
+    pass
+
+class ProofNeeded(Error):
+    pass
+
 # End of Module Elementary.error of UnivMathSys
