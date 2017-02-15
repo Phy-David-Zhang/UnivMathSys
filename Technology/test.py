@@ -244,17 +244,10 @@ def Test_Foundation_set_Element():
     print("\nTest of Element")
 
     TestSet = Set()
-    TestPredicate = Predicate()
-
-    def TempFunc(InVar, InSet):
-        return InSet.Symbol in InVar.Status
-
-    TestPredicate.Symbol = "P(y)"
-    TestPredicate.Condition = TempFunc
 
     TestSet.Symbol = "Y"
     TestSet.Object = "y"
-    TestSet.Unique = dict(Property=TestPredicate)
+    TestSet.PropForm = "P(y)"
 
     TestElmnt = Element(TestSet)
 
@@ -313,14 +306,6 @@ def Test_Foundation_setop_Union():
     SetA.PropForm = "P(a)"
     SetB.PropForm = "P(b)"
 
-    def TempFunc(InVar, InSet):
-        return InSet.Symbol in InVar.Status
-
-    SetA.Condition = lambda InVar, InSet: \
-        InSet.Symbol in InVar.Status
-    SetB.Condition = lambda InVar, InSet: \
-        InSet.Symbol in InVar.Status
-
     SetX = Union(SetA, SetB)
     Elmx = Element(SetX)
 
@@ -375,14 +360,6 @@ def Test_Foundation_setop_Complt():
     SetU.PropForm = "P(u)"
     SetA.PropForm = "P(a)"
 
-    def TempFunc(InVar, InSet):
-        return InSet.Symbol in InVar.Status
-
-    SetU.Condition = lambda InVar, InSet: \
-        InSet.Symbol in InVar.Status
-    SetA.Condition = lambda InVar, InSet: \
-        InSet.Symbol in InVar.Status
-
     SetX = Complt(SetU, SetA)
     Elmx = Element(SetX)
 
@@ -406,11 +383,6 @@ def Test_Foundation_setop_CartProct():
 
     SetA.PropForm = "P(a)"
     SetB.PropForm = "P(b)"
-
-    SetA.Condition = lambda InVar, InSet: \
-        InSet.Symbol in InVar.Status
-    SetB.Condition = lambda InVar, InSet: \
-        InSet.Symbol in InVar.Status
 
     SetX = CartProct(SetA, SetB)
     Elmx = Element(SetX)

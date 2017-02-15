@@ -9,6 +9,7 @@
 
 from Elementary.error import IllDefined, AccessError
 from Elementary.certify import Check
+from Interpreter.enter import SymMatch
 from Foundation.basic import Variable, Operator, \
     Morphism
 from Foundation.initio import Predicate, Class, \
@@ -49,6 +50,8 @@ class Set(Class):
         self._Element = lambda self: "x"
         self._Unique['Property'] \
             = Predicate()
+        self._Unique['Property'].Condition \
+            = self.Default
         self._Unique['Sync'] = False
         self._Format = lambda self: "\\{" + \
             self._Element(self) + "\\mid " + \
@@ -65,10 +68,21 @@ class Set(Class):
             self._Element = lambda self: NewElm
 
     @staticmethod
+    def Default(InVar, InSet):
+        if InSet.Symbol in InVar.Status:
+            return True
+        Left = InVar.Status
+        Rght = InSet.PropForm
+        try: SymMatch(Left, Rght)
+        except ProofNeeded:
+            return False
+        return True
+
+    @staticmethod
     def DefCheck(Input):
         Check(Input, Set)
         TempVar = Object(Class())
-        del TempVar.Status[:]
+        del TempVar.Unique['Status'][:]
         if TempVar.BelongTo(Input).Truth:
             raise IllDefined
 
@@ -99,8 +113,7 @@ class Set(Class):
         Check(NewFunc, 'function')
         TempFunc = self.Condition
         self._Unique['Property'].Condition = NewFunc
-        try:
-            Set.DefCheck(self)
+        try: Set.DefCheck(self)
         except IllDefined:
             print("Set Property Invalid: " + \
                 "Probable Russell Set")
