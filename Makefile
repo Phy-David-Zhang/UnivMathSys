@@ -27,6 +27,7 @@ link = link.py
 sdir = Elementary\
  	   Foundation\
 	   Structure\
+	   Interpreter\
 	   Technology
 
 initfile = $(foreach dir, $(sdir),\
