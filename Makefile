@@ -7,8 +7,10 @@
 
 python = python3
 cmps = zip
+uncm = unzip
 target = UnivMathSys-Python.zip
 pack = Package
+name = UnivMathSys
 
 msrc = Technology
 
@@ -38,14 +40,18 @@ default:
 		done
 	@cp $(msrc)/$(top)/$(stat) $(stat)
 	@cp $(msrc)/$(top)/$(init) $(init)
+	@mkdir $(name)
+	@cp $(msrc)/$(top)/$(init) $(name)/$(init)
 	@echo Generating Package
 	@$(cmps) -qr $(pack)/$(target) $(sdir)
 	@$(cmps) -q $(pack)/$(target) $(stat) $(init)
 	@$(cmps) -q $(pack)/$(target) $(msrc)/$(main)\
 				$(msrc)/$(test) $(msrc)/$(link)
+	@$(cmps) -q $(pack)/$(target) $(name)
 	@echo Cleaning Directory
 	@rm -rf $(initfile)
 	@rm -rf $(stat) $(init)
+	@rm -rf $(name)
 	@echo Package Generation Completed
 
 testrun:
