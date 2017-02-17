@@ -7,7 +7,8 @@
 '''Module Foundation.set of UnivMathSys'''
 
 
-from Elementary.error import IllDefined, AccessError
+from Elementary.error import IllDefined, AccessError,\
+    ProofNeeded
 from Elementary.certify import Check
 from Interpreter.enter import SymMatch
 from Foundation.basic import Variable, Operator, \
@@ -137,7 +138,9 @@ class Element(Object):
             self.Format = InSet.Unique['Element']
         Check(InSet, Set)
         self.Status = lambda self: InSet.Symbol
-        self.Status = lambda self: InSet.PropForm
+        if InSet._Unique['Property']\
+                .Unique['Sync'] is False:
+            self.Status = lambda self: InSet.PropForm
 
 
 class SetEqual(Operator):

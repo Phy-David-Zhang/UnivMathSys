@@ -20,11 +20,11 @@ class Techniques(object):
     def __repr__(self):
         return self.GetRepr(self)
 
-    @staticmethod
-    def Update(self):
+    def Initio(self, *args, **kwargs):
         pass
 
-    def Initio(self):
+    @staticmethod
+    def Update(self):
         pass
 
     @staticmethod
