@@ -1,0 +1,36 @@
+#! /usr/bin/env python3
+
+# User Interface Entrance of UnivMaths System
+
+    # Copyright (C) 2016 Zhang Chang-kai #
+    # Contact via: phy.zhangck@gmail.com #
+    # General Public License version 3.0 #
+
+'''Internal User Interface of UnivMathSys'''
+
+import os
+import sys
+import logging
+import readline
+
+dir = os.path.split(os.path.realpath(__file__))[0]\
+    + "/Package/UnivMathSys-Python.zip"
+sys.path.insert(0, dir)
+
+from UnivMathSys import *
+
+__version__ = "Internal 0.5.4.6"
+
+print("")
+print("Universal Mathematics System - "
+    + __version__)
+print("Python " + sys.version)
+
+while True:
+    try:
+        sntces = input(">>> ")
+        exec(sntces)
+    except Exception:
+        logging.exception("Exception Occurs")
+
+# End of Internal User Interface of UnivMaths
