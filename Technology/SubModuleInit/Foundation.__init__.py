@@ -13,5 +13,4 @@ from .set import Set, Element
 from .setop import Contain, SetEq, Union, Intsct, \
     Complt, CartProct
 
-
 # End of Initialization of Module Foundation
