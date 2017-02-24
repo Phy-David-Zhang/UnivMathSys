@@ -35,7 +35,7 @@ class Variable(Techniques):
 
     @staticmethod
     def GetInfo(self):
-        return self.Symbol + "=" + self.Format
+        return self.Symbol + ":=" + self.Format
 
     @staticmethod
     def GetRepr(self):
