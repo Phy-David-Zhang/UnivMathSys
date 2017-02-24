@@ -8,29 +8,66 @@
 
 '''Internal User Interface of UnivMathSys'''
 
+
+__version__ = "Internal 0.5.4.6"
+
+
 import os
 import sys
 import logging
 import readline
 
+
 dir = os.path.split(os.path.realpath(__file__))[0]\
     + "/Package/UnivMathSys-Python.zip"
 sys.path.insert(0, dir)
 
-from UnivMathSys import *
 
-__version__ = "Internal 0.5.4.6"
+from UnivMathSys import *
 
 print("")
 print("Universal Mathematics System - "
     + __version__)
 print("Python " + sys.version)
 
-while True:
-    try:
-        sntces = input(">>> ")
-        exec(sntces)
-    except Exception:
-        logging.exception("Exception Occurs")
 
-# End of Internal User Interface of UnivMaths
+from Interpreter.compiler import Compile
+
+
+def FileExec(FileName):
+    with open(FileName, 'r') as file:
+        for line in file:
+            cmd = Compile(sntces)
+            if cmd:
+                exec(cmd)
+            else:
+                exec(line)
+
+
+def Interactive():
+    while True:
+        try:
+            sntces = input(">>> ")
+            cmd = Compile(sntces)
+            if cmd:
+                exec(cmd)
+            else:
+                exec(sntces)
+                try:
+                    if sntces is not "":
+                        eval("print(" + sntces + ")")
+                except Exception:
+                    pass
+        except Exception:
+            logging.exception("Exception Occurs")
+
+
+if len(sys.argv) > 1:
+    FileList = sys.argv[1:]
+    for FileName in FileList:
+        FileExec(FileName)
+else:
+    Interactive()
+
+
+# End of Internal User Interface of UnivMathSys
