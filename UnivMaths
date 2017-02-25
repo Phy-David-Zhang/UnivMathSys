@@ -72,6 +72,10 @@ def FileExec(FileName):
                     exec(line)
             # join lines inside a block
             else:
+                # skip comments
+                if line.strip().startswith("#"):
+                    continue
+                # join lines
                 sntces += line
 
 
