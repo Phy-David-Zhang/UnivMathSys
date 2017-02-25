@@ -36,18 +36,48 @@ from Interpreter.compiler import Compile
 
 def FileExec(FileName):
     with open(FileName, 'r') as file:
+        block = False
         for line in file:
-            cmd = Compile(sntces)
-            if cmd:
-                exec(cmd)
+            if line is "\n":
+                continue
+            if not line.startswith(" "):
+                if block is True:
+                    block = False
+                    exec(sntces)
+                if line.startswith("#"):
+                    continue
+                if line.endswith(":\n"):
+                    block = True
+                    sntces = line
+                    continue
+                cmd = Compile(line)
+                if cmd:
+                    exec(cmd)
+                else:
+                    exec(line)
             else:
-                exec(line)
+                sntces += line
 
 
 def Interactive():
+    block = False
     while True:
+        if block is True:
+            receive = input("... ")
+            if receive is "":
+                block = False
+                exec(sntces)
+                continue
+            sntces += receive + "\n"
+            continue
+        else:
+            receive = input(">>> ")
+            if receive.endswith(":"):
+                block = True
+                sntces = receive + "\n"
+                continue
+            sntces = receive
         try:
-            sntces = input(">>> ")
             cmd = Compile(sntces)
             if cmd:
                 exec(cmd)
