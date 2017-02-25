@@ -1,0 +1,26 @@
+# Test UMS File of Universal Mathematics System
+
+    # Copyright (C) 2016 Zhang Chang-kai #
+    # Contact via: phy.zhangck@gmail.com #
+    # General Public License version 3.0 #
+
+
+# Test of Predicate
+print("\nTest of Predicate")
+
+let mu, nu be Predicate
+let Format of mu, nu be 'a in A'
+let Truth of mu be True
+
+from Elementary.build import TrueFunc
+let Condition of nu be TrueFunc
+
+print(mu, nu)
+print(mu.Truth, nu.Truth)
+print(mu.Condition(), nu.Condition())
+
+
+# Ending Info
+print("\nThis is the End of Test\n")
+
+# End of Test UMS File for UnivMathSys

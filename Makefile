@@ -55,6 +55,10 @@ default:
 	@rm -rf $(name)
 	@echo Package Generation Completed
 
+ums:
+	@echo Running Tests
+	@$(python) ./UnivMaths $(msrc)/test.ums
+
 testrun:
 	@echo Running Tests
 	@$(python) $(pack)/$(target) test
