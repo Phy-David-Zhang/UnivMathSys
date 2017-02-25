@@ -9,6 +9,7 @@
 '''Internal User Interface of UnivMathSys'''
 
 
+# version information
 __version__ = "Internal 0.5.4.6"
 
 
@@ -18,71 +19,96 @@ import logging
 import readline
 
 
+# add path for UnivMathSys package to sys.path
 dir = os.path.split(os.path.realpath(__file__))[0]\
     + "/Package/UnivMathSys-Python.zip"
 sys.path.insert(0, dir)
 
 
+# import all concepts defined in UnivMathSys
 from UnivMathSys import *
 
+# print UnivMathSys information
 print("")
 print("Universal Mathematics System - "
     + __version__)
 print("Python " + sys.version)
 
 
+# import compiler
 from Interpreter.compiler import Compile
 
 
+# run script
 def FileExec(FileName):
+    # open script file
     with open(FileName, 'r') as file:
+        # python block init as false
         block = False
+        # read line by line
         for line in file:
+            # skip empty line
             if line is "\n":
                 continue
+            # handle lines without block
             if not line.startswith(" "):
+                # handle previous block
                 if block is True:
                     block = False
                     exec(sntces)
+                # skip comments
                 if line.startswith("#"):
                     continue
+                # whether it is a start of block
                 if line.endswith(":\n"):
                     block = True
                     sntces = line
                     continue
+                # handle single line command
                 cmd = Compile(line)
                 if cmd:
                     exec(cmd)
                 else:
                     exec(line)
+            # join lines inside a block
             else:
                 sntces += line
 
 
+# enter interactive interface
 def Interactive():
+    # python block init as false
     block = False
+    # read and run input
     while True:
+        # handle block
         if block is True:
             receive = input("... ")
+            # run and exit block when input is empty
             if receive is "":
                 block = False
                 exec(sntces)
                 continue
+            # join line within a block
             sntces += receive + "\n"
             continue
+        # whether it is a start of a block
         else:
             receive = input(">>> ")
             if receive.endswith(":"):
                 block = True
                 sntces = receive + "\n"
                 continue
+            # if it is a single line command
             sntces = receive
+        # handle single line command
         try:
             cmd = Compile(sntces)
             if cmd:
                 exec(cmd)
             else:
                 exec(sntces)
+                # try evaluate expression
                 try:
                     if sntces is not "":
                         eval("print(" + sntces + ")")
@@ -92,6 +118,7 @@ def Interactive():
             logging.exception("Exception Occurs")
 
 
+# decide to run script or enter interface
 if len(sys.argv) > 1:
     FileList = sys.argv[1:]
     for FileName in FileList:
