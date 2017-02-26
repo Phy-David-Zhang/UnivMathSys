@@ -9,6 +9,7 @@
 
 import re
 from .exeinit import ExeInit
+from .analyser import Analyse
 
 
 # Form: let ... be ...
@@ -24,6 +25,10 @@ LetOfBeForm = \
 LetBeSyntax = re.compile(LetBeForm)
 LetBeOfSyntax = re.compile(LetBeOfForm)
 LetOfBeSyntax = re.compile(LetOfBeForm)
+
+# Assignment Form: defined as :=
+DefinedAsForm = r'(.*)\s*:=\s*(.*)'
+DefinedAsSyntax = re.compile(DefinedAsForm)
 
 
 # compile given sentences
@@ -62,6 +67,7 @@ def Compile(sntces):
                 Command += Temp
         return Command
 
+    # if match 'let ... be ... of ...' form
     elif re.match(LetBeOfForm, sntces):
         Info = LetBeOfSyntax.match(sntces).groups()
         # extract names
@@ -80,6 +86,18 @@ def Compile(sntces):
             Temp = ExeInit(Name, Info[1])
             if Temp:
                 Command += Temp
+        return Command
+
+    # if match ':=' form
+    elif re.match(DefinedAsForm, sntces):
+        Info = DefinedAsSyntax.match(sntces).groups()
+        # extract names
+        NameList = [re.split(r'[\s\,]+', Info[0])]
+        Definition = Info[1]
+        # generate commands
+        Command = ""
+        for Name in NameList:
+            Command += Analyse(Name, Definition)
         return Command
 
     # return None if match fails
