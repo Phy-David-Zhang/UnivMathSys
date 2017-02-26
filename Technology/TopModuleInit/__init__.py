@@ -7,6 +7,7 @@
 '''Initialization of All Modules'''
 
 from Foundation import *
+from Elementary import *
 from Structure import *
 
 # End of Initialization of All Modules

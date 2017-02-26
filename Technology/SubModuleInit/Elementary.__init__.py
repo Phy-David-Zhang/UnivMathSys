@@ -6,4 +6,7 @@
 
 '''Initialization of Module Elementary'''
 
+from .build import TrueFunc, FalseFunc
+from .certify import Check
+
 # End of Initialization of Module Elementary
