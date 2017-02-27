@@ -42,13 +42,13 @@ class Subclass(Operator):
 class Set(Class):
 
     _Define = "Set"
-    _Symbol = "X"
-    _Element = "x"
+    _Symbol = "_X"
+    _Element = "_x"
 
     @Variable.UniqueInit
     def Initio(self):
-        self._Symbol = "X"
-        self._Element = lambda self: "x"
+        self._Symbol = "_X"
+        self._Element = lambda self: "_x"
         self._Unique['Property'] \
             = Predicate()
         self._Unique['Property'].Condition \
@@ -125,7 +125,7 @@ class Set(Class):
 class Element(Object):
 
     _Define = "Element"
-    _Symbol = "x"
+    _Symbol = "_x"
     _Format = _Symbol
 
     @Variable.UniqueInit

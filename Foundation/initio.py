@@ -18,14 +18,14 @@ class Predicate(Variable):
     '''Concept Predicate'''
 
     _Define = "Predicate"
-    _Symbol = "\\mu"
+    _Symbol = "_\\mu"
     _Format = _Symbol
     _Truth = False
     _Condition = FalseFunc
 
     @Variable.UniqueInit
     def Initio(self):
-        self._Symbol = "\\mu"
+        self._Symbol = "_\\mu"
         self._Truth = False
         self._Condition = FalseFunc
 
@@ -53,14 +53,14 @@ class Class(Variable):
     '''Concept Class'''
 
     _Define = "Class"
-    _Symbol = "X"
+    _Symbol = "_X"
     _Format = _Symbol
-    _Object = "x"
+    _Object = "_x"
 
     @Variable.UniqueInit
     def Initio(self):
-        self._Symbol = "X"
-        self._Object = "x"
+        self._Symbol = "_X"
+        self._Object = "_x"
         self._Unique['Property'] \
             = Predicate()
         self._Unique['Sync'] = False
@@ -82,7 +82,7 @@ class Object(Variable):
     '''Concept Object'''
 
     _Define = "Object"
-    _Symbol = "x"
+    _Symbol = "_x"
     _Format = _Symbol
 
     @Variable.UniqueInit
