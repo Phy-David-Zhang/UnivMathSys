@@ -28,6 +28,19 @@ print(rho, rho.Truth)
 print(sigma, sigma.Truth)
 print(lam, lam.Truth)
 
+A := {a\mid a\in A}
+B := {b\mid b\in B}
+
+rho := Contain(A, B)
+print(rho, rho.Truth)
+rho := Contain(A, A)
+print(rho, rho.Truth)
+
+rho := SetEq(A, B)
+print(rho, rho.Truth)
+rho := SetEq(A, A)
+print(rho, rho.Truth)
+
 # Test of Class
 print("\nTest of Class")
 print(  "=============")

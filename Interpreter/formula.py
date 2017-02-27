@@ -9,7 +9,9 @@
 Formulas = \
 {
     r'([a-zA-Z\_][0-9a-zA-Z\_]*)' + r'\\in' + \
-    r'([a-zA-Z\_][0-9a-zA-Z\_]*)' : "Predicate",
+    r'([a-zA-Z\_][0-9a-zA-Z\_]*)' : "RawPredicate",
+
+    r'(Contain\(.+\))|(SetEq\(.+\))' : "GenPredicate",
 
     r'(Neg\(.+\))|(Conjunc\(.+\))|(Disjunc\(.+\))' + \
     r'|(Imply\(.+\))' : "Logic",

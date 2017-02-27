@@ -67,10 +67,14 @@ def Generate(Info):
     Type = Info.pop(0)
     Name = Info.pop(0)
 
-    if Type is "Predicate":
-        Command = Name + "=" + Type + "()\n"
+    if Type is "RawPredicate":
+        Command = Name + "=Predicate()\n"
         Command += Name + ".Symbol='" + Name + "'\n"
         Command += Name + ".Format=" + Info[0] + "\n"
+
+    if Type is "GenPredicate":
+        Command = Name + "=" + Info[0] + "\n"
+        Command += Name + ".Symbol='" + Name + "'\n"
 
     if Type is "Logic":
         Command = Name + "=" + Info[0] + "\n"
@@ -95,8 +99,10 @@ def Generate(Info):
     if Type is "SetOp":
         Command = Name + "=" + Info[0] + "\n"
         Command += Name + ".Symbol='" + Name + "'\n"
-        Command += Name + ".Elmnt=" + Name + \
-            ".Symbol.lower()\n"
+        Command += "if " + Name + ".Elmnt" + \
+            ".startswith('_'): \n"
+        Command += "    " + Name + ".Elmnt=" + \
+            Name + ".Symbol.lower()\n"
 
     return Command
 
