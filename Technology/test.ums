@@ -28,8 +28,8 @@ print(rho, rho.Truth)
 print(sigma, sigma.Truth)
 print(lam, lam.Truth)
 
-A := {a\mid a\in A}
-B := {b\mid b\in B}
+A := {a|a\in A}
+B := {b|b\in B}
 
 rho := Contain(A, B)
 print(rho, rho.Truth)
