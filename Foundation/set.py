@@ -10,7 +10,7 @@
 from Elementary.error import IllDefined, AccessError,\
     ProofNeeded
 from Elementary.certify import Check
-from Interpreter.enter import SymMatch
+from Interpreter.enter import Verify
 from Foundation.basic import Variable, Operator, \
     Morphism
 from Foundation.initio import Predicate, Class, \
@@ -72,9 +72,13 @@ class Set(Class):
     def Default(InVar, InSet):
         if InSet.Symbol in InVar.Status:
             return True
-        Left = InVar.Status
-        Rght = InSet.PropForm
-        try: SymMatch(Left, Rght)
+        Status = InVar.Status
+        Status = [Stats.replace(InVar.Symbol, "_")
+            for Stats in Status]
+        Property = InSet.PropForm
+        Property = [Prpty.replace(InSet.Elmnt, "_")
+            for Prpty in Property]
+        try: Verify(Status, Property)
         except ProofNeeded:
             return False
         return True
