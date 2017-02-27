@@ -8,8 +8,17 @@
 
 Formulas = \
 {
+    r'([a-zA-Z\_][0-9a-zA-Z\_]*)' + r'\\in' + \
+    r'([a-zA-Z\_][0-9a-zA-Z\_]*)' : "Predicate",
+
+    r'(Neg\(.+\))|(Conjunc\(.+\))|(Disjunc\(.+\))' + \
+    r'|(Imply\(.+\))' : "Logic",
+
     r'\\{\s*(.*)\s*\\mid\s+(.*)\s*\\}' + r'|' + \
-    r'{\s*(.*)\s*\\mid\s+(.*)\s*}' : "Set"
+    r'{\s*(.*)\s*\\mid\s+(.*)\s*}' : "Set",
+
+    r'(Union\(.+\))|(Intsct\(.+\))|(Complt\(.+\))' + \
+    r'|(CartProct\(.+\))' : "SetOp"
 }
 
 
