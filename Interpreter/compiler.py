@@ -27,7 +27,7 @@ LetBeOfSyntax = re.compile(LetBeOfForm)
 LetOfBeSyntax = re.compile(LetOfBeForm)
 
 # Assignment Form: defined as :=
-DefinedAsForm = r'(.*)\s*:=\s*(.*)'
+DefinedAsForm = r'(.*\w+)\s*:=\s*(.*)'
 DefinedAsSyntax = re.compile(DefinedAsForm)
 
 
@@ -45,26 +45,6 @@ def Compile(sntces):
         for Name in Info[0]:
             Command += Name + "." + Info[1] + "=" \
                 + Info[2] + "\n"
-        return Command
-
-    # if match 'let ... be ...' form
-    elif re.match(LetBeForm, sntces):
-        Info = LetBeSyntax.match(sntces).groups()
-        # extract names
-        Info = [re.split(r'[\s\,]+', Info[0])]\
-            + [info for info in Info[1:]]
-        # generate commands
-        Command = ""
-        for Name in Info[0]:
-            # create instance
-            Command += Name + "=" + Info[1] + "()\n"
-            # set symbol of instance
-            Command += Name + ".Symbol='" \
-                + Name + "'\n"
-            # other initialization
-            Temp = ExeInit(Name, Info[1])
-            if Temp:
-                Command += Temp
         return Command
 
     # if match 'let ... be ... of ...' form
@@ -88,16 +68,37 @@ def Compile(sntces):
                 Command += Temp
         return Command
 
+    # if match 'let ... be ...' form
+    elif re.match(LetBeForm, sntces):
+        Info = LetBeSyntax.match(sntces).groups()
+        # extract names
+        Info = [re.split(r'[\s\,]+', Info[0])]\
+            + [info for info in Info[1:]]
+        # generate commands
+        Command = ""
+        for Name in Info[0]:
+            # create instance
+            Command += Name + "=" + Info[1] + "()\n"
+            # set symbol of instance
+            Command += Name + ".Symbol='" \
+                + Name + "'\n"
+            # other initialization
+            Temp = ExeInit(Name, Info[1])
+            if Temp:
+                Command += Temp
+        return Command
+
     # if match ':=' form
     elif re.match(DefinedAsForm, sntces):
         Info = DefinedAsSyntax.match(sntces).groups()
         # extract names
-        NameList = [re.split(r'[\s\,]+', Info[0])]
+        NameList = re.split(r'[\s\,]+', Info[0])
         Definition = Info[1]
         # generate commands
         Command = ""
         for Name in NameList:
-            Command += Analyse(Name, Definition)
+            Command += Analyse(Name, Definition,
+                flag='Command')
         return Command
 
     # return None if match fails

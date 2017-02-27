@@ -50,9 +50,9 @@ def Analyse(*args, flag=None):
 def Match(Input):
 
     Syntax = {re.compile(key): value
-        for key, value in Formulas}
+        for key, value in Formulas.items()}
 
-    for key, value in Syntax:
+    for key, value in Syntax.items():
         if key.match(Input):
             data = key.match(Input).groups()
             data = [d for d in data if d is not None]
@@ -60,6 +60,45 @@ def Match(Input):
             return data
 
     raise SyntaxError("Invalid Syntax: " + Input)
+
+
+def Generate(Info):
+
+    Type = Info.pop(0)
+    Name = Info.pop(0)
+
+    if Type is "Predicate":
+        Command = Name + "=" + Type + "()\n"
+        Command += Name + ".Symbol='" + Name + "'\n"
+        Command += Name + ".Format=" + Info[0] + "\n"
+
+    if Type is "Logic":
+        Command = Name + "=" + Info[0] + "\n"
+        Command += Name + ".Symbol='" + Name + "'\n"
+
+    if Type is "Class":
+        Command = Name + "=" + Type + "()\n"
+        Command += Name + ".Symbol='" + Name + "'\n"
+        Command += Name + ".Object=" + Info[0] + "\n"
+        Command += Name + \
+            ".Unique['Property'].Format=" + Info[1] \
+            + "\n"
+
+    if Type is "Set":
+        Command = Name + "=" + Type + "()\n"
+        Command += Name + ".Symbol='" + Name + "'\n"
+        Command += Name + ".Elmnt=" + \
+            "'" + Info[0] + "'\n"
+        Command += Name + ".PropForm=" + \
+            "'" + Info[1] + "'\n"
+
+    if Type is "SetOp":
+        Command = Name + "=" + Info[0] + "\n"
+        Command += Name + ".Symbol='" + Name + "'\n"
+        Command += Name + ".Elmnt=" + Name + \
+            ".Symbol.lower()\n"
+
+    return Command
 
 
 # End of Language Analyser of UnivMathSys
