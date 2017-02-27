@@ -42,13 +42,14 @@ class Subclass(Operator):
 class Set(Class):
 
     _Define = "Set"
-    _Symbol = "_X"
-    _Element = "_x"
+    _Symbol = "X"
+    _Element = "x"
 
     @Variable.UniqueInit
     def Initio(self):
-        self._Symbol = "_X"
-        self._Element = lambda self: "_x"
+        self._Symbol = self.GenUUID()
+        self._Element = lambda self: \
+            "_x" + self._Symbol
         self._Unique['Property'] \
             = Predicate()
         self._Unique['Property'].Condition \
@@ -129,11 +130,12 @@ class Set(Class):
 class Element(Object):
 
     _Define = "Element"
-    _Symbol = "_x"
+    _Symbol = "x"
     _Format = _Symbol
 
     @Variable.UniqueInit
     def Initio(self, InSet, InVar=None):
+        self.Symbol = self.GenUUID()
         if InVar is not None:
             Check(InVar, Variable)
             self.Symbol = InVar.Symbol

@@ -18,14 +18,14 @@ class Predicate(Variable):
     '''Concept Predicate'''
 
     _Define = "Predicate"
-    _Symbol = "_\\mu"
+    _Symbol = "\\mu"
     _Format = _Symbol
     _Truth = False
     _Condition = FalseFunc
 
     @Variable.UniqueInit
     def Initio(self):
-        self._Symbol = "_\\mu"
+        self._Symbol = self.GenUUID()
         self._Truth = False
         self._Condition = FalseFunc
 
@@ -53,14 +53,14 @@ class Class(Variable):
     '''Concept Class'''
 
     _Define = "Class"
-    _Symbol = "_X"
+    _Symbol = "X"
     _Format = _Symbol
-    _Object = "_x"
+    _Object = "x"
 
     @Variable.UniqueInit
     def Initio(self):
-        self._Symbol = "_X"
-        self._Object = "_x"
+        self._Symbol = self.GenUUID()
+        self._Object = self.GenUUID()
         self._Unique['Property'] \
             = Predicate()
         self._Unique['Sync'] = False
@@ -82,11 +82,12 @@ class Object(Variable):
     '''Concept Object'''
 
     _Define = "Object"
-    _Symbol = "_x"
+    _Symbol = "x"
     _Format = _Symbol
 
     @Variable.UniqueInit
     def Initio(self, InClass, InVar=None):
+        self.Symbol = self.GenUUID()
         if InVar is not None:
             Check(InVar, Variable)
             self.Symbol = InVar.Symbol

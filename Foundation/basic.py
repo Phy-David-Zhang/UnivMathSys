@@ -9,6 +9,7 @@
 
 from Elementary.techs import Techniques
 from functools import wraps
+from uuid import uuid4 as id
 
 
 class Variable(Techniques):
@@ -40,6 +41,10 @@ class Variable(Techniques):
     @staticmethod
     def GetRepr(self):
         return self.Format
+
+    @staticmethod
+    def GenUUID():
+        return "_" + id().hex.upper()
 
     @property
     def Define(self):
