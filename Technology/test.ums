@@ -7,18 +7,68 @@
 
 # Test of Predicate
 print("\nTest of Predicate")
+print(  "=================")
 
 let mu, nu be Predicate
-let Format of mu, nu be 'a in A'
+let Format of mu, nu be 'a \in A'
 let Truth of mu be True
-
-from Elementary.build import TrueFunc
 let Condition of nu be TrueFunc
 
 print(mu, nu)
 print(mu.Truth, nu.Truth)
 print(mu.Condition(), nu.Condition())
 
+rho := Neg(mu)
+print(rho, rho.Truth)
+
+rho := Conjunc(mu, nu)
+sigma := Disjunc(mu, nu)
+lam := Imply(mu, nu)
+print(rho, rho.Truth)
+print(sigma, sigma.Truth)
+print(lam, lam.Truth)
+
+# Test of Class
+print("\nTest of Class")
+print(  "=============")
+
+C := {c\mid c\in C}
+print(C)
+print(C.Unique)
+
+# Test of Object
+print("\nTest of Object")
+print(  "==============")
+
+C := {c\mid c\in C}
+let c be Object of C
+
+print(c, c.Status, c.BelongTo(C).Truth)
+
+# Test of Set
+print("\nTest of Set")
+print(  "===========")
+
+A := {a\mid a\in A}
+B := {b\mid b\in B}
+C := Union(A, B)
+D := Intsct(A, B)
+E := Complt(A, B)
+
+print(A, B)
+print(C)
+print(D)
+print(E)
+
+# Test of Element
+print("\nTest of Element")
+print(  "===========")
+
+let c be Element of C
+let e be Element of E
+
+print(c, c.Status)
+print(e, e.Status)
 
 # Ending Info
 print("\nThis is the End of Test\n")
