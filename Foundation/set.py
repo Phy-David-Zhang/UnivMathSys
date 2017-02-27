@@ -140,7 +140,9 @@ class Element(Object):
         self.Status = lambda self: InSet.Symbol
         if InSet._Unique['Property']\
                 .Unique['Sync'] is False:
-            self.Status = lambda self: InSet.PropForm
+            self.Status = lambda self: \
+                InSet.PropForm.replace\
+                    (InSet.Elmnt, self.Symbol)
 
 
 class SetEqual(Operator):
