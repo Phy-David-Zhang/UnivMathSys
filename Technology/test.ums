@@ -54,21 +54,25 @@ B := {b\mid b\in B}
 C := Union(A, B)
 D := Intsct(A, B)
 E := Complt(A, B)
+F := CartProct(A, B)
 
 print(A, B)
 print(C)
 print(D)
 print(E)
+print(F)
 
 # Test of Element
 print("\nTest of Element")
 print(  "===========")
 
-let c be Element of C
-let e be Element of E
+let ce be Element of C
+let ee be Element of E
+let fe be Element of F
 
-print(c, c.Status)
-print(e, e.Status)
+print(ce, ce.Status)
+print(ee, ee.Status)
+print(fe, fe.Status)
 
 # Ending Info
 print("\nThis is the End of Test\n")
