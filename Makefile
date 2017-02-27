@@ -48,7 +48,7 @@ default:
 	@$(cmps) -q $(pack)/$(target) $(stat) $(init)
 	@$(cmps) -q $(pack)/$(target) $(msrc)/$(main)\
 				$(msrc)/$(test) $(msrc)/$(link)
-	@$(cmps) -q $(pack)/$(target) $(name)
+	@$(cmps) -qr $(pack)/$(target) $(name)
 	@echo Cleaning Directory
 	@rm -rf $(initfile)
 	@rm -rf $(stat) $(init)
