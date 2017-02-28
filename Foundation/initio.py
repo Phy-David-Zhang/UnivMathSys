@@ -27,7 +27,6 @@ class Predicate(Variable):
     def Initio(self):
         self._Symbol = self.GenUUID()
         self._Truth = False
-        self._Condition = FalseFunc
 
     @property
     def Truth(self):
