@@ -74,11 +74,11 @@ class Set(Class):
         if InSet.Symbol in InVar.Status:
             return True
         Status = InVar.Status
-        Status = [Stats.replace(InVar.Symbol, "_")
-            for Stats in Status]
+        Status = [self.Replace(InVar.Symbol, "_",
+            Stats) for Stats in Status]
         Property = InSet.Property
-        Property = [Prpty.replace(InSet.Elmnt, "_")
-            for Prpty in Property]
+        Property = [self.Replace(InSet.Elmnt, "_",
+            Prpty) for Prpty in Property]
         try: Verify(Status, Property)
         except ProofNeeded:
             return False
@@ -141,8 +141,8 @@ class Element(Object):
         if InSet._Unique['Property']\
                 .Unique['Sync'] is False:
             self.Status = lambda self: \
-                InSet.Property.replace\
-                    (InSet.Elmnt, self.Symbol)
+                self.Replace(InSet.Elmnt, \
+                    self.Symbol, InSet.Property)
 
 
 class SetEqual(Operator):

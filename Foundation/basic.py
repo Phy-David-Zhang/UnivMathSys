@@ -10,6 +10,7 @@
 from Elementary.techs import Techniques
 from functools import wraps
 from uuid import uuid4 as id
+from re import sub
 
 
 class Variable(Techniques):
@@ -33,6 +34,12 @@ class Variable(Techniques):
                 lambda self: self._Symbol
             func(self, *args, **kwargs)
         return wrapper
+
+    @staticmethod
+    def Replace(Old, New, Target):
+        Pattern = r'([^0-9a-zA-Z\_])(' + Old + r')'
+        Pattern += r'|^()(' + Old + r')'
+        return sub(Pattern, r'\1' + New, Target)
 
     @staticmethod
     def GetInfo(self):
