@@ -10,7 +10,7 @@
 from Elementary.error import IntpnError, ProofNeeded
 
 
-def SymMatch(Left, Rght):
+def Verify(Left, Rght):
     raise ProofNeeded
 
 # End of Module Interpreter.enter of UnivMathSys
