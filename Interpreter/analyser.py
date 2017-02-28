@@ -93,7 +93,7 @@ def Generate(Info):
         Command += Name + ".Symbol='" + Name + "'\n"
         Command += Name + ".Elmnt=" + \
             "'" + Info[0] + "'\n"
-        Command += Name + ".PropForm=" + \
+        Command += Name + ".Property=" + \
             "'" + Info[1] + "'\n"
 
     if Type is "SetOp":
