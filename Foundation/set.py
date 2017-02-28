@@ -39,7 +39,7 @@ class Subclass(Operator):
         return TempPredicate
 
 
-class Set(Class):
+class Set(Variable):
 
     _Define = "Set"
     _Symbol = "X"
@@ -74,10 +74,10 @@ class Set(Class):
         if InSet.Symbol in InVar.Status:
             return True
         Status = InVar.Status
-        Status = [self.Replace(InVar.Symbol, "_",
+        Status = [Set.Replace(InVar.Symbol, "_",
             Stats) for Stats in Status]
         Property = InSet.Property
-        Property = [self.Replace(InSet.Elmnt, "_",
+        Property = [Set.Replace(InSet.Elmnt, "_",
             Prpty) for Prpty in Property]
         try: Verify(Status, Property)
         except ProofNeeded:
@@ -87,9 +87,8 @@ class Set(Class):
     @staticmethod
     def DefCheck(Input):
         Check(Input, Set)
-        TempVar = Object(Class())
-        del TempVar.Unique['Status'][:]
-        if TempVar.BelongTo(Input).Truth:
+        TempVar = Predicate()
+        if Input.Condition(TempVar, Input):
             print("Set Property Invalid: " + \
                 "Probable Russell Set")
             raise IllDefined
@@ -121,7 +120,7 @@ class Set(Class):
                 .Condition = TempFunc
 
 
-class Element(Object):
+class Element(Variable):
 
     _Define = "Element"
     _Symbol = "x"
@@ -144,6 +143,38 @@ class Element(Object):
                 self.Replace(InSet.Elmnt, \
                     self.Symbol, InSet.Property)
 
+    def BelongTo(self, InSet):
+        TempPredicate = Predicate()
+        Check(InSet, Set)
+        TempPredicate.Format = \
+            self.Symbol + \
+            "\\in" + " " + \
+            InSet.Symbol
+        TempPredicate.Truth = \
+            InSet.Condition(self, InSet)
+        return TempPredicate
+
+
+class Subset(Operator):
+
+    _Define = "Subset"
+    _Symbol = "\\subset"
+
+    @staticmethod
+    def Action(self, Left, Rght):
+        TempPredicate = Predicate()
+        Check(Left, Set)
+        Check(Rght, Set)
+        TempPredicate.Format = \
+            Left.Symbol + \
+            self.Symbol + " " + \
+            Rght.Symbol
+        TempPredicate.Truth = Imply(
+                Element(Left).BelongTo(Left), \
+                Element(Left).BelongTo(Rght) \
+            ).Truth
+        return TempPredicate
+
 
 class SetEqual(Operator):
 
@@ -155,7 +186,7 @@ class SetEqual(Operator):
         TempPredicate = Predicate()
         Check(Left, Set)
         Check(Rght, Set)
-        Op = Subclass()
+        Op = Subset()
         TempPredicate.Truth = \
             Op(Left, Rght).Truth \
             and Op(Rght, Left).Truth

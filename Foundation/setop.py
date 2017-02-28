@@ -11,8 +11,8 @@ from Elementary.certify import Check
 from Foundation.basic import Variable, Operator, \
     Morphism
 from Foundation.logic import Neg, Conjunc, Disjunc
-from Foundation.set import Subclass, Set, \
-    Element, SetEqual
+from Foundation.set import Set, Element, Subset, \
+    SetEqual
 
 
 class SetUnion(Operator):
@@ -127,7 +127,7 @@ class CartesianProduct(Operator):
 
 
 def Contain(Left, Rght):
-    OpContain = Subclass()
+    OpContain = Subset()
     return OpContain(Left, Rght)
 
 def SetEq(Left, Rght):

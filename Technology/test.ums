@@ -53,7 +53,8 @@ print(C.Unique)
 print("\nTest of Object")
 print(  "==============")
 
-C := {c\mid c\in C}
+let C be Class
+let Unique['Property'].Format of C be '\\mu'
 let c be Object of C
 
 print(c, c.Status, c.BelongTo(C).Truth)

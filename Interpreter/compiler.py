@@ -19,7 +19,7 @@ LetBeOfForm = \
     r'let\s+(.*)\s+be\s+(\w*)\s+of\s+(\w*)\s*'
 # Form: let ... of ... be ...
 LetOfBeForm = \
-    r'let\s+(\w*)\s+of\s+(.*)\s+be\s+([.*\s*]*.+)'
+    r'let\s+(.*)\s+of\s+(.*)\s+be\s+([.*\s*]*.+)'
 
 # compile syntax
 LetBeSyntax = re.compile(LetBeForm)
