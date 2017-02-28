@@ -76,7 +76,7 @@ class Set(Class):
         Status = InVar.Status
         Status = [Stats.replace(InVar.Symbol, "_")
             for Stats in Status]
-        Property = InSet.PropForm
+        Property = InSet.Property
         Property = [Prpty.replace(InSet.Elmnt, "_")
             for Prpty in Property]
         try: Verify(Status, Property)
@@ -90,14 +90,12 @@ class Set(Class):
         TempVar = Object(Class())
         del TempVar.Unique['Status'][:]
         if TempVar.BelongTo(Input).Truth:
+            print("Set Property Invalid: " + \
+                "Probable Russell Set")
             raise IllDefined
 
     @property
     def Property(self):
-        raise AccessError("Access Denied")
-
-    @property
-    def PropForm(self):
         return self._Unique['Property'].Format
 
     @property
@@ -105,14 +103,12 @@ class Set(Class):
         return self._Unique['Property'].Condition
 
     @Property.setter
-    def Property(self, NewProp):
-        Check(NewProp, Predicate)
-        self.PropForm = NewProp.Format
-        self.Condition = NewProp.Condition
-
-    @PropForm.setter
-    def PropForm(self, NewForm):
-        self.Unique['Property'].Format = NewForm
+    def Property(self, NewForm):
+        TempForm = self.Property
+        self._Unique['Property'].Format = NewForm
+        try: Set.DefCheck(self)
+        except IllDefined:
+            self._Unique['Property'].Format = TempForm
 
     @Condition.setter
     def Condition(self, NewFunc):
@@ -121,8 +117,6 @@ class Set(Class):
         self._Unique['Property'].Condition = NewFunc
         try: Set.DefCheck(self)
         except IllDefined:
-            print("Set Property Invalid: " + \
-                "Probable Russell Set")
             self._Unique['Property']\
                 .Condition = TempFunc
 
@@ -147,7 +141,7 @@ class Element(Object):
         if InSet._Unique['Property']\
                 .Unique['Sync'] is False:
             self.Status = lambda self: \
-                InSet.PropForm.replace\
+                InSet.Property.replace\
                     (InSet.Elmnt, self.Symbol)
 
 

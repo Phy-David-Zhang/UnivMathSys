@@ -24,15 +24,6 @@ class SetUnion(Operator):
     def Action(self, Left, Rght):
         Check(Left, Set)
         Check(Rght, Set)
-
-        def Condition(InVar, InSet):
-            return Disjunc(
-                InVar.BelongTo(InSet\
-                    .Unique['Depend'][0]),
-                InVar.BelongTo(InSet\
-                    .Unique['Depend'][1])
-            ).Truth
-
         TempSet = Set()
         TempSet.Unique['Depend']\
             .extend([Left, Rght])
@@ -40,13 +31,12 @@ class SetUnion(Operator):
             TempSet.Unique['Depend'][0].Symbol \
                 + "\\cup " + \
             TempSet.Unique['Depend'][1].Symbol
-        TempSet.PropForm = lambda self: \
+        TempSet.Property = lambda self: \
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][0].Symbol \
                     + "\\vee " + \
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][1].Symbol
-        TempSet.Condition = Condition
         return TempSet
 
 
@@ -59,15 +49,6 @@ class Intersection(Operator):
     def Action(self, Left, Rght):
         Check(Left, Set)
         Check(Rght, Set)
-
-        def Condition(InVar, InSet):
-            return Conjunc(
-                InVar.BelongTo(InSet\
-                    .Unique['Depend'][0]),
-                InVar.BelongTo(InSet\
-                    .Unique['Depend'][1])
-            ).Truth
-
         TempSet = Set()
         TempSet.Unique['Depend']\
             .extend([Left, Rght])
@@ -75,13 +56,12 @@ class Intersection(Operator):
             TempSet.Unique['Depend'][0].Symbol \
                 + "\\cap " + \
             TempSet.Unique['Depend'][1].Symbol
-        TempSet.PropForm = lambda self: \
+        TempSet.Property = lambda self: \
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][0].Symbol \
                     + "\\wedge " + \
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][1].Symbol
-        TempSet.Condition = Condition
         return TempSet
 
 
@@ -94,15 +74,6 @@ class Complement(Operator):
     def Action(self, Univ, Input):
         Check(Univ, Set)
         Check(Input, Set)
-
-        def Condition(InVar, InSet):
-            return Conjunc(
-                InVar.BelongTo(InSet\
-                    .Unique['Depend'][0]),
-                Neg(InVar.BelongTo(InSet\
-                    .Unique['Depend'][1]))
-            ).Truth
-
         TempSet = Set()
         TempSet.Unique['Depend']\
             .extend([Univ, Input])
@@ -110,13 +81,12 @@ class Complement(Operator):
             "\\complement_" + \
             TempSet.Unique['Depend'][0].Symbol + \
             TempSet.Unique['Depend'][1].Symbol
-        TempSet.PropForm = lambda self: \
+        TempSet.Property = lambda self: \
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][0].Symbol \
                     + "\\wedge " + \
             TempSet.Elmnt + "\\notin " + \
                 TempSet.Unique['Depend'][1].Symbol
-        TempSet.Condition = Condition
         return TempSet
 
 
@@ -129,15 +99,6 @@ class CartesianProduct(Operator):
     def Action(self, Left, Rght):
         Check(Left, Set)
         Check(Rght, Set)
-
-        def Condition(InVar, InSet):
-            return isinstance(InVar.Format, tuple) \
-                and len(InVar.Format) is 2 and \
-                    InVar.Format[0].BelongTo \
-                        (InSet.Unique['Depend'][0]) \
-                and InVar.Format[1].BelongTo \
-                        (InSet.Unique['Depend'][1])
-
         TempSet = Set()
         TempSet.Elmnt = lambda self: "(" + \
             TempSet.Unique['Depend'][0].Elmnt + "," +\
@@ -154,7 +115,7 @@ class CartesianProduct(Operator):
             TempSet.Unique['Depend'][0].Elmnt
         TempSet.Unique['Element'][1].Symbol = \
             TempSet.Unique['Depend'][1].Elmnt
-        TempSet.PropForm = lambda self: \
+        TempSet.Property = lambda self: \
             TempSet.Unique['Depend'][0].Elmnt \
                 + "\\in " + \
             TempSet.Unique['Depend'][0].Symbol \
@@ -162,7 +123,6 @@ class CartesianProduct(Operator):
             TempSet.Unique['Depend'][1].Elmnt \
                 + "\\in " + \
             TempSet.Unique['Depend'][1].Symbol
-        TempSet.Condition = Condition
         return TempSet
 
 
