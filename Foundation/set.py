@@ -52,6 +52,9 @@ class Set(Variable):
             "_x" + self._Symbol
         self._Unique['Property'] \
             = Predicate()
+        self._Unique['Property'].Format = lambda any:\
+            self._Element(self) + "\\in " + \
+                self._Symbol
         self._Unique['Property'].Condition \
             = self.Default
         self._Unique['Sync'] = False

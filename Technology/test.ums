@@ -63,6 +63,9 @@ print(c, c.Status, c.BelongTo(C).Truth)
 print("\nTest of Set")
 print(  "===========")
 
+let X be Set
+print(X)
+
 A := {a\mid a\in A}
 B := {b\mid b\in B}
 C := Union(A, B)
