@@ -45,11 +45,20 @@ class Set(Variable):
     _Symbol = "X"
     _Element = "x"
 
+    _Identify = r'(?:{|\\{)\s*' + \
+                    r'(?P<Elmnt>.+?)\s*' +\
+                    r'(?:\\in\s+(?P<Base>.+))?\s*' + \
+                r'(?:\||\\mid\s)\s*' + \
+                    r'(?P<Property>.+?)' + \
+                r'(?:}|\\})'
+
     @Variable.UniqueInit
     def Initio(self):
         self._Symbol = self.GenUUID()
         self._Element = lambda self: \
             "_x" + self._Symbol
+        self._Unique['Claim'] = lambda self: \
+            self._Element(self)
         self._Unique['Property'] \
             = Predicate()
         self._Unique['Property'].Format = lambda any:\
@@ -58,8 +67,9 @@ class Set(Variable):
         self._Unique['Property'].Condition \
             = self.Default
         self._Unique['Sync'] = False
+        self._Unique['Base'] = False
         self._Format = lambda self: "\\{" + \
-            self._Element(self) + "\\mid " + \
+            self._Unique['Claim'](self) + "\\mid " + \
             self._Unique['Property'].Format + "\\}"
 
     @property
@@ -71,6 +81,20 @@ class Set(Variable):
         self._Element = NewElm
         if not callable(NewElm):
             self._Element = lambda self: NewElm
+
+    @property
+    def Bases(self):
+        return self._Unique['Depend']
+
+    @Bases.setter
+    def Bases(self, NewBase):
+        if self._Unique['Base'] is False:
+            self._Unique['Base'] = True
+            self._Unique['Claim'] = lambda self: \
+                self._Element(self) + "\\in " + \
+                str(self._Unique['Depend'])
+        Check(NewBase, Set)
+        self._Unique['Depend'].append(NewBase)
 
     @staticmethod
     def Default(InVar, InSet):
@@ -128,6 +152,9 @@ class Element(Variable):
     _Define = "Element"
     _Symbol = "x"
     _Format = _Symbol
+
+    _Identify = \
+        r'(?P<Symbol>[a-zA-Z\_][0-9a-zA-Z\_]*)'
 
     @Variable.UniqueInit
     def Initio(self, InSet, InVar=None):
