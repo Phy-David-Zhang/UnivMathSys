@@ -100,12 +100,10 @@ class Set(Variable):
     def Default(InVar, InSet):
         if InSet.Symbol in InVar.Status:
             return True
-        Status = InVar.Status
         Status = [Set.Replace(InVar.Symbol, "_",
-            Stats) for Stats in Status]
-        Property = InSet.Property
-        Property = [Set.Replace(InSet.Elmnt, "_",
-            Prpty) for Prpty in Property]
+            Stats) for Stats in InVar.Status]
+        Property = Set.Replace(InSet.Elmnt, "_",
+            InSet.Property)
         try: Verify(Status, Property)
         except ProofNeeded:
             return False
