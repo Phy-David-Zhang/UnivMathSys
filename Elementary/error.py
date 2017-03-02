@@ -24,4 +24,7 @@ class IntpnError(Error):
 class ProofNeeded(Error):
     pass
 
+class MatchError(Error):
+    pass
+
 # End of Module Elementary.error of UnivMathSys
