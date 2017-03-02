@@ -18,47 +18,6 @@ print(mu, nu)
 print(mu.Truth, nu.Truth)
 print(mu.Condition(), nu.Condition())
 
-rho := Neg(mu)
-print(rho, rho.Truth)
-
-rho := Conjunc(mu, nu)
-sigma := Disjunc(mu, nu)
-lam := Imply(mu, nu)
-print(rho, rho.Truth)
-print(sigma, sigma.Truth)
-print(lam, lam.Truth)
-
-A := {a|a\in A}
-B := {b|b\in B}
-
-rho := Contain(A, B)
-print(rho, rho.Truth)
-rho := Contain(A, A)
-print(rho, rho.Truth)
-
-rho := SetEq(A, B)
-print(rho, rho.Truth)
-rho := SetEq(A, A)
-print(rho, rho.Truth)
-
-# Test of Class
-print("\nTest of Class")
-print(  "=============")
-
-C := {c\mid c\in C}
-print(C)
-print(C.Unique)
-
-# Test of Object
-print("\nTest of Object")
-print(  "==============")
-
-let C be Class
-let Unique['Property'].Format of C be '\\mu'
-let c be Object of C
-
-print(c, c.Status, c.BelongTo(C).Truth)
-
 # Test of Set
 print("\nTest of Set")
 print(  "===========")
@@ -68,28 +27,15 @@ print(X)
 
 A := {a\mid a\in A}
 B := {b\mid b\in B}
-C := Union(A, B)
-D := Intsct(A, B)
-E := Complt(A, B)
-F := CartProct(A, B)
 
 print(A, B)
-print(C)
-print(D)
-print(E)
-print(F)
 
 # Test of Element
 print("\nTest of Element")
 print(  "===========")
 
-let ce be Element of C
-let ee be Element of E
-let fe be Element of F
-
-print(ce, ce.Status)
-print(ee, ee.Status)
-print(fe, fe.Status)
+let a be Element of A
+print(a, a.Status)
 
 # Ending Info
 print("\nThis is the End of Test\n")

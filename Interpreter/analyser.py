@@ -8,7 +8,9 @@
 
 
 import re
-from .formula import Formulas
+from .formula import BasicFormulas, GeneralFormulas
+from collections import namedtuple
+from Elementary.error import MatchError
 
 
 # ----------------------------
@@ -31,78 +33,79 @@ def Analyse(*args, flag=None):
         return Info
 
     elif flag is 'Type':
-        Info = Match(args[0])
+        Info = Match(args[0], flag='Type')
         return Info[0]
 
     elif flag is 'Certify':
         pass
 
     elif flag is 'Command':
-        Info = Match(args[1])
-        Info.insert(1, args[0])
-        Command = Generate(Info)
-        return Command
+        try:
+            Info = Match(args[1])
+            Info.update(Name=args[0])
+            Command = Generate(Info)
+            return Command
+        except MatchError:
+            pass
 
     else:
-        raise KeyError("Invalid Key: " + flag)
+        raise KeyError("Invalid Flag: " + flag)
 
 
-def Match(Input):
+def Match(Input, flag=None):
 
-    Syntax = {re.compile(key): value
-        for key, value in Formulas.items()}
+    if flag is None:
 
-    for key, value in Syntax.items():
-        if key.match(Input):
-            data = key.match(Input).groups()
-            data = [d for d in data if d is not None]
-            data.insert(0, value)
-            return data
+        Syntax = {re.compile(key): value
+            for key, value in BasicFormulas.items()}
 
-    raise SyntaxError("Invalid Syntax: " + Input)
+        for syn, type in Syntax.items():
+            if syn.match(Input):
+                data = dict(Type=type)
+                data.update(syn.match(Input)\
+                    .groupdict())
+                return data
+
+        raise MatchError("Unable to match " + Input +\
+            " with basic formulas")
+
+    elif flag is 'Type':
+
+        try: return Match(Input)['Type']
+        except MatchError:
+            pass
+
+        for ast, type in GeneralFormulas.items():
+            if ast.Analyse(Input):
+                return type
+        raise MatchError("Unable to match " + Input +\
+            " with all build-in formulas")
+
+    else:
+        raise KeyError("Invalid Flag: " + flag)
 
 
 def Generate(Info):
 
-    Type = Info.pop(0)
-    Name = Info.pop(0)
+    Type = Info['Type']
+    Name = Info['Name']
 
-    if Type is "RawPredicate":
+    if Type is "Predicate":
         Command = Name + "=Predicate()\n"
         Command += Name + ".Symbol='" + Name + "'\n"
-        Command += Name + ".Format=" + Info[0] + "\n"
-
-    if Type is "GenPredicate":
-        Command = Name + "=" + Info[0] + "\n"
-        Command += Name + ".Symbol='" + Name + "'\n"
-
-    if Type is "Logic":
-        Command = Name + "=" + Info[0] + "\n"
-        Command += Name + ".Symbol='" + Name + "'\n"
-
-    if Type is "Class":
-        Command = Name + "=" + Type + "()\n"
-        Command += Name + ".Symbol='" + Name + "'\n"
-        Command += Name + ".Object=" + Info[0] + "\n"
-        Command += Name + \
-            ".Unique['Property'].Format=" + Info[1] \
-            + "\n"
+        Command += Name + ".Format=" + \
+            "'" + Info['Form'] + "'\n"
 
     if Type is "Set":
-        Command = Name + "=" + Type + "()\n"
+        Command = Name + "=Set()\n"
         Command += Name + ".Symbol='" + Name + "'\n"
         Command += Name + ".Elmnt=" + \
-            "'" + Info[0] + "'\n"
+            "'" + Info['Elmnt'] + "'\n"
         Command += Name + ".Property=" + \
-            "'" + Info[1] + "'\n"
-
-    if Type is "SetOp":
-        Command = Name + "=" + Info[0] + "\n"
-        Command += Name + ".Symbol='" + Name + "'\n"
-        Command += "if " + Name + ".Elmnt" + \
-            ".startswith('_'): \n"
-        Command += "    " + Name + ".Elmnt=" + \
-            Name + ".Symbol.lower()\n"
+            "'" + Info['Property'] + "'\n"
+        if Info['Base']:
+            Command += Name + ".Base=" + \
+                "'" + Info['Base'] + "'\n"
 
     return Command
 

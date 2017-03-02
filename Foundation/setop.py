@@ -8,11 +8,18 @@
 
 
 from Elementary.certify import Check
+from Elementary.syntr import BaseAST
 from Foundation.basic import Variable, Operator, \
     Morphism
 from Foundation.logic import Neg, Conjunc, Disjunc
 from Foundation.set import Set, Element, Subset, \
     SetEqual
+
+
+class SetAST(BaseAST):
+
+    def Initio(self, Input):
+        pass
 
 
 class SetUnion(Operator):

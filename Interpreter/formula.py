@@ -6,21 +6,26 @@
 
 '''Formula Library of UnivMaths System'''
 
-Formulas = \
+
+from Foundation.basic import Variable
+from Foundation.set import Set
+from Foundation.setop import SetAST
+
+
+GenID = lambda id: r'(?P<' + id + r'>' + \
+    r'[a-zA-Z\_][0-9a-zA-Z\_]*)'
+
+BasicFormulas = \
 {
-    r'([a-zA-Z\_][0-9a-zA-Z\_]*)' + r'\\in' + \
-    r'([a-zA-Z\_][0-9a-zA-Z\_]*)' : "RawPredicate",
+    r'(?P<Form>[a-zA-Z\_][0-9a-zA-Z\_]*\s*\\in\s+' + \
+    r'[a-zA-Z\_][0-9a-zA-Z\_]*)': "Predicate",
 
-    r'(Contain\(.+\))|(SetEq\(.+\))' : "GenPredicate",
+    Set._Identify : "Set"
+}
 
-    r'(Neg\(.+\))|(Conjunc\(.+\))|(Disjunc\(.+\))' + \
-    r'|(Imply\(.+\))' : "Logic",
-
-    r'(?:{|\\{)\s*' + r'(.+?)(?:\\in\s+(.+))?\s*' + \
-    r'(?:\||\\mid\s)\s*' + r'(.+?)' + r'(?:}|\\})' : "Set",
-
-    r'(Union\(.+\))|(Intsct\(.+\))|(Complt\(.+\))' + \
-    r'|(CartProct\(.+\))' : "SetOp"
+GeneralFormulas = \
+{
+    SetAST : "Set"
 }
 
 
