@@ -26,9 +26,10 @@ let X be Set
 print(X)
 
 A := {a\mid a\in A}
-B := {b\mid b\in B}
+B := {b\in A\mid b\in B}
 
 print(A, B)
+print(B.Unique)
 
 # Test of Element
 print("\nTest of Element")

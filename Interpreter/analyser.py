@@ -28,18 +28,23 @@ from Elementary.error import MatchError
 
 def Analyse(*args, flag=None):
 
+    # default: extract all info from a string
     if flag is None:
         Info = Match(args[0])
         return Info
 
+    # analyse type of input
     elif flag is 'Type':
         Info = Match(args[0], flag='Type')
         return Info[0]
 
+    # provide certification of two predicates
     elif flag is 'Certify':
         pass
 
+    # generate python commands for input
     elif flag is 'Command':
+        # try generating if input is among basic forms
         try:
             Info = Match(args[1])
             Info.update(Name=args[0])
@@ -54,12 +59,14 @@ def Analyse(*args, flag=None):
 
 def Match(Input, flag=None):
 
+    # default: search basic formulas
     if flag is None:
-
+        # compile syntax
         Syntax = {re.compile(key): value
             for key, value in BasicFormulas.items()}
-
+        # try if input matches syntax
         for syn, type in Syntax.items():
+            # if match, return a dict containing info
             if syn.match(Input):
                 data = dict(Type=type)
                 data.update(syn.match(Input)\
@@ -69,12 +76,13 @@ def Match(Input, flag=None):
         raise MatchError("Unable to match " + Input +\
             " with basic formulas")
 
+    # search basic and general formulas to find type
     elif flag is 'Type':
-
+        # try match in basic fomulas
         try: return Match(Input)['Type']
         except MatchError:
             pass
-
+        # try match in general formulas
         for ast, type in GeneralFormulas.items():
             if ast.Analyse(Input):
                 return type
@@ -85,6 +93,7 @@ def Match(Input, flag=None):
         raise KeyError("Invalid Flag: " + flag)
 
 
+# generate python codes
 def Generate(Info):
 
     Type = Info['Type']

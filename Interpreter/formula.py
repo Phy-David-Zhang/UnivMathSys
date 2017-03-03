@@ -12,6 +12,7 @@ from Foundation.set import Set
 from Foundation.setop import SetAST
 
 
+# generate name for identifiers
 GenID = lambda id: r'(?P<' + id + r'>' + \
     r'[a-zA-Z\_][0-9a-zA-Z\_]*)'
 
