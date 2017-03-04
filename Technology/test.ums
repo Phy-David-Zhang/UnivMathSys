@@ -27,16 +27,26 @@ print(X)
 
 A := {a\mid a\in A}
 B := {b\in A\mid b\in B}
+C := A\cup B
+D := A\cap B
+E := \complement_A B
+F := A\times B
+G := (A\cup B)\cap(C\cup D)\cap E
 
 print(A, B)
 print(B.Unique)
+print(C, D)
+print(E, F)
+print(G)
 
 # Test of Element
 print("\nTest of Element")
 print(  "===========")
 
 let a be Element of A
+let g be Element of G
 print(a, a.Status)
+print(g, g.Status)
 
 # Ending Info
 print("\nThis is the End of Test\n")

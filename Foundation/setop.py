@@ -9,6 +9,7 @@
 
 from Elementary.certify import Check
 from Elementary.syntr import BaseAST
+from Elementary.error import FormulaError
 from Foundation.basic import Variable, Operator, \
     Morphism
 from Foundation.logic import Neg, Conjunc, Disjunc
@@ -18,8 +19,64 @@ from Foundation.set import Set, Element, Subset, \
 
 class SetAST(BaseAST):
 
-    def Initio(self, Input):
-        pass
+    UNION = r'(?P<UNION>\\cup)'
+    INTSCT = r'(?P<INTSCT>\\cap)'
+    COMPLT = r'(?P<COMPLT>\\complement)'
+    CARTPROD = r'(?P<CARTPROD>\\times)'
+
+    OpList = [UNION, INTSCT, COMPLT, CARTPROD]
+    OpName = {'UNION': 'Union',
+              'INTSCT': 'Intsct',
+              'CARTPROD': 'CartProct',
+              'COMPLT': 'Complt'}
+
+    def Initio(self):
+        Pattern = '|'.join(self.OpList)
+        super().Initio(Pattern)
+
+    def _Final(self):
+        return self.FinalSet()
+
+    def FinalSet(self):
+        if self._Accept('COMPLT'):
+            self._Expect('UDLINE')
+            Univ = self.GenrlSet()
+            Input = self.GenrlSet()
+            return "Complt(" + Univ + "," + \
+                Input + ")"
+        try:
+            Left = self.GenrlSet()
+            OpMatch = None
+            OpFunc = None
+            for Op, Val in self.OpName.items():
+                if self._Accept(Op):
+                    OpMatch = Op
+                    OpFunc = self.OpName[Op]
+            if not OpFunc:
+                raise FormulaError
+            Rght = self.GenrlSet()
+            Formula = OpFunc + \
+                "(" + Left + "," + Rght + ")"
+            while self._Accept(OpMatch):
+                Left = Formula
+                Rght = self.GenrlSet()
+                Formula = OpFunc + \
+                    "(" + Left + "," + Rght + ")"
+            return Formula
+        except FormulaError:
+            return self.BasicSet()
+
+    def GenrlSet(self):
+        if self._Accept('LPAREN'):
+            Formula = self.FinalSet()
+            self._Expect('RPAREN')
+            return Formula
+        else:
+            return self.BasicSet()
+
+    def BasicSet(self):
+        if self._Accept('ID'):
+            return self.CurrToken.Value
 
 
 class SetUnion(Operator):
@@ -38,6 +95,8 @@ class SetUnion(Operator):
             TempSet.Unique['Depend'][0].Symbol \
                 + "\\cup " + \
             TempSet.Unique['Depend'][1].Symbol
+        TempSet.Symbol = \
+            TempSet.Unique['Origin'](self)
         TempSet.Property = lambda self: \
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][0].Symbol \
@@ -63,6 +122,8 @@ class Intersection(Operator):
             TempSet.Unique['Depend'][0].Symbol \
                 + "\\cap " + \
             TempSet.Unique['Depend'][1].Symbol
+        TempSet.Symbol = \
+            TempSet.Unique['Origin'](self)
         TempSet.Property = lambda self: \
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][0].Symbol \
@@ -88,6 +149,8 @@ class Complement(Operator):
             "\\complement_" + \
             TempSet.Unique['Depend'][0].Symbol + \
             TempSet.Unique['Depend'][1].Symbol
+        TempSet.Symbol = \
+            TempSet.Unique['Origin'](self)
         TempSet.Property = lambda self: \
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][0].Symbol \
@@ -115,6 +178,8 @@ class CartesianProduct(Operator):
             TempSet.Unique['Depend'][0].Symbol \
                 + "\\times " + \
             TempSet.Unique['Depend'][1].Symbol
+        TempSet.Symbol = \
+            TempSet.Unique['Origin'](self)
         TempSet.Unique['Element'] = \
             (Element(TempSet.Unique['Depend'][0]),
              Element(TempSet.Unique['Depend'][1]))

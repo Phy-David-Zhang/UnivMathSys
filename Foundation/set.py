@@ -152,7 +152,7 @@ class Element(Variable):
     _Format = _Symbol
 
     _Identify = \
-        r'(?P<Symbol>[a-zA-Z\_][0-9a-zA-Z\_]*)'
+        r'(?P<Symbol>[a-zA-Z][0-9a-zA-Z]*)'
 
     @Variable.UniqueInit
     def Initio(self, InSet, InVar=None):
