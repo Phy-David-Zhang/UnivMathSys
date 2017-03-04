@@ -26,7 +26,7 @@ BasicFormulas = \
 
 GeneralFormulas = \
 {
-    SetAST : "Set"
+    SetAST() : "Set"
 }
 
 

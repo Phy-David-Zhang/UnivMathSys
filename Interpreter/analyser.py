@@ -8,6 +8,7 @@
 
 
 import re
+import logging
 from .formula import BasicFormulas, GeneralFormulas
 from collections import namedtuple
 from Elementary.error import MatchError
@@ -48,10 +49,23 @@ def Analyse(*args, flag=None):
         try:
             Info = Match(args[1])
             Info.update(Name=args[0])
-            Command = Generate(Info)
-            return Command
+            return Generate(Info)
         except MatchError:
-            pass
+            Formula = None
+            Info = dict(Name=args[0])
+            for ast, type in GeneralFormulas.items():
+                try:
+                    Formula = ast.Analyse(args[1])
+                    Info['Type'] = type
+                    Info['Formula'] = Formula
+                except Exception:
+                    if type is 'Set':
+                        logging.exception("")
+            if not Formula:
+                raise MatchError("Unable to match " +\
+                    args[1] + " with all formulas")
+            return Generate(Info,
+                FormulaType='General')
 
     else:
         raise KeyError("Invalid Flag: " + flag)
@@ -94,20 +108,25 @@ def Match(Input, flag=None):
 
 
 # generate python codes
-def Generate(Info):
+def Generate(Info, FormulaType='Basic'):
 
     Type = Info['Type']
     Name = Info['Name']
 
-    if Type is "Predicate":
-        Command = Name + "=Predicate()\n"
-        Command += Name + ".Symbol='" + Name + "'\n"
+    if FormulaType is 'Basic':
+        Command = Name + "=" + Type + "()\n"
+    elif FormulaType is 'General':
+        Command = Name + "=" + Info['Formula'] + "\n"
+    else:
+        raise KeyError("Unknown Formula Type")
+
+    Command += Name + ".Symbol='" + Name + "'\n"
+
+    if Type is 'Predicate' and FormulaType is 'Basic':
         Command += Name + ".Format=" + \
             "'" + Info['Form'] + "'\n"
 
-    if Type is "Set":
-        Command = Name + "=Set()\n"
-        Command += Name + ".Symbol='" + Name + "'\n"
+    if Type is 'Set' and FormulaType is 'Basic':
         Command += Name + ".Elmnt=" + \
             "'" + Info['Elmnt'] + "'\n"
         Command += Name + ".Property=" + \
@@ -115,6 +134,12 @@ def Generate(Info):
         if Info['Base']:
             Command += Name + ".Base=" + \
                 "'" + Info['Base'] + "'\n"
+
+    if Type is 'Set' and FormulaType is 'General':
+        Command += "if " + Name + ".Elmnt" + \
+            ".startswith('_'): \n"
+        Command += "    " + Name + ".Elmnt=" + \
+            Name + ".Symbol.lower()\n"
 
     return Command
 
