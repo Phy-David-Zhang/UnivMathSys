@@ -57,6 +57,7 @@ class Set(Variable):
         self._Symbol = self.GenUUID()
         self._Element = lambda self: \
             "_x" + self._Symbol
+        self._Condition = None
         self._Unique['Claim'] = lambda self: \
             self._Element(self)
         self._Unique['Property'] \
@@ -100,23 +101,27 @@ class Set(Variable):
     def Default(InVar, InSet):
         if InSet.Symbol in InVar.Status:
             return True
+        if InSet.Condition:
+            return InSet._Condition(InVar, InSet)
         Status = [Set.Replace(InVar.Symbol, "_",
             Stats) for Stats in InVar.Status]
         Property = Set.Replace(InSet.Elmnt, "_",
             InSet.Property)
-        try: Verify(Status, Property)
-        except ProofNeeded:
-            return False
-        return True
+        try: return Verify(Status, Property)
+        except ProofNeeded: return False
 
     @staticmethod
     def DefCheck(Input):
         Check(Input, Set)
         TempVar = Predicate()
-        if Input.Condition(TempVar, Input):
+        if Input.Inspect(TempVar, Input):
             print("Set Property Invalid: " + \
                 "Probable Russell Set")
             raise IllDefined
+
+    @property
+    def Inspect(self):
+        return self._Unique['Property'].Condition
 
     @property
     def Property(self):
@@ -124,7 +129,7 @@ class Set(Variable):
 
     @property
     def Condition(self):
-        return self._Unique['Property'].Condition
+        return self._Condition
 
     @Property.setter
     def Property(self, NewForm):
@@ -138,11 +143,10 @@ class Set(Variable):
     def Condition(self, NewFunc):
         Check(NewFunc, 'function')
         TempFunc = self.Condition
-        self._Unique['Property'].Condition = NewFunc
+        self._Condition = NewFunc
         try: Set.DefCheck(self)
         except IllDefined:
-            self._Unique['Property']\
-                .Condition = TempFunc
+            self._Condition = TempFunc
 
 
 class Element(Variable):
@@ -179,7 +183,7 @@ class Element(Variable):
             "\\in" + " " + \
             InSet.Symbol
         TempPredicate.Truth = \
-            InSet.Condition(self, InSet)
+            InSet.Inspect(self, InSet)
         return TempPredicate
 
 
