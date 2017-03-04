@@ -27,4 +27,7 @@ class ProofNeeded(Error):
 class MatchError(Error):
     pass
 
+class FormulaError(Error):
+    pass
+
 # End of Module Elementary.error of UnivMathSys
