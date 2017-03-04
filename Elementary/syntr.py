@@ -13,8 +13,8 @@ from collections import namedtuple
 
 class BaseAST(object):
 
-    ID = r'(?P<ID>[a-zA-Z][0-9a-zA-Z]*)'
-    IID = r'(?:\s+|^)(?P<IID>\_[0-9a-zA-Z]*)'
+    ID = r'(?P<ID>[a-zA-Z][0-9a-zA-Z\_]*)'
+    IID = r'(?:\s+|^)(?P<IID>\_[0-9a-zA-Z\_]*)'
     WS = r'(?P<WS>\s+)'
     NUM = r'(?P<NUM>\d+)'
     PLUS = r'(?P<OPPLUS>\+)'
