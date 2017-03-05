@@ -113,6 +113,12 @@ def Generate(Info, FormulaType='Basic'):
     Type = Info['Type']
     Name = Info['Name']
 
+    if Type is 'Identifier' and \
+                FormulaType is 'Basic':
+        Command = Name + "=" + Info['ID'] + "\n"
+        Command += Name + ".Symbol='" + Name + "'\n"
+        return Command
+
     if FormulaType is 'Basic':
         Command = Name + "=" + Type + "()\n"
     elif FormulaType is 'General':

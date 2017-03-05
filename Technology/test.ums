@@ -48,6 +48,12 @@ let g be Element of G
 print(a, a.Status)
 print(g, g.Status)
 
+a = Element(B, a)
+print(a, a.Status)
+
+H := G
+print(H)
+
 # Ending Info
 print("\nThis is the End of Test\n")
 
