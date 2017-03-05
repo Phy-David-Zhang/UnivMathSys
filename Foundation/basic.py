@@ -92,7 +92,10 @@ class Variable(Techniques):
 
     @Status.setter
     def Status(self, NewStat):
-        self._Unique['Status'].append(NewStat)
+        Stat = NewStat
+        if not callable(NewStat):
+            Stat = lambda self: NewStat
+        self._Unique['Status'].append(Stat)
 
 
 class Operator(Techniques):
