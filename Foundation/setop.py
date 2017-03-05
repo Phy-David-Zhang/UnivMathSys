@@ -64,6 +64,7 @@ class SetAST(BaseAST):
                     "(" + Left + "," + Rght + ")"
             return Formula
         except FormulaError:
+            self._Restore()
             return self.BasicSet()
 
     def GenrlSet(self):
@@ -148,7 +149,7 @@ class Complement(Operator):
         TempSet.Unique['Origin'] = lambda self: \
             "\\complement_" + \
             TempSet.Unique['Depend'][0].Symbol + \
-            TempSet.Unique['Depend'][1].Symbol
+            " " + TempSet.Unique['Depend'][1].Symbol
         TempSet.Symbol = \
             TempSet.Unique['Origin'](self)
         TempSet.Property = lambda self: \

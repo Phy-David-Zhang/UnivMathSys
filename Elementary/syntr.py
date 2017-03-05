@@ -38,6 +38,7 @@ class BaseAST(object):
 
     def Analyse(self, Input):
         self.TokenList = self.GenTokens(Input)
+        self.PrevToken = None
         self.CurrToken = None
         self.NextToken = None
         self._Advance()
@@ -49,11 +50,20 @@ class BaseAST(object):
         for m in iter(Scanner.match, None):
             Tokens = Token(m.lastgroup, m.group())
             if Tokens.Type != 'WS':
-                yield Tokens
+                Regret = yield Tokens
+                if Regret:
+                    yield None
+                    Regret = yield Regret
 
     def _Advance(self):
-        self.CurrToken, self.NextToken = \
+        self.PrevToken, self.CurrToken, \
+            self.NextToken = self.CurrToken, \
             self.NextToken, next(self.TokenList, None)
+
+    def _Restore(self):
+        self.TokenList.send(self.NextToken)
+        self.CurrToken, self.NextToken = \
+            self.PrevToken, self.CurrToken
 
     def _Accept(self, Type):
         if self.NextToken and \
