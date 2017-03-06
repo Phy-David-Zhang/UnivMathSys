@@ -104,10 +104,17 @@ class Operator(Techniques):
 
     _Define = None
     _Symbol = None
+    _OpList = list()
 
     @staticmethod
     def Action(self, *args, **kwargs):
         pass
+
+    def Precdc(self, Input):
+        for Op in self._OpList:
+            if Input.find(Op) + 1:
+                return "(" + Input + ")"
+        return Input
 
     @property
     def Define(self):
