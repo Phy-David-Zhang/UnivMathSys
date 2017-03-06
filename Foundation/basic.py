@@ -116,6 +116,13 @@ class Operator(Techniques):
                 return "(" + Input + ")"
         return Input
 
+    @staticmethod
+    def Replace(Old, New, Target):
+        Old = Old.replace('\\', '\\\\')
+        Pattern = r'([^0-9a-zA-Z\_])(' + Old + r')'
+        Pattern += r'|^()(' + Old + r')'
+        return sub(Pattern, r'\1' + New, Target)
+        
     @property
     def Define(self):
         return self._Define

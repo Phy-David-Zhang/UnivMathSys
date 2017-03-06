@@ -14,6 +14,10 @@ from Foundation.basic import Variable, Operator, \
 from Foundation.initio import Predicate
 
 
+__OpList__ = ["\\forall", "\\exists", "\\wedge",
+              "\\vee", "\\Rightarrow"]
+
+
 class UnivQuan(Operator):
 
     '''Concept Universal Quantifier'''
@@ -33,7 +37,7 @@ class ExistQuan(Operator):
     '''Concept Existential Quantifier'''
 
     _Define = "Existential Quantifier"
-    _Symbol = "\\exist"
+    _Symbol = "\\exists"
 
     @staticmethod
     def Action(self, InVar):
@@ -67,6 +71,7 @@ class Conjunction(Operator):
 
     _Define = "Conjunction"
     _Symbol = "\\wedge"
+    _OpList = __OpList__
 
     @staticmethod
     def Action(self, Left, Rght):
@@ -74,12 +79,18 @@ class Conjunction(Operator):
         Check(Left, Predicate)
         Check(Rght, Predicate)
         TempPredicate.Format = \
-            Left.Symbol + \
-            self.Symbol+ " " + \
-            Rght.Symbol
+            lambda any: \
+                self.Precdc(Left.Format) + \
+                self.Symbol + " " + \
+                self.Precdc(Rght.Format) \
+            if not isinstance(any, list) else \
+                self.Replace(any[0], any[1],
+                    self.Precdc(Left.Format)) + \
+                self.Symbol + " " + \
+                self.Replace(any[2], any[3],
+                    self.Precdc(Rght.Format))
         TempPredicate.Truth = \
-            Left.Truth and \
-            Rght.Truth
+            Left.Truth and Rght.Truth
         return TempPredicate
 
 
@@ -89,6 +100,7 @@ class Disjunction(Operator):
 
     _Define = "Disjunction"
     _Symbol = "\\vee"
+    _OpList = __OpList__
 
     @staticmethod
     def Action(self, Left, Rght):
@@ -96,12 +108,18 @@ class Disjunction(Operator):
         Check(Left, Predicate)
         Check(Rght, Predicate)
         TempPredicate.Format = \
-            Left.Symbol + \
-            self.Symbol + " " + \
-            Rght.Symbol
+            lambda any: \
+                self.Precdc(Left.Format) + \
+                self.Symbol + " " + \
+                self.Precdc(Rght.Format) \
+            if not isinstance(any, list) else \
+                self.Replace(any[0], any[1],
+                    self.Precdc(Left.Format)) + \
+                self.Symbol + " " + \
+                self.Replace(any[2], any[3],
+                    self.Precdc(Rght.Format))
         TempPredicate.Truth = \
-            Left.Truth or \
-            Rght.Truth
+            Left.Truth or Rght.Truth
         return TempPredicate
 
 
@@ -110,7 +128,7 @@ class Implication(Operator):
     '''Concept Implication'''
 
     _Define = "Implication"
-    _Symbol = "\\rightarrow"
+    _Symbol = "\\Rightarrow"
 
     @staticmethod
     def Action(self, Left, Rght):
