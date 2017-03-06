@@ -65,13 +65,15 @@ class Set(Variable):
         self._Unique['Property'].Format = lambda any:\
             self._Element(self) + "\\in " + \
                 self._Symbol
+        self._Unique['Property'].Short = lambda any:\
+            self._Unique['Property'].Format
         self._Unique['Property'].Condition \
             = self.Default
         self._Unique['Sync'] = False
         self._Unique['Base'] = False
         self._Format = lambda self: "\\{" + \
             self._Unique['Claim'](self) + "\\mid " + \
-            self._Unique['Property'].Format + "\\}"
+            self._Unique['Property'].Short("") + "\\}"
 
     @property
     def Elmnt(self):
