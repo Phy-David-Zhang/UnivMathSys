@@ -27,8 +27,7 @@ class SetAST(BaseAST):
     OpList = [UNION, INTSCT, COMPLT, CARTPROD]
     OpName = {'UNION': 'Union',
               'INTSCT': 'Intsct',
-              'CARTPROD': 'CartProct',
-              'COMPLT': 'Complt'}
+              'CARTPROD': 'CartProct'}
 
     def Initio(self):
         Pattern = '|'.join(self.OpList)
@@ -80,10 +79,15 @@ class SetAST(BaseAST):
             return self.CurrToken.Value
 
 
+__OpList__ = ["\\cup", "\\cap", "\\complement",
+              "\\times"]
+
+
 class SetUnion(Operator):
 
     _Define = "Union"
     _Symbol = "\\cup"
+    _OpList = __OpList__
 
     @staticmethod
     def Action(self, Left, Rght):
@@ -92,10 +96,10 @@ class SetUnion(Operator):
         TempSet = Set()
         TempSet.Unique['Depend']\
             .extend([Left, Rght])
-        TempSet.Unique['Origin'] = lambda self: \
-            TempSet.Unique['Depend'][0].Symbol \
-                + "\\cup " + \
-            TempSet.Unique['Depend'][1].Symbol
+        TempSet.Unique['Origin'] = lambda any: \
+            self.Precdc(TempSet.Unique['Depend'][0]\
+                .Symbol) + "\\cup " + self.Precdc(
+            TempSet.Unique['Depend'][1].Symbol)
         TempSet.Symbol = \
             TempSet.Unique['Origin'](self)
         TempSet.Property = lambda self: Disjunc(
@@ -118,6 +122,7 @@ class Intersection(Operator):
 
     _Define = "Intersection"
     _Symbol = "\\cap"
+    _OpList = __OpList__
 
     @staticmethod
     def Action(self, Left, Rght):
@@ -126,10 +131,10 @@ class Intersection(Operator):
         TempSet = Set()
         TempSet.Unique['Depend']\
             .extend([Left, Rght])
-        TempSet.Unique['Origin'] = lambda self: \
-            TempSet.Unique['Depend'][0].Symbol \
-                + "\\cap " + \
-            TempSet.Unique['Depend'][1].Symbol
+        TempSet.Unique['Origin'] = lambda any: \
+            self.Precdc(TempSet.Unique['Depend'][0]\
+                .Symbol) + "\\cap " + self.Precdc(
+            TempSet.Unique['Depend'][1].Symbol)
         TempSet.Symbol = \
             TempSet.Unique['Origin'](self)
         TempSet.Property = lambda self: Conjunc(
@@ -160,10 +165,11 @@ class Complement(Operator):
         TempSet = Set()
         TempSet.Unique['Depend']\
             .extend([Univ, Input])
-        TempSet.Unique['Origin'] = lambda self: \
-            "\\complement_" + \
-            TempSet.Unique['Depend'][0].Symbol + \
-            " " + TempSet.Unique['Depend'][1].Symbol
+        TempSet.Unique['Origin'] = lambda any: \
+            "\\complement_" + self.Precdc(
+            TempSet.Unique['Depend'][0]\
+                .Symbol) + " " + self.Precdc(
+            TempSet.Unique['Depend'][1].Symbol)
         TempSet.Symbol = \
             TempSet.Unique['Origin'](self)
         TempSet.Property = lambda self: Conjunc(
