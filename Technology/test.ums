@@ -33,15 +33,21 @@ E := \complement_A B
 F := A\times B
 G := (A\cup B)\cap(C\cup D)\cap E
 
+J := A\cup B\cup C
+K := A\cap B\cap D
+
 print(A, B)
 print(B.Unique)
 print(C, D)
 print(E, F)
+print(E.Property)
 print(G)
+print(J)
+print(K)
 
 # Test of Element
 print("\nTest of Element")
-print(  "===========")
+print(  "===============")
 
 let a be Element of A
 let g be Element of G

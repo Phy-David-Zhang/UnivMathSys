@@ -98,7 +98,14 @@ class SetUnion(Operator):
             TempSet.Unique['Depend'][1].Symbol
         TempSet.Symbol = \
             TempSet.Unique['Origin'](self)
-        TempSet.Property = lambda self: \
+        TempSet.Property = lambda self: Disjunc(
+            TempSet.Unique['Depend'][0]\
+                .Unique['Property'],
+            TempSet.Unique['Depend'][1]\
+                .Unique['Property'])._Format\
+                    ([Left.Elmnt, TempSet.Elmnt] + \
+                     [Rght.Elmnt, TempSet.Elmnt])
+        TempSet.Unique['Property'].Short = lambda em:\
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][0].Symbol \
                     + "\\vee " + \
@@ -125,7 +132,14 @@ class Intersection(Operator):
             TempSet.Unique['Depend'][1].Symbol
         TempSet.Symbol = \
             TempSet.Unique['Origin'](self)
-        TempSet.Property = lambda self: \
+        TempSet.Property = lambda self: Conjunc(
+            TempSet.Unique['Depend'][0]\
+                .Unique['Property'],
+            TempSet.Unique['Depend'][1]\
+                .Unique['Property'])._Format\
+                    ([Left.Elmnt, TempSet.Elmnt] + \
+                     [Rght.Elmnt, TempSet.Elmnt])
+        TempSet.Unique['Property'].Short = lambda em:\
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][0].Symbol \
                     + "\\wedge " + \
@@ -152,7 +166,14 @@ class Complement(Operator):
             " " + TempSet.Unique['Depend'][1].Symbol
         TempSet.Symbol = \
             TempSet.Unique['Origin'](self)
-        TempSet.Property = lambda self: \
+        TempSet.Property = lambda self: Conjunc(
+            TempSet.Unique['Depend'][0]\
+                .Unique['Property'], Neg(
+            TempSet.Unique['Depend'][1]\
+                .Unique['Property']))._Format\
+                    ([Univ.Elmnt, TempSet.Elmnt] + \
+                     [Input.Elmnt, TempSet.Elmnt])
+        TempSet.Unique['Property'].Short = lambda em:\
             TempSet.Elmnt + "\\in " + \
                 TempSet.Unique['Depend'][0].Symbol \
                     + "\\wedge " + \
