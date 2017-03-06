@@ -14,8 +14,8 @@ from Foundation.basic import Variable, Operator, \
 from Foundation.initio import Predicate
 
 
-__OpList__ = ["\\forall", "\\exists", "\\wedge",
-              "\\vee", "\\Rightarrow"]
+__OpList__ = ["\\forall", "\\exists", "\\neg",
+              "\\wedge", "\\vee", "\\Rightarrow"]
 
 
 class UnivQuan(Operator):
@@ -58,10 +58,14 @@ class Negation(Operator):
         TempPredicate = Predicate()
         Check(Input, Predicate)
         TempPredicate.Format = \
-            self.Symbol + " " + \
-            Input.Symbol
-        TempPredicate.Truth = \
-            not Input.Truth
+            lambda any: \
+                self.Symbol + " " + \
+                self.Precdc(Input.Format) \
+            if not isinstance(any, list) else \
+                self.Symbol + " " + \
+                self.Replace(any[0], any[1],
+                    self.Precdc(Input.Format))
+        TempPredicate.Truth = not Input.Truth
         return TempPredicate
 
 
