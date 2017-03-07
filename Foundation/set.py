@@ -55,8 +55,8 @@ class Set(Variable):
     @Variable.UniqueInit
     def Initio(self):
         self._Symbol = self.GenUUID()
-        self._Element = lambda self: \
-            "_x" + self._Symbol
+        self._Element = lambda any: \
+            "_x" + hex(abs(hash(self._Symbol)))
         self._Condition = None
         self._Unique['Claim'] = lambda self: \
             self._Element(self)

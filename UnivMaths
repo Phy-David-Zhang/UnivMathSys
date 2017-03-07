@@ -10,7 +10,7 @@
 
 
 # version information
-__version__ = "Internal 0.6.10.2"
+__version__ = "Internal 0.6.10.3"
 
 
 import os
