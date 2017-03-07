@@ -42,6 +42,7 @@ print(C, D)
 print(E, F)
 print(E.Property)
 print(G)
+print(G.Property)
 print(J)
 print(K)
 
@@ -59,6 +60,10 @@ print(a, a.Status)
 
 H := G
 print(H)
+print(H.Unique['Origin'](""))
+
+L := A\cap\complement_B C
+print(L, L.Unique['Origin'](""))
 
 # Ending Info
 print("\nThis is the End of Test\n")

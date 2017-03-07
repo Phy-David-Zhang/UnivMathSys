@@ -71,6 +71,9 @@ class SetAST(BaseAST):
             Formula = self.FinalSet()
             self._Expect('RPAREN')
             return Formula
+        elif self._Accept('COMPLT'):
+            self._Restore()
+            return self.FinalSet()
         else:
             return self.BasicSet()
 
