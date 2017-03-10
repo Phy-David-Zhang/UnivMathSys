@@ -232,7 +232,7 @@ def Test_Foundation_set_Set():
     print(TempSet.Define, TempSet.Symbol, \
             TempSet.Format)
 
-    TempSet.Property = "true"
+    TempSet.Property = "_\\in X"
     TempSet.Condition = TrueFunc
 
     print(TempSet.Define, TempSet.Symbol, \
@@ -247,7 +247,7 @@ def Test_Foundation_set_Element():
 
     TestSet.Symbol = "Y"
     TestSet.Object = "y"
-    TestSet.Property = "P(y)"
+    TestSet.Property = "y\\in Y"
 
     TestElmnt = Element(TestSet)
 
@@ -303,8 +303,8 @@ def Test_Foundation_setop_Union():
     SetA.Elmnt = "a"
     SetB.Elmnt = "b"
 
-    SetA.Property = "P(a)"
-    SetB.Property = "P(b)"
+    SetA.Property = "a\\in A"
+    SetB.Property = "b\\in B"
 
     SetX = Union(SetA, SetB)
     Elmx = Element(SetX)
@@ -328,8 +328,8 @@ def Test_Foundation_setop_Intsct():
     SetA.Elmnt = "a"
     SetB.Elmnt = "b"
 
-    SetA.Property = "P(a)"
-    SetB.Property = "P(b)"
+    SetA.Property = "a\\in A"
+    SetB.Property = "b\\in B"
 
     SetA.Condition = lambda InVar, InSet: \
         InSet.Symbol in InVar.Status
@@ -357,8 +357,8 @@ def Test_Foundation_setop_Complt():
     SetU.Object = "u"
     SetA.Object = "a"
 
-    SetU.Property = "P(u)"
-    SetA.Property = "P(a)"
+    SetU.Property = "u\\in U"
+    SetA.Property = "a\\in A"
 
     SetX = Complt(SetU, SetA)
     Elmx = Element(SetX)
@@ -381,8 +381,8 @@ def Test_Foundation_setop_CartProct():
     SetA.Elmnt = "a"
     SetB.Elmnt = "b"
 
-    SetA.Property = "P(a)"
-    SetB.Property = "P(b)"
+    SetA.Property = "a\\in A"
+    SetB.Property = "b\\in B"
 
     SetX = CartProct(SetA, SetB)
     Elmx = Element(SetX)

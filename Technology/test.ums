@@ -63,7 +63,20 @@ print(H)
 print(H.Unique['Origin'](""))
 
 L := A\cap\complement_B C
-print(L, L.Unique['Origin'](""))
+print(L, L.Property, L.Unique['Origin'](""))
+
+print(Element(L).BelongTo(B).Truth)
+
+let A, B, C be Set
+D := \complement_C (A\cap B)
+E := \complement_C A\cup\complement_C B
+print(SetEq(D, E).Truth)
+L := A\cap\complement_B C
+print(L, L.Property)
+print(Element(B).BelongTo(L).Truth)
+print(D.Unique['Origin'](""))
+
+R := {r|r\\notin R}
 
 # Ending Info
 print("\nThis is the End of Test\n")
