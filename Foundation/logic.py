@@ -52,6 +52,7 @@ class Negation(Operator):
 
     _Define = "Negation"
     _Symbol = "\\neg"
+    _OpList = __OpList__
 
     @staticmethod
     def Action(self, Input):
