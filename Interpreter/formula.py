@@ -18,11 +18,7 @@ GenID = lambda id: r'(?P<' + id + r'>' + \
 
 BasicFormulas = \
 {
-    r'(?P<ID>[a-zA-Z][0-9a-zA-Z\_]*$)': "Identifier",
-
-    r'(?P<Form>[a-zA-Z\_][0-9a-zA-Z\_]*\s*\\in\s+' + \
-    r'[a-zA-Z\_][0-9a-zA-Z\_]*)': "Predicate",
-
+    Variable._Identify: "Identifier",
     Set._Identify : "Set"
 }
 

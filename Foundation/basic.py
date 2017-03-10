@@ -22,6 +22,8 @@ class Variable(Techniques):
     _Format = None
     _Unique = dict()
 
+    _Identify = r'(?P<ID>[a-zA-Z][0-9a-zA-Z\_]*$)'
+
     @classmethod
     def UniqueInit(cls, func):
         @wraps(func)
@@ -122,7 +124,7 @@ class Operator(Techniques):
         Pattern = r'([^0-9a-zA-Z\_])(' + Old + r')'
         Pattern += r'|^()(' + Old + r')'
         return sub(Pattern, r'\1' + New, Target)
-        
+
     @property
     def Define(self):
         return self._Define
