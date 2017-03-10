@@ -10,13 +10,31 @@
 
 
 # version information
-__version__ = "Internal 0.6.10.4"
+__version__ = "Internal 0.6.11.2"
 
 
 import os
 import sys
 import logging
 import readline
+
+# handler setup
+StrHndlr = logging.StreamHandler()
+StrHndlr.setFormatter(logging.Formatter\
+    ('%(levelname)s: %(message)s'))
+
+# logger setup
+MainLogger = logging.getLogger('Main')
+ResolverLogger = logging.getLogger('Resolver')
+CompilerLogger = logging.getLogger('Compiler')
+
+MainLogger.setLevel('WARNING')
+ResolverLogger.setLevel('WARNING')
+CompilerLogger.setLevel('WARNING')
+
+MainLogger.addHandler(StrHndlr)
+ResolverLogger.addHandler(StrHndlr)
+CompilerLogger.addHandler(StrHndlr)
 
 
 # add path for UnivMathSys package to sys.path
@@ -67,6 +85,7 @@ def FileExec(FileName):
                 # handle single line command
                 cmd = Compile(line)
                 if cmd:
+                    CompilerLogger.debug(cmd)
                     exec(cmd)
                 else:
                     exec(line)

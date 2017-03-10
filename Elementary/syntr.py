@@ -8,7 +8,10 @@
 
 
 import re
+import logging
 from collections import namedtuple
+
+Logger = logging.getLogger('Main')
 
 
 class BaseAST(object):
@@ -37,11 +40,14 @@ class BaseAST(object):
         self._Pattern = re.compile(self._Pattern)
 
     def Analyse(self, Input):
+        Logger.info("Enter Analyse")
+        Logger.debug("Input: " + Input)
         self.TokenList = self.GenTokens(Input)
         self.PrevToken = None
         self.CurrToken = None
         self.NextToken = None
         self._Advance()
+        Logger.info("Enter _Final")
         return self._Final()
 
     def GenTokens(self, text):
@@ -59,23 +65,28 @@ class BaseAST(object):
         self.PrevToken, self.CurrToken, \
             self.NextToken = self.CurrToken, \
             self.NextToken, next(self.TokenList, None)
+        Logger.info("Advance: " + str(self.CurrToken))
 
     def _Restore(self):
-        self.TokenList.send(self.NextToken)
+        if self.NextToken:
+            self.TokenList.send(self.NextToken)
         self.CurrToken, self.NextToken = \
             self.PrevToken, self.CurrToken
+        Logger.info("Restore: " + str(self.CurrToken))
 
     def _Accept(self, Type):
         if self.NextToken and \
                 self.NextToken.Type == Type:
             self._Advance()
+            Logger.debug("Accept: " + \
+                str(self.CurrToken))
             return True
         else:
             return False
 
     def _Expect(self, Type):
         if not self._Accept(Type):
-            raise SyntaxError("Unidentified" + \
+            raise SyntaxError("Unidentified " + \
                 "Syntax: " + self.NextToken.Value)
 
     def _Final(self):
