@@ -37,14 +37,8 @@ class SetAST(BaseAST):
         return self.FinalSet()
 
     def FinalSet(self):
-        if self._Accept('COMPLT'):
-            self._Expect('UDLINE')
-            Univ = self.GenrlSet()
-            Input = self.GenrlSet()
-            return "Complt(" + Univ + "," + \
-                Input + ")"
+        Left = self.GenrlSet()
         try:
-            Left = self.GenrlSet()
             OpMatch = None
             OpFunc = None
             for Op, Val in self.OpName.items():
@@ -63,17 +57,19 @@ class SetAST(BaseAST):
                     "(" + Left + "," + Rght + ")"
             return Formula
         except FormulaError:
-            self._Restore()
-            return self.BasicSet()
+            return Left
 
     def GenrlSet(self):
         if self._Accept('LPAREN'):
             Formula = self.FinalSet()
             self._Expect('RPAREN')
             return Formula
-        elif self._Accept('COMPLT'):
-            self._Restore()
-            return self.FinalSet()
+        if self._Accept('COMPLT'):
+            self._Expect('UDLINE')
+            Univ = self.GenrlSet()
+            Input = self.GenrlSet()
+            return "Complt(" + Univ + "," + \
+                Input + ")"
         else:
             return self.BasicSet()
 
@@ -82,8 +78,7 @@ class SetAST(BaseAST):
             return self.CurrToken.Value
 
 
-__OpList__ = ["\\cup", "\\cap", "\\complement",
-              "\\times"]
+__OpList__ = ["\\cup", "\\cap", "\\times"]
 
 
 class SetUnion(Operator):
@@ -160,6 +155,7 @@ class Complement(Operator):
 
     _Define = "Complement"
     _Symbol = "\\complement"
+    _OpList = __OpList__
 
     @staticmethod
     def Action(self, Univ, Input):
