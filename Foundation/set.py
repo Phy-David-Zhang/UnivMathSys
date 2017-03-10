@@ -11,11 +11,12 @@ from Elementary.error import IllDefined, AccessError,\
     ProofNeeded
 from Elementary.certify import Check
 from Interpreter.enter import Verify
+from Interpreter.resolver import ResolveEngine
 from Foundation.basic import Variable, Operator, \
     Morphism
 from Foundation.initio import Predicate, Class, \
     Object, BelongTo
-from Foundation.logic import Imply
+from Foundation.logic import Neg, Imply
 
 
 class Subclass(Operator):
@@ -104,12 +105,15 @@ class Set(Variable):
         if InSet.Symbol in InVar.Status:
             return True
         if InSet.Condition:
-            return InSet._Condition(InVar, InSet)
+            try: return InSet._Condition(InVar, InSet)
+            except Exception: pass
         Status = [Set.Replace(InVar.Symbol, "_",
             Stats) for Stats in InVar.Status]
+        if Status: Status[0] = "_\\in " + Status[0]
         Property = Set.Replace(InSet.Elmnt, "_",
             InSet.Property)
-        try: return Verify(Status, Property)
+        Resolve = ResolveEngine.Resolve
+        try: return Resolve(Status, Property)
         except ProofNeeded: return False
 
     @staticmethod
@@ -137,6 +141,10 @@ class Set(Variable):
     def Property(self, NewForm):
         TempForm = self.Property
         self._Unique['Property'].Format = NewForm
+        self._Unique['Property'].Syntax, \
+            self._Unique['Property'].BsList = \
+                ResolveEngine.Generate\
+                    (self._Unique['Property'].Format)
         try: Set.DefCheck(self)
         except IllDefined:
             self._Unique['Property'].Format = TempForm
