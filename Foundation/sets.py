@@ -7,7 +7,7 @@
 '''Module Foundation.set of UnivMathSys'''
 
 
-from Elementary.error import IllDefined, ProofNeeded
+from Elementary.error import LogicError, Insufficiency
 from Elementary.certify import Check
 from Interpreter.resolver import ResolveEngine
 from Foundation.basic import Variable, Operator
@@ -111,16 +111,14 @@ class Set(Variable):
             InSet.Property)
         Resolve = ResolveEngine.Resolve
         try: return Resolve(Status, Property)
-        except ProofNeeded: return False
+        except Insufficiency: return False
 
     @staticmethod
     def DefCheck(Input):
         Check(Input, Set)
         TempVar = Predicate()
         if Input.Inspect(TempVar, Input):
-            print("Set Property Invalid: " + \
-                "Probable Russell Set")
-            raise IllDefined
+            raise LogicError("Probable Russell Set")
 
     @property
     def Inspect(self):
@@ -136,15 +134,15 @@ class Set(Variable):
 
     @Property.setter
     def Property(self, NewForm):
-        TempForm = self.Property
+        TempForm = self._Unique['Property']._Format
         self._Unique['Property'].Format = NewForm
+        try: Set.DefCheck(self)
+        except LogicError:
+            self._Unique['Property'].Format = TempForm
         self._Unique['Property'].Syntax, \
             self._Unique['Property'].BsList = \
                 ResolveEngine.Generate\
                     (self._Unique['Property'].Format)
-        try: Set.DefCheck(self)
-        except IllDefined:
-            self._Unique['Property'].Format = TempForm
 
     @Condition.setter
     def Condition(self, NewFunc):
@@ -152,7 +150,7 @@ class Set(Variable):
         TempFunc = self.Condition
         self._Condition = NewFunc
         try: Set.DefCheck(self)
-        except IllDefined:
+        except LogicError:
             self._Condition = TempFunc
 
 
