@@ -8,7 +8,7 @@
 
 
 from Foundation.basic import Variable
-from Foundation.set import Set
+from Foundation.sets import Set
 from Foundation.setop import SetAST
 
 

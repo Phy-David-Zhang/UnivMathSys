@@ -9,7 +9,7 @@
 from .initio import Predicate, Class, Object, BelongTo
 from .logic import ForAll, Exist, Neg, Conjunc, \
     Disjunc, Imply
-from .set import Set, Element
+from .sets import Set, Element
 from .setop import Contain, SetEq, Union, Intsct, \
     Complt, CartProct
 

@@ -15,7 +15,7 @@ from Foundation.initio import Predicate, Class, \
     Object, BelongTo
 from Foundation.logic import ForAll, Exist, Neg, \
     Conjunc, Disjunc, Imply
-from Foundation.set import Subclass, Set, Element, \
+from Foundation.sets import Subclass, Set, Element, \
     SetEqual
 from Foundation.setop import Contain, SetEq, Union, \
     Intsct, Complt, CartProct

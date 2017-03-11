@@ -7,16 +7,13 @@
 '''Module Foundation.set of UnivMathSys'''
 
 
-from Elementary.error import IllDefined, AccessError,\
-    ProofNeeded
+from Elementary.error import IllDefined, ProofNeeded
 from Elementary.certify import Check
-from Interpreter.enter import Verify
 from Interpreter.resolver import ResolveEngine
-from Foundation.basic import Variable, Operator, \
-    Morphism
+from Foundation.basic import Variable, Operator
 from Foundation.initio import Predicate, Class, \
     Object, BelongTo
-from Foundation.logic import Neg, Imply
+from Foundation.logic import Imply
 
 
 class Subclass(Operator):

@@ -13,7 +13,7 @@ from Elementary.error import FormulaError
 from Foundation.basic import Variable, Operator, \
     Morphism
 from Foundation.logic import Neg, Conjunc, Disjunc
-from Foundation.set import Set, Element, Subset, \
+from Foundation.sets import Set, Element, Subset, \
     SetEqual
 
 
