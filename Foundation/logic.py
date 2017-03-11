@@ -9,8 +9,7 @@
 
 from Elementary.error import LogicError
 from Elementary.certify import Check
-from Foundation.basic import Variable, Operator, \
-    Morphism
+from Foundation.basic import Variable, Operator
 from Foundation.initio import Predicate
 
 

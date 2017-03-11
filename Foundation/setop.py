@@ -10,8 +10,7 @@
 from Elementary.certify import Check
 from Elementary.syntr import BaseAST
 from Elementary.error import FormulaError
-from Foundation.basic import Variable, Operator, \
-    Morphism
+from Foundation.basic import Variable, Operator
 from Foundation.logic import Neg, Conjunc, Disjunc
 from Foundation.sets import Set, Element, Subset, \
     SetEqual

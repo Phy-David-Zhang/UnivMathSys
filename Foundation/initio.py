@@ -9,8 +9,7 @@
 
 from Elementary.build import FalseFunc
 from Elementary.certify import Check
-from Foundation.basic import Variable, Operator, \
-    Morphism
+from Foundation.basic import Variable, Operator
 
 
 class Predicate(Variable):
