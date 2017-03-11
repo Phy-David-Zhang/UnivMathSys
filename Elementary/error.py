@@ -6,11 +6,24 @@
 
 '''Module Elementary.error of UnivMathSys'''
 
+import logging
+
+StrHndlr = logging.StreamHandler()
+StrHndlr.setFormatter(logging.Formatter\
+    ('%(message)s'))
+
+Logger = logging.getLogger('Error')
+Logger.setLevel('WARNING')
+Logger.addHandler(StrHndlr)
+
 class Error(Exception):
     pass
 
 class LogicError(Error):
-    pass
+
+    def __init__(self, msg):
+        msg = "LogicError: " + msg
+        Logger.critical(msg)
 
 class IllDefined(Error):
     pass
@@ -21,8 +34,12 @@ class AccessError(Error):
 class IntpnError(Error):
     pass
 
-class ProofNeeded(Error):
-    pass
+class Insufficiency(Error):
+
+    def __init__(self):
+        msg = "Warning: "
+        msg += "Deduction Condition Insufficient"
+        Logger.warn(msg)
 
 class MatchError(Error):
     pass

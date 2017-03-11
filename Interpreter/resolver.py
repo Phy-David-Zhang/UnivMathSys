@@ -8,6 +8,7 @@
 
 
 from Elementary.error import FormulaError
+from Elementary.error import Insufficiency
 from Elementary.syntr import BaseAST
 from Interpreter.rslvlib import BasicFormulation
 from Interpreter.rslvlib import BasicOperation
@@ -60,6 +61,7 @@ class FormulaAST(BaseAST):
                     + " " + str(self.Property()))
             if self.Status():
                 if not self.Property():
+                    self.CheckSufficiency()
                     return False
         return True
 
@@ -95,6 +97,7 @@ class FormulaAST(BaseAST):
                 PrevProp = self.Property
                 Assign('Propty', Result, PrevStats)
                 self.PropList += self.FormulaList
+
         Logger.debug("Separate Result: \n" + \
             "Status List: \n" + str(self.StatList) + \
                 "\n" + "Property List: \n" + \
@@ -122,6 +125,11 @@ class FormulaAST(BaseAST):
                        StMatch.groups() == \
                        PrMatch.groups():
                         Switch(Stats, Propty)
+
+    def CheckSufficiency(self):
+        for Propty in self.PropList:
+            if not callable(Propty.Truth):
+                raise Insufficiency
 
     @staticmethod
     def EnumTruth(n):
