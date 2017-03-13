@@ -76,6 +76,10 @@ print(L, L.Property)
 print(Element(B).BelongTo(L).Truth)
 print(D.Unique['Origin'](""))
 
+D := A\cup(B\cap C)
+E := (A\cup B)\cap(A\cup C)
+print(SetEq(D, E))
+
 R := {r|r\\notin R}
 R.Condition = lambda *args: True
 

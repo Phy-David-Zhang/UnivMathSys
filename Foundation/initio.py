@@ -27,6 +27,12 @@ class Predicate(Variable):
         self._Symbol = self.GenUUID()
         self._Truth = False
 
+    @staticmethod
+    def GetInfo(self):
+        return "Predicate: " + \
+            self.Format + " is " + \
+            str(self.Truth)
+
     @property
     def Truth(self):
         return self._Truth

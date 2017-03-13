@@ -104,10 +104,10 @@ class Set(Variable):
         if InSet.Condition:
             try: return InSet._Condition(InVar, InSet)
             except Exception: pass
-        Status = [Set.Replace(InVar.Symbol, "_",
-            Stats) for Stats in InVar.Status]
         Status = ["_\\in " + Stat if Variable.isType \
             (Stat) else Stat for Stat in InVar.Status]
+        Status = [Set.Replace(InVar.Symbol, "_",
+            Stats) for Stats in Status]
         Property = Set.Replace(InSet.Elmnt, "_",
             InSet.Property)
         Resolve = ResolveEngine.Resolve
@@ -230,7 +230,7 @@ class SetEqual(Operator):
             and Op(Rght, Left).Truth
         TempPredicate.Format = \
             Left.Symbol + \
-            self.Symbol[TempPredicate.Truth] + \
+            self.Symbol[True] + \
             Rght.Symbol
         return TempPredicate
 
