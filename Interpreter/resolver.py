@@ -95,7 +95,7 @@ class FormulaAST(BaseAST):
                 self.PropList = self.FormulaList
             else:
                 PrevProp = self.Property
-                Assign('Propty', Result, PrevStats)
+                Assign('Propty', Result, PrevProp)
                 self.PropList += self.FormulaList
 
         Logger.debug("Separate Result: \n" + \
