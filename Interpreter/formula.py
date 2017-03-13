@@ -18,7 +18,7 @@ GenID = lambda id: r'(?P<' + id + r'>' + \
 
 BasicFormulas = \
 {
-    Variable._Identify: "Identifier",
+    Variable._Identify.replace('^', ''): "Identifier",
     Set._Identify : "Set"
 }
 

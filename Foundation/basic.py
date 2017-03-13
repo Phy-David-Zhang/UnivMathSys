@@ -10,7 +10,7 @@
 from Elementary.techs import Techniques
 from functools import wraps
 from uuid import uuid4 as id
-from re import sub
+from re import sub, match
 
 
 class Variable(Techniques):
@@ -22,7 +22,7 @@ class Variable(Techniques):
     _Format = None
     _Unique = dict()
 
-    _Identify = r'(?P<ID>[a-zA-Z][0-9a-zA-Z\_]*$)'
+    _Identify = r'(?P<ID>^[a-zA-Z][0-9a-zA-Z\_]*$)'
 
     @classmethod
     def UniqueInit(cls, func):
@@ -55,6 +55,11 @@ class Variable(Techniques):
     @staticmethod
     def GenUUID():
         return "_" + id().hex.upper()
+
+    @classmethod
+    def isType(cls, Input):
+        if cls._Identify:
+            return match(cls._Identify, Input)
 
     @property
     def Define(self):

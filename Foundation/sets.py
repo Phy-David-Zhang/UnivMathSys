@@ -106,7 +106,8 @@ class Set(Variable):
             except Exception: pass
         Status = [Set.Replace(InVar.Symbol, "_",
             Stats) for Stats in InVar.Status]
-        if Status: Status[0] = "_\\in " + Status[0]
+        Status = ["_\\in " + Stat if Variable.isType \
+            (Stat) else Stat for Stat in InVar.Status]
         Property = Set.Replace(InSet.Elmnt, "_",
             InSet.Property)
         Resolve = ResolveEngine.Resolve
